@@ -6,38 +6,38 @@
  *
  ******************************************************************************/
 
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
+#    include <stdio.h>
+#    include <stdlib.h>
+#    include <string.h>
 
 /* Instruction Set */
 
-#define LOADA	   0X00
-#define LOADB	   0X01
-#define LOADAI    0X02
-#define LOADBI    0X03
-#define NOP	      0X04
-#define STOREA    0X05
-#define STOREB    0X06
-#define ADDA	   0X07
-#define ADDB	   0X08
-#define COMPAI    0X09
-#define COMPBI    0X0A
-#define BLT	      0X0B
-#define BGT 	   0X0C
-#define JUMP	   0X0D
-#define PRINTA    0X0E
-#define BREAK     0x0F
+#    define LOADA            0X00
+#    define LOADB            0X01
+#    define LOADAI           0X02
+#    define LOADBI           0X03
+#    define NOP              0X04
+#    define STOREA           0X05
+#    define STOREB           0X06
+#    define ADDA             0X07
+#    define ADDB             0X08
+#    define COMPAI           0X09
+#    define COMPBI           0X0A
+#    define BLT              0X0B
+#    define BGT              0X0C
+#    define JUMP             0X0D
+#    define PRINTA           0X0E
+#    define BREAK            0x0F
 
-#define MAX_LINE 1024
+#    define MAX_LINE         1024
 
-#define FALSE     0
-#define TRUE      (!FALSE)
+#    define FALSE            0
+#    define TRUE             (!FALSE)
 
-#define ADDRESS_LENGTH   2
-#define IMMEDIATE_LENGTH 1
+#    define ADDRESS_LENGTH   2
+#    define IMMEDIATE_LENGTH 1
 
-#define ADDRESS_SPACE    65536
+#    define ADDRESS_SPACE    65536
 
 typedef enum {NONE, IMMEDIATE, ADDRESS} OPERAND_TYPE;
 

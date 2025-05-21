@@ -4,7 +4,6 @@
 ** This code is Copyright 1999 by Dann Corbit
 */
 
-
 /*
 ** This file is INTEL specific.  It should be pretty easy to generate one
 ** for any sort of architecture.
@@ -25,29 +24,24 @@
 ** These floating point mapping functions are due to Terje Mathisen.
 ** They are reprinted with his permission.
 */
-#include <assert.h>
 #include "inteltyp.h"
+#include <assert.h>
 
 #ifdef ASSERT
-#undef ASSERT
+#    undef ASSERT
 #endif
 
 #ifdef _DEBUG
-#define ASSERT(x) assert((x))
+#    define ASSERT(x) assert((x))
 #else
-#define ASSERT(x)
+#    define ASSERT(x)
 #endif
 
-
-uint32
-float2key(float f)
-{
-    uint32          sign,
-                    mant,
-                    mask;
+uint32 float2key(float f) {
+    uint32 sign, mant, mask;
 
     ASSERT(sizeof(float) == sizeof(uint32));
-    mant = *(uint32 *) & f;     /* Load float as array of bits */
+    mant = *(uint32 *)&f;       /* Load float as array of bits */
     sign = mant & SB_MASK32;    /* Isolate the leading sign bit */
     mant ^= SB_MASK32;          /* Invert the sign bit, making + > - */
     mask = sign - (sign >> 31); /* Either 0 or 0x7fffffff */
@@ -55,15 +49,11 @@ float2key(float f)
     return mant;
 }
 
-uint64
-double2key(double d)
-{
-    uint64          sign,
-                    mant,
-                    mask;
+uint64 double2key(double d) {
+    uint64 sign, mant, mask;
 
     ASSERT(sizeof(double) == sizeof(uint64));
-    mant = *(uint64 *) & d;     /* Load float as array of bits */
+    mant = *(uint64 *)&d;       /* Load float as array of bits */
     sign = mant & SB_MASK64;    /* Isolate the leading sign bit */
     mant ^= SB_MASK64;          /* Invert the sign bit, making + > - */
     mask = sign - (sign >> 63); /* Either 0 or 0x7fffffffffffffff */

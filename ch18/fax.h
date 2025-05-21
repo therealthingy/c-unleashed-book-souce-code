@@ -26,12 +26,10 @@
  *
  */
 
-#define PIXELS_PER_ROW    1728
-#define PIXELS_PER_OCTET  8
-#define OCTETS_PER_ROW    (PIXELS_PER_ROW / PIXELS_PER_OCTET)
-#define MAXIMUM_ROWS      1024
-#define T4_BUFFER_SIZE    1024
-#define EOL_LENGTH        12
-#define OCTET_MASK        0xff
-
-
+#define PIXELS_PER_ROW   1728
+#define PIXELS_PER_OCTET 8
+#define OCTETS_PER_ROW   (PIXELS_PER_ROW / PIXELS_PER_OCTET)
+#define MAXIMUM_ROWS     1024
+#define T4_BUFFER_SIZE   1024
+#define EOL_LENGTH       12
+#define OCTET_MASK       0xff

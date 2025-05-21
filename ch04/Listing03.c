@@ -1,10 +1,9 @@
+#include <locale.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <locale.h>
 #include <time.h>
 
-int main(void)
-{
+int main(void) {
     time_t timeval;
     struct tm *tmptr;
     char *localename, *category;

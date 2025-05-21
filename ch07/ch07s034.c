@@ -1,3 +1,3 @@
 #ifndef NDEBUG
-  DebugDumpList(&Root);
+DebugDumpList(&Root);
 #endif

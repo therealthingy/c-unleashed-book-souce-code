@@ -9,21 +9,19 @@
 
 #include <string.h>
 
-int getcols(char *line, char *words[], int maxwords, int delim)
-{
-char *p = line, *p2;
-int nwords = 0;
+int getcols(char *line, char *words[], int maxwords, int delim) {
+    char *p = line, *p2;
+    int nwords = 0;
 
-while(*p != '\0')
-	{
-	words[nwords++] = p;
-	if(nwords >= maxwords)
-		return nwords;
-	p2 = strchr(p, delim);
-	if(p2 == NULL)
-		break;
-	*p2 = '\0';
-	p = p2 + 1;
-	}
-return nwords;
+    while (*p != '\0') {
+        words[nwords++] = p;
+        if (nwords >= maxwords)
+            return nwords;
+        p2 = strchr(p, delim);
+        if (p2 == NULL)
+            break;
+        *p2 = '\0';
+        p = p2 + 1;
+    }
+    return nwords;
 }

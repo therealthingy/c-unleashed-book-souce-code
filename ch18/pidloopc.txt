@@ -200,6 +200,6 @@ line (MS-DOS, Windows, UNIX, Linux):
 pidloop step.pid -v >step.out
 
 You can open step.out in any standard text editor and watch the 
-results of PID algorithms. The results are plotted in Figure 19.7 
+results of PID algorithms. The results are plotted in Figure 18.7 
 in the text.
 

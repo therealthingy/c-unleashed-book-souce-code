@@ -108,9 +108,8 @@
  * Change these to suit your platform and implementation
  */
 typedef unsigned long block_t;
-typedef block_t element_t;/* Only for CFBdif_...() functions */
+typedef block_t element_t; /* Only for CFBdif_...() functions */
 typedef block_t key_t;
-
 
 /*
  * Prototypes for the functions implementing the
@@ -125,207 +124,112 @@ typedef block_t key_t;
  */
 
 /* Returns one block of ciphertext */
-block_t encrypt(
-  block_t plaintext,
-  key_t key
-);
+block_t encrypt(block_t plaintext, key_t key);
 
 /* Returns one block of plaintext */
-block_t decrypt(
-  block_t ciphertext,
-  key_t key
-);
-
+block_t decrypt(block_t ciphertext, key_t key);
 
 /* The Electronic Code Book (ECB) Mode */
-void ECB_encryption(
-  block_t const plaintext[],
-  block_t ciphertext[],
-  size_t len,
-  key_t key)
-{
-  int i;
-  for(i = 0; i < len; i++)
-  {
-    ciphertext[i] = encrypt(plaintext[i], key);
-  }
+void ECB_encryption(block_t const plaintext[], block_t ciphertext[], size_t len, key_t key) {
+    int i;
+    for (i = 0; i < len; i++) {
+        ciphertext[i] = encrypt(plaintext[i], key);
+    }
 }
 
-void ECB_decryption(
-  block_t const ciphertext[],
-  block_t plaintext[],
-  size_t len,
-  key_t key)
-{
-  int i;
-  for(i = 0; i < len; i++)
-  {
-    plaintext[i] = decrypt(ciphertext[i], key);
-  }
+void ECB_decryption(block_t const ciphertext[], block_t plaintext[], size_t len, key_t key) {
+    int i;
+    for (i = 0; i < len; i++) {
+        plaintext[i] = decrypt(ciphertext[i], key);
+    }
 }
-
 
 /* The Cipher Block Chaining (CBC) Mode */
-void CBC_encryption(
-  block_t const plaintext[],
-  block_t ciphertext[],
-  size_t len,
-  key_t key,
-  block_t origin)
-{
-  int i;
-  ciphertext[0] = encrypt(plaintext[0] ^ origin, key);
-  for(i = 1; i < len; i++)
-  {
-    ciphertext[i] =
-      encrypt(plaintext[i] ^ ciphertext[i - 1], key);
-  }
+void CBC_encryption(block_t const plaintext[], block_t ciphertext[], size_t len, key_t key, block_t origin) {
+    int i;
+    ciphertext[0] = encrypt(plaintext[0] ^ origin, key);
+    for (i = 1; i < len; i++) {
+        ciphertext[i] = encrypt(plaintext[i] ^ ciphertext[i - 1], key);
+    }
 }
 
-void CBC_decryption(
-  block_t const ciphertext[],
-  block_t plaintext[],
-  size_t len,
-  key_t key,
-  block_t origin)
-{
-  int i;
-  plaintext[0] = decrypt(ciphertext[0], key) ^ origin;
-  for(i = 1; i < len; i++)
-  {
-    plaintext[i] =
-      decrypt(ciphertext[i], key) ^ ciphertext[i - 1];
-  }
+void CBC_decryption(block_t const ciphertext[], block_t plaintext[], size_t len, key_t key, block_t origin) {
+    int i;
+    plaintext[0] = decrypt(ciphertext[0], key) ^ origin;
+    for (i = 1; i < len; i++) {
+        plaintext[i] = decrypt(ciphertext[i], key) ^ ciphertext[i - 1];
+    }
 }
-
 
 /* Output Feedback (OFB) Mode with ELEMENTSIZE == BLOCKSIZE */
-void OFB_encryption(
-  block_t const plaintext[],
-  block_t ciphertext[],
-  size_t len,
-  key_t key,
-  block_t origin)
-{
-  int i;
-  block_t temp;
+void OFB_encryption(block_t const plaintext[], block_t ciphertext[], size_t len, key_t key, block_t origin) {
+    int i;
+    block_t temp;
 
-  temp = origin;
+    temp = origin;
 
-  for(i = 0; i < len; i++)
-  {
-    temp = encrypt(temp, key);
-    ciphertext[i] = plaintext[i] ^ temp;
-  }
+    for (i = 0; i < len; i++) {
+        temp = encrypt(temp, key);
+        ciphertext[i] = plaintext[i] ^ temp;
+    }
 }
 
-void OFB_decryption(
-  block_t const ciphertext[],
-  block_t plaintext[],
-  size_t len,
-  key_t key,
-  block_t origin)
-{
-  int i;
-  block_t temp;
+void OFB_decryption(block_t const ciphertext[], block_t plaintext[], size_t len, key_t key, block_t origin) {
+    int i;
+    block_t temp;
 
-  temp = origin;
+    temp = origin;
 
-  for(i = 0; i < len; i++)
-  {
-    temp = encrypt(temp, key);
-    plaintext[i] = ciphertext[i] ^ temp;
-  }
+    for (i = 0; i < len; i++) {
+        temp = encrypt(temp, key);
+        plaintext[i] = ciphertext[i] ^ temp;
+    }
 }
-
 
 /* Cipher Feedback (CFB) Mode when ELEMENTSIZE == BLOCKSIZE */
-void CFB_encryption(
-  block_t const plaintext[],
-  block_t ciphertext[],
-  size_t len,
-  key_t key,
-  block_t origin)
-{
-  int i;
+void CFB_encryption(block_t const plaintext[], block_t ciphertext[], size_t len, key_t key, block_t origin) {
+    int i;
 
-  ciphertext[0] = plaintext[0] ^ encrypt(origin, key);
+    ciphertext[0] = plaintext[0] ^ encrypt(origin, key);
 
-  for(i = 1; i < len; i++)
-  {
-    ciphertext[i] =
-      plaintext[i] ^ encrypt(ciphertext[i - 1], key);
-  }
+    for (i = 1; i < len; i++) {
+        ciphertext[i] = plaintext[i] ^ encrypt(ciphertext[i - 1], key);
+    }
 }
 
-void CFB_decryption(
-  block_t const ciphertext[],
-  block_t plaintext[],
-  size_t len,
-  key_t key,
-  block_t origin)
-{
-  int i;
+void CFB_decryption(block_t const ciphertext[], block_t plaintext[], size_t len, key_t key, block_t origin) {
+    int i;
 
-  plaintext[0] = ciphertext[0] ^ encrypt(origin, key);
+    plaintext[0] = ciphertext[0] ^ encrypt(origin, key);
 
-  for(i = 1; i < len; i++)
-  {
-    plaintext[i] =
-      ciphertext[i] ^ encrypt(ciphertext[i - 1], key);
-  }
+    for (i = 1; i < len; i++) {
+        plaintext[i] = ciphertext[i] ^ encrypt(ciphertext[i - 1], key);
+    }
 }
-
 
 /* Cipher Feedback (CFB) Mode when BLOCKSIZE != ELEMENTSIZE */
-void CFBdif_encryption(
-  element_t const plaintext[],
-  element_t ciphertext[],
-  size_t len,
-  key_t key,
-  block_t origin)
-{
-  int i;
-  block_t temp;
+void CFBdif_encryption(element_t const plaintext[], element_t ciphertext[], size_t len, key_t key, block_t origin) {
+    int i;
+    block_t temp;
 
-  temp = origin;
-  ciphertext[0] =
-    plaintext[0] ^
-    encrypt(temp, key) >> BLOCKSIZE - ELEMENTSIZE &
-      (1 << ELEMENTSIZE) - 1;
+    temp = origin;
+    ciphertext[0] = plaintext[0] ^ encrypt(temp, key) >> BLOCKSIZE - ELEMENTSIZE & (1 << ELEMENTSIZE) - 1;
 
-  for(i = 1; i < len; i++)
-  {
-    temp = temp << ELEMENTSIZE | ciphertext[i - 1];
-    ciphertext[i] =
-      plaintext[i] ^
-      encrypt(temp, key) >> BLOCKSIZE - ELEMENTSIZE &
-        (1 << ELEMENTSIZE) - 1;
-  }
+    for (i = 1; i < len; i++) {
+        temp = temp << ELEMENTSIZE | ciphertext[i - 1];
+        ciphertext[i] = plaintext[i] ^ encrypt(temp, key) >> BLOCKSIZE - ELEMENTSIZE & (1 << ELEMENTSIZE) - 1;
+    }
 }
 
-void CFBdif_decryption(
-  element_t const ciphertext[],
-  element_t plaintext[],
-  size_t len,
-  key_t key,
-  block_t origin)
-{
-  int i;
-  block_t temp;
+void CFBdif_decryption(element_t const ciphertext[], element_t plaintext[], size_t len, key_t key, block_t origin) {
+    int i;
+    block_t temp;
 
-  temp = origin;
-  plaintext[0] =
-    ciphertext[0] ^
-    encrypt(temp, key) >> BLOCKSIZE - ELEMENTSIZE &
-      (1 << ELEMENTSIZE) - 1;
+    temp = origin;
+    plaintext[0] = ciphertext[0] ^ encrypt(temp, key) >> BLOCKSIZE - ELEMENTSIZE & (1 << ELEMENTSIZE) - 1;
 
-  for(i = 1; i < len; i++)
-  {
-    temp = temp << ELEMENTSIZE | ciphertext[i - 1];
-    plaintext[i] =
-      ciphertext[i] ^
-      encrypt(temp, key) >> BLOCKSIZE - ELEMENTSIZE &
-        (1 << ELEMENTSIZE) - 1;
-  }
+    for (i = 1; i < len; i++) {
+        temp = temp << ELEMENTSIZE | ciphertext[i - 1];
+        plaintext[i] = ciphertext[i] ^ encrypt(temp, key) >> BLOCKSIZE - ELEMENTSIZE & (1 << ELEMENTSIZE) - 1;
+    }
 }

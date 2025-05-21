@@ -33,14 +33,8 @@
 
 void FreeStrArray(char **Array, size_t NumRows);
 char **AllocStrArray(size_t NumRows, size_t Width);
-int ResizeOneString(char **Array,
-                    size_t Row,
-                    size_t NewSize);
-int AddRowsToStrArray(char ***ArrayPtr,
-                      size_t OldNumRows,
-                      int NumRowsToAdd,
-                      size_t InitWidth);
-int ConsolidateStrArray(char **ArrayPtr,
-                        size_t NumRows);
+int ResizeOneString(char **Array, size_t Row, size_t NewSize);
+int AddRowsToStrArray(char ***ArrayPtr, size_t OldNumRows, int NumRowsToAdd, size_t InitWidth);
+int ConsolidateStrArray(char **ArrayPtr, size_t NumRows);
 
 #endif

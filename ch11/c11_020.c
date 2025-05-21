@@ -29,83 +29,67 @@
  */
 
 #include <stdio.h>
-#include <time.h>
 #include <stdlib.h>
+#include <time.h>
 
-int random(int i)
-{
-  double d;
+int random(int i) {
+    double d;
 
-  d = rand() / ((double)RAND_MAX + 1.0);
-  d *= i;
-  return (int)d;
+    d = rand() / ((double)RAND_MAX + 1.0);
+    d *= i;
+    return (int)d;
 }
 
-int go_left(int *x, int *y)
-{
-  --*x;
+int go_left(int *x, int *y) {
+    --*x;
 
-  printf("Going left!\n");
+    printf("Going left!\n");
 
-  return random(5);
-
+    return random(5);
 }
 
-int go_right(int *x, int *y)
-{
-  ++*x;
+int go_right(int *x, int *y) {
+    ++*x;
 
-  printf("Going right!\n");
-  return random(5);
-
+    printf("Going right!\n");
+    return random(5);
 }
 
-int go_down(int *x, int *y)
-{
-  --*y;
+int go_down(int *x, int *y) {
+    --*y;
 
-  printf("Going down!\n");
+    printf("Going down!\n");
 
-  return random(5);
-
+    return random(5);
 }
 
-int go_up(int *x, int *y)
-{
-  ++*y;
+int go_up(int *x, int *y) {
+    ++*y;
 
-  printf("Going up!\n");
+    printf("Going up!\n");
 
-  return random(5);
-
+    return random(5);
 }
 
-int stop(int *x, int *y)
-{
-  printf("End of the road: (%d, %d)\n", *x, *y);
-  
-  return -1;
+int stop(int *x, int *y) {
+    printf("End of the road: (%d, %d)\n", *x, *y);
+
+    return -1;
 }
 
-int main(void)
-{
-  int (*action[])(int *, int *) =
-  {
-    go_left, go_right, go_down, go_up, stop
-  };
+int main(void) {
+    int (*action[])(int *, int *) = {go_left, go_right, go_down, go_up, stop};
 
-  int state = 0;
-  int x = 0;
-  int y = 0;
+    int state = 0;
+    int x = 0;
+    int y = 0;
 
-  srand((unsigned)time(NULL));
+    srand((unsigned)time(NULL));
 
-  do
-  {
-    printf("Currently at (%d, %d)\n", x, y);
-    state = (*action[state])(&x, &y);
-  } while(state != -1);
+    do {
+        printf("Currently at (%d, %d)\n", x, y);
+        state = (*action[state])(&x, &y);
+    } while (state != -1);
 
-  return 0;
+    return 0;
 }
-

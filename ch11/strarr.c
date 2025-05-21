@@ -28,174 +28,133 @@
  *
  */
 
+#include <assert.h>
 #include <stdlib.h>
 #include <string.h>
-#include <assert.h>
 
 #include "strarr.h"
 
-void FreeStrArray(char **Array, size_t NumRows)
-{
-  size_t Row;
+void FreeStrArray(char **Array, size_t NumRows) {
+    size_t Row;
 
-  if(Array != NULL)
-  {
-    for(Row = 0; Row < NumRows; Row++)
-    {
-      if(Array[Row] != NULL)
-      {
-        free(Array[Row]);
-      }
-    }
-    free(Array);
-  }
-}
-
-char **AllocStrArray(size_t NumRows, size_t Width)
-{
-  char **Array = NULL;
-  size_t Row;
-  int Success = 1;
-
-  /* allocating 0 bytes is not a great idea, and
-   * represents a logic error.
-   */
-  assert(NumRows > 0);
-  assert(Width > 0);
-
-  /* Just in case the zero allocation is NOT caught
-   * in testing, we'll check for it here.
-   */
-  if(NumRows > 0 && Width > 0)
-  {
-    Array = malloc(NumRows * sizeof *Array);
-    if(Array != NULL)
-    {
-      for(Row = 0; Row < NumRows; Row++)
-      {
-        Array[Row] = malloc(Width * sizeof *Array[Row]);
-        if(NULL == Array[Row])
-        {
-          Success = 0;
+    if (Array != NULL) {
+        for (Row = 0; Row < NumRows; Row++) {
+            if (Array[Row] != NULL) {
+                free(Array[Row]);
+            }
         }
-        else
-        {
-          /* Making this into an empty string is a quick
-           * op which will almost invariably be The Right
-           * Thing and can never be The Wrong Thing, so
-           * we might as well do it.
-           */
-          Array[Row][0] = '\0';
-        }
-      }
-      /* If any inner allocation failed,
-       * we should clean up.
-       */
-      if(1 != Success)
-      {
-        FreeStrArray(Array, NumRows);
-        Array = NULL;
-      }
+        free(Array);
     }
-  }
-
-  return Array;
 }
 
-int ResizeOneString(char **Array,
-                    size_t Row,
-                    size_t NewSize)
-{
-  char *p;
-  int Success = 1;
+char **AllocStrArray(size_t NumRows, size_t Width) {
+    char **Array = NULL;
+    size_t Row;
+    int Success = 1;
 
-  assert(Array != NULL);
-
-  p = realloc(Array[Row], NewSize);
-  if(p != NULL)
-  {
-    Array[Row] = p;
-  }
-  else
-  {
-    Success = 0;
-  }
-
-  return Success;
-}
-
-int AddRowsToStrArray(char ***ArrayPtr,
-                      size_t OldNumRows,
-                      int NumRowsToAdd,
-                      size_t InitWidth)
-{
-  char **p;
-  int Success = 1;
-  int Row;
-  int OldRows;
-
-  OldRows = (int)OldNumRows;
-  if(NumRowsToAdd < 0)
-  {
-    for(Row = OldRows - 1;
-        Row >= OldRows + NumRowsToAdd;
-        Row--)
-    {
-      free((*ArrayPtr)[Row]);
-    }
-  }
-
-  p = realloc(*ArrayPtr,
-              (OldRows + NumRowsToAdd) *
-               sizeof(**ArrayPtr));
-
-  if(p != NULL)
-  {
-    *ArrayPtr = p;
-
-    for(Row = OldRows;
-        Success && Row < OldRows + NumRowsToAdd;
-        Row++)
-    {
-      (*ArrayPtr)[Row] = malloc(InitWidth);
-      if((*ArrayPtr)[Row] != NULL)
-      {
-        (*ArrayPtr)[Row][0] = '\0';
-      }
-      else
-      {
-        Success = 0;
-      }
-    }
-  }
-  else
-  {
-    Success = 0;
-  }
-  return Success;
-}
-
-int ConsolidateStrArray(char **ArrayPtr,
-                        size_t NumRows)
-{
-  size_t Row;
-  size_t Len;
-  int NumFailures = 0;
-
-  for(Row = 0; Row < NumRows; Row++)
-  {
-    /* If the library has been correctly used, no
-     * row pointer will ever be NULL, so we should
-     * assert that this is the case.
+    /* allocating 0 bytes is not a great idea, and
+     * represents a logic error.
      */
-    assert(ArrayPtr[Row] != NULL);
-    Len = 1 + strlen(ArrayPtr[Row]);
-    if(0 == ResizeOneString(ArrayPtr, Row, Len))
-    {
-      ++NumFailures;
+    assert(NumRows > 0);
+    assert(Width > 0);
+
+    /* Just in case the zero allocation is NOT caught
+     * in testing, we'll check for it here.
+     */
+    if (NumRows > 0 && Width > 0) {
+        Array = malloc(NumRows * sizeof *Array);
+        if (Array != NULL) {
+            for (Row = 0; Row < NumRows; Row++) {
+                Array[Row] = malloc(Width * sizeof *Array[Row]);
+                if (NULL == Array[Row]) {
+                    Success = 0;
+                } else {
+                    /* Making this into an empty string is a quick
+                     * op which will almost invariably be The Right
+                     * Thing and can never be The Wrong Thing, so
+                     * we might as well do it.
+                     */
+                    Array[Row][0] = '\0';
+                }
+            }
+            /* If any inner allocation failed,
+             * we should clean up.
+             */
+            if (1 != Success) {
+                FreeStrArray(Array, NumRows);
+                Array = NULL;
+            }
+        }
     }
-  }
-  return NumFailures;
+
+    return Array;
+}
+
+int ResizeOneString(char **Array, size_t Row, size_t NewSize) {
+    char *p;
+    int Success = 1;
+
+    assert(Array != NULL);
+
+    p = realloc(Array[Row], NewSize);
+    if (p != NULL) {
+        Array[Row] = p;
+    } else {
+        Success = 0;
+    }
+
+    return Success;
+}
+
+int AddRowsToStrArray(char ***ArrayPtr, size_t OldNumRows, int NumRowsToAdd, size_t InitWidth) {
+    char **p;
+    int Success = 1;
+    int Row;
+    int OldRows;
+
+    OldRows = (int)OldNumRows;
+    if (NumRowsToAdd < 0) {
+        for (Row = OldRows - 1; Row >= OldRows + NumRowsToAdd; Row--) {
+            free((*ArrayPtr)[Row]);
+        }
+    }
+
+    p = realloc(*ArrayPtr, (OldRows + NumRowsToAdd) * sizeof(**ArrayPtr));
+
+    if (p != NULL) {
+        *ArrayPtr = p;
+
+        for (Row = OldRows; Success && Row < OldRows + NumRowsToAdd; Row++) {
+            (*ArrayPtr)[Row] = malloc(InitWidth);
+            if ((*ArrayPtr)[Row] != NULL) {
+                (*ArrayPtr)[Row][0] = '\0';
+            } else {
+                Success = 0;
+            }
+        }
+    } else {
+        Success = 0;
+    }
+    return Success;
+}
+
+int ConsolidateStrArray(char **ArrayPtr, size_t NumRows) {
+    size_t Row;
+    size_t Len;
+    int NumFailures = 0;
+
+    for (Row = 0; Row < NumRows; Row++) {
+        /* If the library has been correctly used, no
+         * row pointer will ever be NULL, so we should
+         * assert that this is the case.
+         */
+        assert(ArrayPtr[Row] != NULL);
+        Len = 1 + strlen(ArrayPtr[Row]);
+        if (0 == ResizeOneString(ArrayPtr, Row, Len)) {
+            ++NumFailures;
+        }
+    }
+    return NumFailures;
 }
 
 /* end of strarr.c */

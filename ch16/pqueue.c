@@ -2,175 +2,163 @@
 #include "graphs.h"
 #include <stdlib.h>
 
-void PQ_Initialise(struct PQueue * Q)
-{
-	Q->Front=NULL;
+void PQ_Initialise(struct PQueue *Q) {
+    Q->Front = NULL;
 }
 
-void PQ_Free(struct PQueue * Q)
-{
-	struct PQueue_Node * node;
+void PQ_Free(struct PQueue *Q) {
+    struct PQueue_Node *node;
 
-	if (!Q->Front) return;
+    if (!Q->Front)
+        return;
 
-	while (Q->Front)
-	{
-		node=Q->Front->Next;
-		free(Q->Front);
-		Q->Front=node;
-	}
+    while (Q->Front) {
+        node = Q->Front->Next;
+        free(Q->Front);
+        Q->Front = node;
+    }
 }
 
-int PQ_Enqueue(struct PQueue * Q, int Weight, int Index)
-{
-	struct PQueue_Node ** nodeptr;
-	struct PQueue_Node *scannode, *newnode;
+int PQ_Enqueue(struct PQueue *Q, int Weight, int Index) {
+    struct PQueue_Node **nodeptr;
+    struct PQueue_Node *scannode, *newnode;
 
-	/* check to see if Index is already present */
-	nodeptr=&Q->Front;
-	newnode=Q->Front;
-	while (newnode)
-	{
-		if (newnode->Index==Index)
-		{
-			*nodeptr=newnode->Next;
-			break;
-		}
-		nodeptr=&newnode->Next;
-		newnode=newnode->Next;
-	}
-	if (!newnode)
-	{
-		newnode=malloc(sizeof(struct PQueue_Node));
-		if (!newnode) return GRAPH_OUTOFMEM;
-	}
-	
-	/* here, newnode is valid, uninitialised and not present in the queue regardless */
-	newnode->Weight=Weight;
-	newnode->Index=Index;
+    /* check to see if Index is already present */
+    nodeptr = &Q->Front;
+    newnode = Q->Front;
+    while (newnode) {
+        if (newnode->Index == Index) {
+            *nodeptr = newnode->Next;
+            break;
+        }
+        nodeptr = &newnode->Next;
+        newnode = newnode->Next;
+    }
+    if (!newnode) {
+        newnode = malloc(sizeof(struct PQueue_Node));
+        if (!newnode)
+            return GRAPH_OUTOFMEM;
+    }
 
-	/* now insert newnode into the queue */
-	scannode=Q->Front;
-	nodeptr=&Q->Front;
-	while (scannode) {
-		if (scannode->Weight>Weight)
-		{
-			/* insert newnode before scannode */
-			newnode->Next=scannode;
-			*nodeptr=newnode;
-			return 0;
-		}
-		nodeptr=&scannode->Next;
-		scannode=scannode->Next;
-	}
-	
-	/* if we reached the end of the list, then insert newnode after scannode */
-	newnode->Next=NULL;
-	*nodeptr=newnode;
+    /* here, newnode is valid, uninitialised and not present in the queue regardless */
+    newnode->Weight = Weight;
+    newnode->Index = Index;
 
-	return 0;
+    /* now insert newnode into the queue */
+    scannode = Q->Front;
+    nodeptr = &Q->Front;
+    while (scannode) {
+        if (scannode->Weight > Weight) {
+            /* insert newnode before scannode */
+            newnode->Next = scannode;
+            *nodeptr = newnode;
+            return 0;
+        }
+        nodeptr = &scannode->Next;
+        scannode = scannode->Next;
+    }
+
+    /* if we reached the end of the list, then insert newnode after scannode */
+    newnode->Next = NULL;
+    *nodeptr = newnode;
+
+    return 0;
 }
 
-int PQ_Dequeue(struct PQueue * Q)
-{
-	/* simply, return >0 if Q->Front==NULL, otherwise the index of the first node (and remove it) */
-	int retindex;
-	struct PQueue_Node * node;
+int PQ_Dequeue(struct PQueue *Q) {
+    /* simply, return >0 if Q->Front==NULL, otherwise the index of the first node (and remove it) */
+    int retindex;
+    struct PQueue_Node *node;
 
-	if (!Q->Front) return -1;
+    if (!Q->Front)
+        return -1;
 
-	node=Q->Front;
-	Q->Front=node->Next;
+    node = Q->Front;
+    Q->Front = node->Next;
 
-	retindex=node->Index;
-	free(node);
+    retindex = node->Index;
+    free(node);
 
-	return retindex;	
-}	
-
-void PEQ_Initialise(struct PEdgeQueue * Q)
-{
-	Q->Front=NULL;
+    return retindex;
 }
 
-void PEQ_Free(struct PEdgeQueue * Q)
-{
-	struct PEdgeQueue_Node * node;
-
-	if (!Q->Front) return;
-
-	while (Q->Front)
-	{
-		node=Q->Front->Next;
-		free(Q->Front);
-		Q->Front=node;
-	}
+void PEQ_Initialise(struct PEdgeQueue *Q) {
+    Q->Front = NULL;
 }
 
-int PEQ_Enqueue(struct PEdgeQueue * Q, struct EdgeScan * EScan)
-{
-	struct PEdgeQueue_Node ** nodeptr;
-	struct PEdgeQueue_Node *scannode, *newnode;
+void PEQ_Free(struct PEdgeQueue *Q) {
+    struct PEdgeQueue_Node *node;
 
-	/* check to see if Index is already present */
-	nodeptr=&Q->Front;
-	newnode=Q->Front;
-	while (newnode)
-	{
-		if (newnode->Source==EScan->Source && newnode->Dest==EScan->Dest)
-		{
-			*nodeptr=newnode->Next;
-			break;
-		}
-		nodeptr=&newnode->Next;
-		newnode=newnode->Next;
-	}
-	if (!newnode)
-	{
-		newnode=malloc(sizeof(struct PEdgeQueue_Node));
-		if (!newnode) return GRAPH_OUTOFMEM;
-	}
-	
-	/* here, newnode is valid, uninitialised and not present in the queue regardless */
-	newnode->Weight=EScan->Cost;
-	newnode->Source=EScan->Source;
-	newnode->Dest=EScan->Dest;
+    if (!Q->Front)
+        return;
 
-	/* now insert newnode into the queue */
-	scannode=Q->Front;
-	nodeptr=&Q->Front;
-	while (scannode) {
-		if (scannode->Weight>EScan->Cost)
-		{
-			/* insert newnode before scannode */
-			newnode->Next=scannode;
-			*nodeptr=newnode;
-			return 0;
-		}
-		nodeptr=&scannode->Next;
-		scannode=scannode->Next;
-	}
-	
-	/* if we reached the end of the list, then insert newnode after scannode */
-	newnode->Next=NULL;
-	*nodeptr=newnode;
-
-	return 0;
+    while (Q->Front) {
+        node = Q->Front->Next;
+        free(Q->Front);
+        Q->Front = node;
+    }
 }
 
-int PEQ_Dequeue(struct PEdgeQueue * Q, struct EdgeScan * EScan)
-{
-	struct PEdgeQueue_Node * node;
+int PEQ_Enqueue(struct PEdgeQueue *Q, struct EdgeScan *EScan) {
+    struct PEdgeQueue_Node **nodeptr;
+    struct PEdgeQueue_Node *scannode, *newnode;
 
-	if (!Q->Front) return -1;
+    /* check to see if Index is already present */
+    nodeptr = &Q->Front;
+    newnode = Q->Front;
+    while (newnode) {
+        if (newnode->Source == EScan->Source && newnode->Dest == EScan->Dest) {
+            *nodeptr = newnode->Next;
+            break;
+        }
+        nodeptr = &newnode->Next;
+        newnode = newnode->Next;
+    }
+    if (!newnode) {
+        newnode = malloc(sizeof(struct PEdgeQueue_Node));
+        if (!newnode)
+            return GRAPH_OUTOFMEM;
+    }
 
-	node=Q->Front;
-	Q->Front=node->Next;
+    /* here, newnode is valid, uninitialised and not present in the queue regardless */
+    newnode->Weight = EScan->Cost;
+    newnode->Source = EScan->Source;
+    newnode->Dest = EScan->Dest;
 
-	EScan->Source=node->Source;
-	EScan->Dest=node->Dest;
-	EScan->Cost=node->Weight;
+    /* now insert newnode into the queue */
+    scannode = Q->Front;
+    nodeptr = &Q->Front;
+    while (scannode) {
+        if (scannode->Weight > EScan->Cost) {
+            /* insert newnode before scannode */
+            newnode->Next = scannode;
+            *nodeptr = newnode;
+            return 0;
+        }
+        nodeptr = &scannode->Next;
+        scannode = scannode->Next;
+    }
 
-	free(node);
-	return 0;
+    /* if we reached the end of the list, then insert newnode after scannode */
+    newnode->Next = NULL;
+    *nodeptr = newnode;
+
+    return 0;
+}
+
+int PEQ_Dequeue(struct PEdgeQueue *Q, struct EdgeScan *EScan) {
+    struct PEdgeQueue_Node *node;
+
+    if (!Q->Front)
+        return -1;
+
+    node = Q->Front;
+    Q->Front = node->Next;
+
+    EScan->Source = node->Source;
+    EScan->Dest = node->Dest;
+    EScan->Cost = node->Weight;
+
+    free(node);
+    return 0;
 }

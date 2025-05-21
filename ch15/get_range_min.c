@@ -23,29 +23,27 @@
 **                                                                       **
 **************************************************************************/
 
+#include "sparse.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include "sparse.h"
 
 int sp_get_range_min(SPARSE_MATRIX *sp, int dim)
-/* SPARSE_MATRIX *sp  The sparse matrix from which to retrieve the range 
+/* SPARSE_MATRIX *sp  The sparse matrix from which to retrieve the range
                         value */
 /* int dim            The dimension number */
 {
-  /* If the sparse matrix is empty, then a range value cannot be retrieved */
-  if (sp == (SPARSE_MATRIX *)NULL)
-  {
-    return(0);
-  }
+    /* If the sparse matrix is empty, then a range value cannot be retrieved */
+    if (sp == (SPARSE_MATRIX *)NULL) {
+        return (0);
+    }
 
-  sp->error_no = SP_NOERR;
+    sp->error_no = SP_NOERR;
 
-  /* Make sure that the dimension specified is legal */
-  if ((sp->dimensions < dim) || (dim < (int)1))
-  {
-    sp->error_no = SP_DIM;
-    return(0);
-  }
+    /* Make sure that the dimension specified is legal */
+    if ((sp->dimensions < dim) || (dim < (int)1)) {
+        sp->error_no = SP_DIM;
+        return (0);
+    }
 
-  return(*(sp->hdr_ranges + ((dim - 1) * 2)));
+    return (*(sp->hdr_ranges + ((dim - 1) * 2)));
 }

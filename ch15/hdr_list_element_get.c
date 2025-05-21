@@ -27,61 +27,53 @@
 **                                                                       **
 **************************************************************************/
 
-#include <stdio.h>
 #include "sparse.h"
+#include <stdio.h>
 
 SP_HDR_ELEMENT *sp_hdr_list_element_get(SPARSE_MATRIX *sp, int dim, int seq)
-/* SPARSE_MATRIX *sp  The sparse matrix in which to find the header list 
+/* SPARSE_MATRIX *sp  The sparse matrix in which to find the header list
                         element */
 /* int dim            The dimension number of the header list element*/
 /*     seq            The sequence number of the header list element */
 {
-  SP_HDR_ELEMENT *header_list, *header_element;
+    SP_HDR_ELEMENT *header_list, *header_element;
 
-  /* If the sparse matrix passed is empty, then there are no nodes to be 
-     found */
-  if (sp == (SPARSE_MATRIX *)NULL)
-    return ((SP_HDR_ELEMENT *)NULL);
+    /* If the sparse matrix passed is empty, then there are no nodes to be
+       found */
+    if (sp == (SPARSE_MATRIX *)NULL)
+        return ((SP_HDR_ELEMENT *)NULL);
 
-  sp->error_no = SP_NOERR;
+    sp->error_no = SP_NOERR;
 
-  /* Retrieve the header list associated with the dimension */
-  header_list = sp_get_header_list(sp, dim);
-  if ((sp->error_no != SP_NOERR) || (header_list == (SP_HDR_ELEMENT *)NULL))
-  {
-    return((SP_HDR_ELEMENT *)NULL);
-  }
+    /* Retrieve the header list associated with the dimension */
+    header_list = sp_get_header_list(sp, dim);
+    if ((sp->error_no != SP_NOERR) || (header_list == (SP_HDR_ELEMENT *)NULL)) {
+        return ((SP_HDR_ELEMENT *)NULL);
+    }
 
-  /* Make sure that the sequence number specified is within range */
-  if ((seq < sp_get_range_min(sp, dim)) || (sp->error_no != SP_NOERR))
-  {
-    sp->error_no = SP_DLOW;
-    return((SP_HDR_ELEMENT *)NULL);
-  }
+    /* Make sure that the sequence number specified is within range */
+    if ((seq < sp_get_range_min(sp, dim)) || (sp->error_no != SP_NOERR)) {
+        sp->error_no = SP_DLOW;
+        return ((SP_HDR_ELEMENT *)NULL);
+    }
 
-  /* Make sure that the sequence number specified is within range */
-  if ((seq > sp_get_range_max(sp, dim)) || (sp->error_no != SP_NOERR))
-  {
-    sp->error_no = SP_DHIGH;
-    return((SP_HDR_ELEMENT *)NULL);
-  }
+    /* Make sure that the sequence number specified is within range */
+    if ((seq > sp_get_range_max(sp, dim)) || (sp->error_no != SP_NOERR)) {
+        sp->error_no = SP_DHIGH;
+        return ((SP_HDR_ELEMENT *)NULL);
+    }
 
-  /* Search the header list for the requested sequence */
-  header_element = header_list;
-  while ((header_element->next->sequence <= seq) && 
-         (header_element->next != header_list))
-  {
-    header_element = header_element->next;
-  }
+    /* Search the header list for the requested sequence */
+    header_element = header_list;
+    while ((header_element->next->sequence <= seq) && (header_element->next != header_list)) {
+        header_element = header_element->next;
+    }
 
-  /* If the header_element is not the same sequence number as passed in, 
-     then the sequence number is not in the list */
-  if (header_element->sequence != seq)
-  {
-    return((SP_HDR_ELEMENT *)NULL);
-  }
-  else
-  {
-    return(header_element);
-  }
+    /* If the header_element is not the same sequence number as passed in,
+       then the sequence number is not in the list */
+    if (header_element->sequence != seq) {
+        return ((SP_HDR_ELEMENT *)NULL);
+    } else {
+        return (header_element);
+    }
 }

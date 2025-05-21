@@ -40,65 +40,42 @@
 /*
  * Change these types to match your platform
  */
-typedef unsigned char byte_t;/* 8-bit integer */
-typedef unsigned short uint16_t;/* 16-bit integer */
-typedef unsigned long uint32_t;/* 32-bit integer */
-typedef unsigned long long uint64_t;/* 64-bit integer */
+typedef unsigned char byte_t;        /* 8-bit integer */
+typedef unsigned short uint16_t;     /* 16-bit integer */
+typedef unsigned long uint32_t;      /* 32-bit integer */
+typedef unsigned long long uint64_t; /* 64-bit integer */
 
 /*
  * Translate the message blocks into the native byte order
  * from big-endian byte order
  */
-void native_byte_order16(
-    uint16_t* msg,
-    size_t num_blocks)
-{
-    byte_t* b_ptr;
+void native_byte_order16(uint16_t *msg, size_t num_blocks) {
+    byte_t *b_ptr;
 
-    while(num_blocks--)
-    {
-        b_ptr = (byte_t*)(msg + num_blocks);
-        msg[num_blocks] =
-            (uint16_t)b_ptr[0] << 8 |
-            (uint16_t)b_ptr[1];
+    while (num_blocks--) {
+        b_ptr = (byte_t *)(msg + num_blocks);
+        msg[num_blocks] = (uint16_t)b_ptr[0] << 8 | (uint16_t)b_ptr[1];
     }
 }
 
-void native_byte_order32(
-    uint32_t* msg,
-    size_t num_blocks)
-{
-    byte_t* b_ptr;
+void native_byte_order32(uint32_t *msg, size_t num_blocks) {
+    byte_t *b_ptr;
 
-    while(num_blocks--)
-    {
-        b_ptr = (byte_t*)(msg + num_blocks);
+    while (num_blocks--) {
+        b_ptr = (byte_t *)(msg + num_blocks);
         msg[num_blocks] =
-            (uint32_t)b_ptr[0] << 24 |
-            (uint32_t)b_ptr[1] << 16 |
-            (uint32_t)b_ptr[2] << 8 |
-            (uint32_t)b_ptr[3];
+            (uint32_t)b_ptr[0] << 24 | (uint32_t)b_ptr[1] << 16 | (uint32_t)b_ptr[2] << 8 | (uint32_t)b_ptr[3];
     }
 }
 
-void native_byte_order64(
-    uint64_t* msg,
-    size_t num_blocks)
-{
-    byte_t* b_ptr;
+void native_byte_order64(uint64_t *msg, size_t num_blocks) {
+    byte_t *b_ptr;
 
-    while(num_blocks--)
-    {
-        b_ptr = (byte_t*)(msg + num_blocks);
-        msg[num_blocks] =
-            (uint64_t)b_ptr[0] << 56 |
-            (uint64_t)b_ptr[1] << 48 |
-            (uint64_t)b_ptr[2] << 40 |
-            (uint64_t)b_ptr[3] << 32 |
-            (uint64_t)b_ptr[4] << 24 |
-            (uint64_t)b_ptr[5] << 16 |
-            (uint64_t)b_ptr[6] << 8 |
-            (uint64_t)b_ptr[7];
+    while (num_blocks--) {
+        b_ptr = (byte_t *)(msg + num_blocks);
+        msg[num_blocks] = (uint64_t)b_ptr[0] << 56 | (uint64_t)b_ptr[1] << 48 | (uint64_t)b_ptr[2] << 40 |
+                          (uint64_t)b_ptr[3] << 32 | (uint64_t)b_ptr[4] << 24 | (uint64_t)b_ptr[5] << 16 |
+                          (uint64_t)b_ptr[6] << 8 | (uint64_t)b_ptr[7];
     }
 }
 
@@ -106,32 +83,24 @@ void native_byte_order64(
  * Translates the message blocks from the native byte order
  * to big-endian byte order
  */
-void big_endian16(
-    uint16_t* msg,
-    size_t num_blocks)
-{
-    byte_t* b_ptr;
+void big_endian16(uint16_t *msg, size_t num_blocks) {
+    byte_t *b_ptr;
     uint16_t temp;
 
-    while(num_blocks--)
-    {
-        b_ptr = (byte_t*)(msg + num_blocks);
+    while (num_blocks--) {
+        b_ptr = (byte_t *)(msg + num_blocks);
         temp = msg[num_blocks];
         b_ptr[0] = temp >> 8;
         b_ptr[1] = temp;
     }
 }
 
-void big_endian32(
-    uint32_t* msg,
-    size_t num_blocks)
-{
-    byte_t* b_ptr;
+void big_endian32(uint32_t *msg, size_t num_blocks) {
+    byte_t *b_ptr;
     uint32_t temp;
 
-    while(num_blocks--)
-    {
-        b_ptr = (byte_t*)(msg + num_blocks);
+    while (num_blocks--) {
+        b_ptr = (byte_t *)(msg + num_blocks);
         temp = msg[num_blocks];
         b_ptr[0] = temp >> 24;
         b_ptr[1] = temp >> 16;
@@ -140,16 +109,12 @@ void big_endian32(
     }
 }
 
-void big_endian64(
-    uint64_t* msg,
-    size_t num_blocks)
-{
-    byte_t* b_ptr;
+void big_endian64(uint64_t *msg, size_t num_blocks) {
+    byte_t *b_ptr;
     uint64_t temp;
 
-    while(num_blocks--)
-    {
-        b_ptr = (byte_t*)(msg + num_blocks);
+    while (num_blocks--) {
+        b_ptr = (byte_t *)(msg + num_blocks);
         temp = msg[num_blocks];
         b_ptr[0] = temp >> 56;
         b_ptr[1] = temp >> 48;

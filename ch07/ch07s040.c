@@ -1,1 +1,1 @@
-  assert(fabs(hour) > DBL_MIN);
+assert(fabs(hour) > DBL_MIN);

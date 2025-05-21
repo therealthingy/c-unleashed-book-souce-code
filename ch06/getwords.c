@@ -14,22 +14,25 @@
  *  becomes a string in its own right.  The number of words is returned.
  */
 
-#include <stddef.h>
 #include <ctype.h>
+#include <stddef.h>
 
-int getwords(char *line, char *words[], int maxwords)
-{
-char *p = line;
-int nwords = 0;
+int getwords(char *line, char *words[], int maxwords) {
+    char *p = line;
+    int nwords = 0;
 
-while(1)
-	{
-	while(isspace(*p)) p++;
-	if(*p == '\0') return nwords;
-	words[nwords++] = p;
-	while(!isspace(*p) && *p != '\0') p++;
-	if(*p == '\0') return nwords;
-	if(nwords >= maxwords) return nwords;
-	*p++ = '\0';
-	}
+    while (1) {
+        while (isspace(*p))
+            p++;
+        if (*p == '\0')
+            return nwords;
+        words[nwords++] = p;
+        while (!isspace(*p) && *p != '\0')
+            p++;
+        if (*p == '\0')
+            return nwords;
+        if (nwords >= maxwords)
+            return nwords;
+        *p++ = '\0';
+    }
 }

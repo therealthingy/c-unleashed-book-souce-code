@@ -1,3 +1,2 @@
-  if(NULL = root->left)
-  {
-    /* ... */
+if (NULL = root->left) {
+/* ... */

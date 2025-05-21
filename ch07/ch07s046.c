@@ -1,1 +1,1 @@
-  char *p;
+char *p;

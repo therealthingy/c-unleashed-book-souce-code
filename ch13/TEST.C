@@ -4,72 +4,50 @@
 ** This code is Copyright 1999 by Dann Corbit
 */
 
-
 /*
 ** A test driver for sort routines.
 ** For small data sets, a profiler is needed because the
 ** routines are much faster than the resolution of clock()
 */
-#include <limits.h>
-#include <float.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-#include <string.h>
-#include <math.h>
-#include "inteltyp.h"
 #include "distribs.h"
 #include "genproto.h"
+#include "inteltyp.h"
 #include "mtrand.h"
+#include <float.h>
+#include <limits.h>
+#include <math.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
 
 #ifdef WIN32
-#define CDECL __cdecl
+#    define CDECL __cdecl
 #else
-#define CDECL
+#    define CDECL
 #endif
 
-
-
-
-static const char *dlist[] =
-{
-    "constant",
-    "five",
-    "perverse",
-    "ramp",
-    "random",
-    "reverse",
-    "sorted",
-    "ten",
-    "trig",
-    "twenty",
-    "two",
-    NULL
-};
-
+static const char *dlist[] = {"constant", "five", "perverse", "ramp",   "random", "reverse",
+                              "sorted",   "ten",  "trig",     "twenty", "two",    NULL};
 
 /*
-   **  Functions to time another function
-   **  WARNING: Static variables are modified, so this code is NOT REENTRANT!
-   **  Do not use this code in multi-threading programs!
+ **  Functions to time another function
+ **  WARNING: Static variables are modified, so this code is NOT REENTRANT!
+ **  Do not use this code in multi-threading programs!
  */
 
-static clock_t  c_start,
-                c_now;
-static time_t   start,
-                now;
+static clock_t c_start, c_now;
+static time_t start, now;
 static const double dclocks_per_sec = CLOCKS_PER_SEC;
-void            reset_timer()
-{
+void reset_timer() {
     start = time(NULL);
     c_start = clock();
 }
 
-double          dTotal = 0;
-double          elapsed_time_since_reset(const char *message)
-{
-    double          delta;
-    double          fract;
+double dTotal = 0;
+double elapsed_time_since_reset(const char *message) {
+    double delta;
+    double fract;
     now = time(NULL);
     c_now = clock();
     delta = difftime(now, start);
@@ -88,51 +66,33 @@ double          elapsed_time_since_reset(const char *message)
     return delta;
 }
 
-
-void            dup(int la[], double da[], int count)
-{
-    int             i;
+void dup(int la[], double da[], int count) {
+    int i;
     for (i = 0; i < count; i++)
-        da[i] = (double) la[i];
+        da[i] = (double)la[i];
 }
 
 #define MAX_PAR 100
-int             main(int argc, char **argv)
-{
-    int             k;
-    double          dt[512];
-    int             it[512];
-    long            COUNT = 1000000L;
-    long            pmin,
-                    pmax;
-    unsigned long   cycles = 0;
-    long            iterations;
-    size_t          count;
-    size_t          pass;
-    char            pause[3];
-    int             which = 0;
-    int             sorttype;
-    int             iseed = 7;
-    int            *iarray;
-    double         *darray;
-    double          bd = 0,
-                    hd = 0,
-                    sd = 0,
-                    id = 0,
-                    qd = 0,
-                    ld = 0,
-                    pd = 0,
-                    md = 0;
-    double          bi = 0,
-                    si = 0,
-                    hi = 0,
-                    ii = 0,
-                    qi = 0,
-                    li = 0,
-                    pi = 0,
-                    mi = 0;
+int main(int argc, char **argv) {
+    int k;
+    double dt[512];
+    int it[512];
+    long COUNT = 1000000L;
+    long pmin, pmax;
+    unsigned long cycles = 0;
+    long iterations;
+    size_t count;
+    size_t pass;
+    char pause[3];
+    int which = 0;
+    int sorttype;
+    int iseed = 7;
+    int *iarray;
+    double *darray;
+    double bd = 0, hd = 0, sd = 0, id = 0, qd = 0, ld = 0, pd = 0, md = 0;
+    double bi = 0, si = 0, hi = 0, ii = 0, qi = 0, li = 0, pi = 0, mi = 0;
 
-    partition       pset[MAX_PAR] = {0};
+    partition pset[MAX_PAR] = {0};
 
     enum distribution_type d = constant;
     if (argc > 1) {
@@ -162,7 +122,7 @@ int             main(int argc, char **argv)
 #ifdef _DEBUG
         iterations = 1;
 #else
-        iterations = (long) (1e4 / (log(pass)));
+        iterations = (long)(1e4 / (log(pass)));
 #endif
         if (iterations < 1)
             iterations = 1;
@@ -331,15 +291,16 @@ int             main(int argc, char **argv)
         }
         which = 0;
         d = constant;
-        printf("Integral sorts %9lu %5.1f %5.1f  %5.1f  %5.1f  %5.1f  %5.1f %5.1f %5.1f\n", pass, bi, si, ii, qi, li, mi, hi, pi);
-        printf("Double   sorts %9lu %5.1f %5.1f  %5.1f  %5.1f  %5.1f  %5.1f %5.1f %5.1f\n", pass, bd, sd, id, qd, ld, md, hd, pd);
+        printf("Integral sorts %9lu %5.1f %5.1f  %5.1f  %5.1f  %5.1f  %5.1f %5.1f %5.1f\n", pass, bi, si, ii, qi, li,
+               mi, hi, pi);
+        printf("Double   sorts %9lu %5.1f %5.1f  %5.1f  %5.1f  %5.1f  %5.1f %5.1f %5.1f\n", pass, bd, sd, id, qd, ld,
+               md, hd, pd);
         bi = si = ii = qi = li = mi = hi = pi = 0;
         bd = sd = id = qd = ld = md = hd = pd = 0;
         if (pass < 64)
             pass++;
         else
             pass = pass * 2;
-
     }
 
     free(darray);

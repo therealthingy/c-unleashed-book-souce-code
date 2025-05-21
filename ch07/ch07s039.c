@@ -1,2 +1,2 @@
-  if(fabs(hour) > DBL_MIN)
-  /* ... */
+if (fabs(hour) > DBL_MIN)
+/* ... */

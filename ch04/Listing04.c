@@ -1,8 +1,7 @@
 #include <stdio.h>
 #include <time.h>
 
-int main(void)
-{
+int main(void) {
     time_t timeval;
     struct tm tmval;
     char inbuff[30];
@@ -16,9 +15,8 @@ int main(void)
         if (inbuff[0] == 'q' && inbuff[1] == '\n')
             break;
 
-        if (sscanf(inbuff, "%d/%d/%d %d:%d:%d",
-                   &tmval.tm_year, &tmval.tm_mon, &tmval.tm_mday,
-                   &tmval.tm_hour, &tmval.tm_min, &tmval.tm_sec) != 6) {
+        if (sscanf(inbuff, "%d/%d/%d %d:%d:%d", &tmval.tm_year, &tmval.tm_mon, &tmval.tm_mday, &tmval.tm_hour,
+                   &tmval.tm_min, &tmval.tm_sec) != 6) {
             printf("Invalid date format\n");
             continue;
         }

@@ -29,36 +29,28 @@
  */
 #include <stdio.h>
 
-void tee(FILE *fp)
-{
-  char buffer[2048];
-  while(fgets(buffer, sizeof buffer, stdin))
-  {
-    fprintf(stdout, "%s", buffer);
-    if(NULL != fp)
-    {
-      fprintf(fp, "%s", buffer);
+void tee(FILE *fp) {
+    char buffer[2048];
+    while (fgets(buffer, sizeof buffer, stdin)) {
+        fprintf(stdout, "%s", buffer);
+        if (NULL != fp) {
+            fprintf(fp, "%s", buffer);
+        }
     }
-  }
 }
 
-int main(int argc, char *argv[])
-{
-  FILE *fp = NULL;
-  if(argc > 1)
-  {
-    fp = fopen(argv[1], "w");
-    if(NULL == fp)
-    {
-      fputs("Error opening output stream.", stderr);
+int main(int argc, char *argv[]) {
+    FILE *fp = NULL;
+    if (argc > 1) {
+        fp = fopen(argv[1], "w");
+        if (NULL == fp) {
+            fputs("Error opening output stream.", stderr);
+        }
     }
-  }
-  tee(fp);
-  if(NULL != fp)
-  {
-    fclose(fp);
-  }
+    tee(fp);
+    if (NULL != fp) {
+        fclose(fp);
+    }
 
-  return 0;
+    return 0;
 }
-

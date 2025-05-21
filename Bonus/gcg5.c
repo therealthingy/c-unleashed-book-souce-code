@@ -1,3 +1,4 @@
+// clang-format off
 /* Automatic code generation program
  * Copyright Richard Heathfield 1999
  * binary@eton.powernet.co.uk

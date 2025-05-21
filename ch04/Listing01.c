@@ -2,8 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-int main(void)
-{
+int main(void) {
     time_t start, end;
 
     start = time(NULL);

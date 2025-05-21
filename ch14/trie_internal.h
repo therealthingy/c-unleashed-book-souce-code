@@ -1,13 +1,13 @@
-#if !defined( TRIE_INTERNAL_H_ )
-#define TRIE_INTERNAL_H_
+#if !defined(TRIE_INTERNAL_H_)
+#    define TRIE_INTERNAL_H_
 
 /*
  * This file defines the private internals for the trie management module
  * No file outside the trie code itself should include this
  */
 
-#include <limits.h>
-#include "trie.h"
+#    include "trie.h"
+#    include <limits.h>
 
 /*
  * This is the number of bits to extract out of the key for each level,
@@ -23,8 +23,8 @@
  * significantly more speed (actually, you gain no speed at all if you
  * increase TRIE_LOG_BRANCH_FACTOR > CHAR_BIT)
  */
-#define TRIE_LOG_BRANCH_FACTOR 4
-#define TRIE_BRANCH_FACTOR      (1<<TRIE_LOG_BRANCH_FACTOR)
+#    define TRIE_LOG_BRANCH_FACTOR 4
+#    define TRIE_BRANCH_FACTOR     (1 << TRIE_LOG_BRANCH_FACTOR)
 
 /*
  * This is the internal representation of a leaf, which corresponds to
@@ -32,13 +32,13 @@
  * have reduced the possibilities to one key
  */
 struct trie_leaf {
-  enum trie_node_type type; /* TRIE_LEAF.  This is the type field to */
-                         /* identify the node type, and must be the first */
-                         /* element of this structure */
-  unsigned char *key;    /* Our copy of the key that this leaf stands for */
-  size_t len_key;        /* The length of the key, in bytes */
-  trie_result result;    /* The value that trie_search should return when */
-                         /* we find this key */
+    enum trie_node_type type; /* TRIE_LEAF.  This is the type field to */
+                              /* identify the node type, and must be the first */
+                              /* element of this structure */
+    unsigned char *key;       /* Our copy of the key that this leaf stands for */
+    size_t len_key;           /* The length of the key, in bytes */
+    trie_result result;       /* The value that trie_search should return when */
+                              /* we find this key */
 };
 
 /*
@@ -51,19 +51,19 @@ struct trie_leaf {
  * represented by a NULL.
  */
 struct trie_subtrie {
-  enum trie_node_type type; /* TRIE_NODE.  This is the type field to */
-                         /* identify the node type, and must be the first */
-                         /* element of this structure */
-  struct trie_leaf *exact_match; /* The leaf that corresponds to the key */
-                         /* that ends here -- this is the leaf that matches */
-                         /* if the key ends here.  NULL if it hasn't been */
-                         /* inserted */
-  int count;             /* The number of leaves that has the prefix */
-  trie_pointer next_level[TRIE_BRANCH_FACTOR]; /* Entry N here is a pointer */
-                         /* to the node that correspond to the prefix */
-                         /* followed by N.  While searching, we extract the */
-                         /* next set of bits from the key, and index into */
-                         /* this array to get the next node */
+    enum trie_node_type type;                    /* TRIE_NODE.  This is the type field to */
+                                                 /* identify the node type, and must be the first */
+                                                 /* element of this structure */
+    struct trie_leaf *exact_match;               /* The leaf that corresponds to the key */
+                                                 /* that ends here -- this is the leaf that matches */
+                                                 /* if the key ends here.  NULL if it hasn't been */
+                                                 /* inserted */
+    int count;                                   /* The number of leaves that has the prefix */
+    trie_pointer next_level[TRIE_BRANCH_FACTOR]; /* Entry N here is a pointer */
+                                                 /* to the node that correspond to the prefix */
+                                                 /* followed by N.  While searching, we extract the */
+                                                 /* next set of bits from the key, and index into */
+                                                 /* this array to get the next node */
 };
 
 /*
@@ -75,7 +75,7 @@ struct trie_subtrie {
  *
  * initialize_walker, which initializes a key_walker object to start at
  * the beginning of the specified key
- * 
+ *
  * extract_next, which evaluates to the next set of bits from the key, or
  * -1 if we have reached the end of the key.
  *
@@ -88,26 +88,20 @@ struct trie_subtrie {
  * necessary.  Therefore, we give two different implementations, and select
  * the version based on the size of TRIE_BRANCH_FACTOR
  */
-#if TRIE_BRANCH_FACTOR > UCHAR_MAX
+#    if TRIE_BRANCH_FACTOR > UCHAR_MAX
 /*
  * This is the version where we can evaluate the next output just by reading
  * the next unsigned char from the key
  */
 typedef struct key_walker {
-  const unsigned char *key;
-  size_t len;
+    const unsigned char *key;
+    size_t len;
 } key_walker;
-#define initialize_walker(walker, key, len_key) \
-  (void)(                                       \
-    (walker).key = (key),                       \
-    (walker).len = (len_key)                    \
-  )
-#define extract_next(walker)                    \
-  ((walker).len == 0 ? -1 : ((walker).len -= 1, *(walker).key++))
-#define extract_at_offset(key, len_key, offset) \
-  ((len_key) <= (offset) ? -1 : ((key)[offset]))
+#        define initialize_walker(walker, key, len_key) (void)((walker).key = (key), (walker).len = (len_key))
+#        define extract_next(walker)                    ((walker).len == 0 ? -1 : ((walker).len -= 1, *(walker).key++))
+#        define extract_at_offset(key, len_key, offset) ((len_key) <= (offset) ? -1 : ((key)[offset]))
 
-#else
+#    else
 
 /*
  * This is the version where we must extract the next output from a
@@ -115,33 +109,28 @@ typedef struct key_walker {
  * masks necessary.  Note that this does not attempt to combine outputs
  * from adjacent unsigned chars.
  */
-#define LEVEL_PER_UCHAR  ((CHAR_BIT+TRIE_LOG_BRANCH_FACTOR-1) /        \
-                                                  TRIE_LOG_BRANCH_FACTOR)
+#        define LEVEL_PER_UCHAR ((CHAR_BIT + TRIE_LOG_BRANCH_FACTOR - 1) / TRIE_LOG_BRANCH_FACTOR)
 
 typedef struct key_walker {
-  const unsigned char *key;
-  size_t len;
-  int bit_offset;
+    const unsigned char *key;
+    size_t len;
+    int bit_offset;
 } key_walker;
-#define initialize_walker(walker, key, len_key)               \
-  (void) (                                                    \
-    (walker).key = (key),                                     \
-    (walker).len = (len_key),                                 \
-    (walker).bit_offset = -TRIE_LOG_BRANCH_FACTOR             \
-  )
-#define extract_next(walker)                                  \
-  ((walker).len == 0 ? -1 :                                   \
-    ((walker).bit_offset >= CHAR_BIT-TRIE_LOG_BRANCH_FACTOR ? \
-      (((walker).len -= 1) ? ((walker).bit_offset=0,          \
-          *++(walker).key & (TRIE_BRANCH_FACTOR-1)) : -1) :   \
-      ((walker).bit_offset += TRIE_LOG_BRANCH_FACTOR,         \
-          (*(walker).key >> (walker).bit_offset)              \
-                  & (TRIE_BRANCH_FACTOR-1))))
-#define extract_at_offset(key, len_key, offset)               \
-   ((len_key)*LEVEL_PER_UCHAR <= (offset) ? -1 :              \
-     ((((key)[ (offset)/LEVEL_PER_UCHAR ]) >>                 \
-          (TRIE_LOG_BRANCH_FACTOR*((offset)%LEVEL_PER_UCHAR))) \
-                  & (TRIE_BRANCH_FACTOR-1)))
-#endif
+#        define initialize_walker(walker, key, len_key) \
+            (void)((walker).key = (key), (walker).len = (len_key), (walker).bit_offset = -TRIE_LOG_BRANCH_FACTOR)
+#        define extract_next(walker)                                                                                   \
+            ((walker).len == 0                                                                                         \
+                 ? -1                                                                                                  \
+                 : ((walker).bit_offset >= CHAR_BIT - TRIE_LOG_BRANCH_FACTOR                                           \
+                        ? (((walker).len -= 1) ? ((walker).bit_offset = 0, *++(walker).key & (TRIE_BRANCH_FACTOR - 1)) \
+                                               : -1)                                                                   \
+                        : ((walker).bit_offset += TRIE_LOG_BRANCH_FACTOR,                                              \
+                           (*(walker).key >> (walker).bit_offset) & (TRIE_BRANCH_FACTOR - 1))))
+#        define extract_at_offset(key, len_key, offset)                                                                \
+            ((len_key) * LEVEL_PER_UCHAR <= (offset)                                                                   \
+                 ? -1                                                                                                  \
+                 : ((((key)[(offset) / LEVEL_PER_UCHAR]) >> (TRIE_LOG_BRANCH_FACTOR * ((offset) % LEVEL_PER_UCHAR))) & \
+                    (TRIE_BRANCH_FACTOR - 1)))
+#    endif
 
 #endif /* TRIE_INTERNAL_H_ */

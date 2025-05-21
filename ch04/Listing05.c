@@ -1,8 +1,7 @@
 #include <stdio.h>
 #include <time.h>
 
-int main(void)
-{
+int main(void) {
     clock_t start, end;
 
     start = clock();
@@ -11,8 +10,6 @@ int main(void)
 
     end = clock();
 
-    printf("Interval = %.2f seconds\n", (double)(end-start) /
-                                           (double)CLOCKS_PER_SEC);
+    printf("Interval = %.2f seconds\n", (double)(end - start) / (double)CLOCKS_PER_SEC);
     return 0;
 }
-

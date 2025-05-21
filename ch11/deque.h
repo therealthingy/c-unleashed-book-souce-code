@@ -35,43 +35,32 @@
 
 #include "dllist.h"
 
-#define DEQUE_SUCCESS       0
-#define DEQUE_ADD_FAILURE   1
-#define DEQUE_DEL_FAILURE   2
-#define DEQUE_EMPTY         3
+#define DEQUE_SUCCESS     0
+#define DEQUE_ADD_FAILURE 1
+#define DEQUE_DEL_FAILURE 2
+#define DEQUE_EMPTY       3
 
-typedef struct DEQUE
-{
+typedef struct DEQUE {
 #ifndef NDEBUG
-  int CheckInit1;
+    int CheckInit1;
 #endif
 
-  DLLIST *HeadPtr;
-  DLLIST *TailPtr;
-  size_t NumItems;
+    DLLIST *HeadPtr;
+    DLLIST *TailPtr;
+    size_t NumItems;
 
 #ifndef NDEBUG
-  int CheckInit2;
+    int CheckInit2;
 #endif
 } DEQUE;
 
-int DequeAddAtFront(DEQUE *Deque,
-                    int Tag,
-                    void *Object,
-                    size_t Size);
-int DequeAddAtBack(DEQUE *Deque,
-                   int Tag,
-                   void *Object,
-                   size_t Size);
+int DequeAddAtFront(DEQUE *Deque, int Tag, void *Object, size_t Size);
+int DequeAddAtBack(DEQUE *Deque, int Tag, void *Object, size_t Size);
 int DequeRemoveFromFront(void *Object, DEQUE *Deque);
 int DequeRemoveFromBack(void *Object, DEQUE *Deque);
 
-void *DequeGetDataFromFront(DEQUE *Deque,
-                            int *Tag,
-                            size_t *Size);
-void *DequeGetDataFromBack(DEQUE *Deque,
-                           int *Tag,
-                           size_t *Size);
+void *DequeGetDataFromFront(DEQUE *Deque, int *Tag, size_t *Size);
+void *DequeGetDataFromBack(DEQUE *Deque, int *Tag, size_t *Size);
 size_t DequeCount(DEQUE *Deque);
 
 #endif

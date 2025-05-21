@@ -29,7 +29,6 @@
  *
  */
 
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -37,121 +36,84 @@
 
 #include "clist.h"
 
-int GetRnd(int Num)
-{
-  return (int)(Num * (rand() / ((double)RAND_MAX + 1.0)));
+int GetRnd(int Num) {
+    return (int)(Num * (rand() / ((double)RAND_MAX + 1.0)));
 }
 
-int PrintChildName(int Tag, void *Object, void *Args)
-{
-  printf("%s is on the merry-go-round!\n", (char *)Object);
+int PrintChildName(int Tag, void *Object, void *Args) {
+    printf("%s is on the merry-go-round!\n", (char *)Object);
 
-  return 0;
+    return 0;
 }
 
-void RemoveNewLine(char *s)
-{
-  char *p = strchr(s, '\n');
-  if(p != NULL)
-  {
-    *p = '\0';
-  }
-}
-
-int main(void)
-{
-  char buffer[32];
-  CLIST Carousel = {0};
-  int Result = EXIT_SUCCESS;
-
-  char *InitNames[] =
-  {
-    "Matt", "Liz", "Nick", "Alex", "Amanda"
-  };
-  int i;
-  int j;
-
-  srand((unsigned)time(NULL));
-
-  puts("Welcome to the CLIST merry-go-round!");
-  puts("------------------------------------\n");
-  puts("We'll start off with five children\n");
-
-  for(i = 0; EXIT_SUCCESS == Result && i < 5; i++)
-  {
-    if(CL_SUCCESS !=
-          CLAddItem(&Carousel,
-                    0,
-                    InitNames[i],
-                    strlen(InitNames[i]) + 1))
-    {
-      printf("Insufficient memory. Sorry.\n");
-      Result = EXIT_FAILURE;
+void RemoveNewLine(char *s) {
+    char *p = strchr(s, '\n');
+    if (p != NULL) {
+        *p = '\0';
     }
-  }
+}
 
-  while(EXIT_SUCCESS == Result && Carousel.NumItems > 0)
-  {
-    CLWalk(&Carousel, PrintChildName, NULL);
+int main(void) {
+    char buffer[32];
+    CLIST Carousel = {0};
+    int Result = EXIT_SUCCESS;
 
-    if(0 == GetRnd(3))
-    {
-      j = GetRnd(Carousel.NumItems);
-      for(i = 0; i < j; i++)
-      {
-        PrintChildName(0,
-                       CLGetData(&Carousel, NULL, NULL),
-                       NULL);
-        CLRotate(&Carousel, 1);
-      }
+    char *InitNames[] = {"Matt", "Liz", "Nick", "Alex", "Amanda"};
+    int i;
+    int j;
 
-      printf("The merry-go-round has stopped.\n");
-      if(0 == GetRnd(6))
-      {
-        printf("Please type in a child's name.\n");
-        if(NULL == fgets(buffer, sizeof buffer, stdin))
-        {
-          Result = EXIT_FAILURE;
-        }
-        else
-        {
-          RemoveNewLine(buffer);
-          if(CL_SUCCESS !=
-                CLAddItem(&Carousel,
-                          0,
-                          buffer,
-                          strlen(buffer) + 1))
-          {
+    srand((unsigned)time(NULL));
+
+    puts("Welcome to the CLIST merry-go-round!");
+    puts("------------------------------------\n");
+    puts("We'll start off with five children\n");
+
+    for (i = 0; EXIT_SUCCESS == Result && i < 5; i++) {
+        if (CL_SUCCESS != CLAddItem(&Carousel, 0, InitNames[i], strlen(InitNames[i]) + 1)) {
             printf("Insufficient memory. Sorry.\n");
             Result = EXIT_FAILURE;
-          }
-          else
-          {
-            printf("%s gets on the merry-go-round!\n",
-                   buffer);
-          }
         }
-      }
-      else if(0 == GetRnd(3))
-      {
-        printf("%s gets off the merry-go-round!\n",
-               (char *)CLGetData(&Carousel, NULL, NULL));
-        CLDelete(&Carousel);
-      }
-      else
-      {
-        printf("Nobody got on or off.\n");
-      }
-
-      if(Carousel.NumItems > 0)
-      {
-        printf("Here we go again!\n");
-      }
     }
-  }
 
-  printf("That-a-that-a-that-a-that's all, folks!\n");
+    while (EXIT_SUCCESS == Result && Carousel.NumItems > 0) {
+        CLWalk(&Carousel, PrintChildName, NULL);
 
-  CLDestroy(&Carousel);
-  return Result;
+        if (0 == GetRnd(3)) {
+            j = GetRnd(Carousel.NumItems);
+            for (i = 0; i < j; i++) {
+                PrintChildName(0, CLGetData(&Carousel, NULL, NULL), NULL);
+                CLRotate(&Carousel, 1);
+            }
+
+            printf("The merry-go-round has stopped.\n");
+            if (0 == GetRnd(6)) {
+                printf("Please type in a child's name.\n");
+                if (NULL == fgets(buffer, sizeof buffer, stdin)) {
+                    Result = EXIT_FAILURE;
+                } else {
+                    RemoveNewLine(buffer);
+                    if (CL_SUCCESS != CLAddItem(&Carousel, 0, buffer, strlen(buffer) + 1)) {
+                        printf("Insufficient memory. Sorry.\n");
+                        Result = EXIT_FAILURE;
+                    } else {
+                        printf("%s gets on the merry-go-round!\n", buffer);
+                    }
+                }
+            } else if (0 == GetRnd(3)) {
+                printf("%s gets off the merry-go-round!\n", (char *)CLGetData(&Carousel, NULL, NULL));
+                CLDelete(&Carousel);
+            } else {
+                printf("Nobody got on or off.\n");
+            }
+
+            if (Carousel.NumItems > 0) {
+                printf("Here we go again!\n");
+            }
+        }
+    }
+
+    printf("That-a-that-a-that-a-that's all, folks!\n");
+
+    CLDestroy(&Carousel);
+    return Result;
 }

@@ -4,5 +4,5 @@
 ** This code is Copyright 1999 by Dann Corbit
 */
 
-#define ETYPE_SIGNED_INT
+#define E_TYPE_SIGNED_INT
 #include "allsort.h"

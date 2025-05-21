@@ -34,43 +34,27 @@
  */
 
 /* One element of a heap. */
-typedef struct HEAP_ELEMENT
-{
-  int Tag;
-  size_t Size;
-  void *Object;
+typedef struct HEAP_ELEMENT {
+    int Tag;
+    size_t Size;
+    void *Object;
 } HEAP_ELEMENT;
 
 /* An entire heap. */
-typedef struct HEAP
-{
-  size_t Count;		    /* Number of elements in heap. */
-  size_t MaxCount;		/* No. of elems allocated. */
-  HEAP_ELEMENT *Heap;	/* Heap elements. */
+typedef struct HEAP {
+    size_t Count;       /* Number of elements in heap. */
+    size_t MaxCount;    /* No. of elems allocated. */
+    HEAP_ELEMENT *Heap; /* Heap elements. */
 } HEAP;
 
-typedef int (*HEAP_COMPARE)(const void *Left,
-                            int LeftTag,
-                            const void *Right,
-                            int RightTag);
-typedef int (*HEAP_PRINT)(const void *Object,
-                          int Tag,
-                          size_t Size,
-                          FILE *fp);
+typedef int (*HEAP_COMPARE)(const void *Left, int LeftTag, const void *Right, int RightTag);
+typedef int (*HEAP_PRINT)(const void *Object, int Tag, size_t Size, FILE *fp);
 
 HEAP *HeapCreate(size_t MaxCount);
 void HeapDestroy(HEAP *Heap);
-int HeapInsert(HEAP *Heap, 
-               int Tag, 
-               size_t Size, 
-               void *Object, 
-               HEAP_COMPARE Comp);
+int HeapInsert(HEAP *Heap, int Tag, size_t Size, void *Object, HEAP_COMPARE Comp);
 int HeapPeek(int *Tag, size_t *Size);
-int HeapDelete(HEAP *Heap,
-               int *Tag,
-               size_t *Size,
-               void *Object,
-               HEAP_COMPARE Comp);
+int HeapDelete(HEAP *Heap, int *Tag, size_t *Size, void *Object, HEAP_COMPARE Comp);
 
 int HeapGetSize(HEAP *Heap);
 

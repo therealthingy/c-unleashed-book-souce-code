@@ -36,13 +36,12 @@
 #define DL_ZERO_SIZE    2
 #define DL_NULL_POINTER 3
 
-typedef struct DLLIST
-{
-  int Tag;
-  struct DLLIST *Prev;
-  struct DLLIST *Next;
-  void *Object;
-  size_t Size;
+typedef struct DLLIST {
+    int Tag;
+    struct DLLIST *Prev;
+    struct DLLIST *Next;
+    void *Object;
+    size_t Size;
 } DLLIST;
 
 DLLIST *DLCreate(int Tag, void *Object, size_t Size);
@@ -58,39 +57,22 @@ int DLInsertBefore(DLLIST *ExistingItem, DLLIST *NewItem);
 int DLInsertAfter(DLLIST *ExistingItem, DLLIST *NewItem);
 
 /* Add item at start of list */
-int DLPrepend(DLLIST **Item,
-              int Tag,
-              void *Object,
-              size_t Size);
+int DLPrepend(DLLIST **Item, int Tag, void *Object, size_t Size);
 
 /* Add item at end of list */
-int DLAppend(DLLIST **Item,
-             int Tag,
-             void *Object,
-             size_t Size);
+int DLAppend(DLLIST **Item, int Tag, void *Object, size_t Size);
 
 /* Add new item immediately after current item */
-int DLAddAfter(DLLIST **Item,
-               int Tag,
-               void *Object,
-               size_t Size);
+int DLAddAfter(DLLIST **Item, int Tag, void *Object, size_t Size);
 
 /* Add new item immediately before current item */
-int DLAddBefore(DLLIST **Item,
-                int Tag,
-                void *Object,
-                size_t Size);
+int DLAddBefore(DLLIST **Item, int Tag, void *Object, size_t Size);
 
 /* Update one item */
-int DLUpdate(DLLIST *Item,
-             int NewTag,
-             void *NewObject,
-             size_t NewSize);
+int DLUpdate(DLLIST *Item, int NewTag, void *NewObject, size_t NewSize);
 
 /* Get a pointer to the data */
-void *DLGetData(DLLIST *Item,
-                int *Tag,
-                size_t *Size);
+void *DLGetData(DLLIST *Item, int *Tag, size_t *Size);
 
 /* Extract one item from the
  * list, without destroying it.
@@ -116,8 +98,6 @@ DLLIST *DLJoin(DLLIST *Left, DLLIST *Right);
 int DLCount(DLLIST *List);
 
 /* Walk the list */
-int DLWalk(DLLIST *List,
-           int(*Func)(int, void *, void *),
-           void *Args);
+int DLWalk(DLLIST *List, int (*Func)(int, void *, void *), void *Args);
 
 #endif

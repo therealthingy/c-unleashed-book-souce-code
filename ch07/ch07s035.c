@@ -1,4 +1,4 @@
 enum { DEBUG = 0 };
 
-if(DEBUG)
+if (DEBUG)
   printf(....

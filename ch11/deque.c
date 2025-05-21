@@ -30,195 +30,144 @@
  *
  */
 
-
-#include <string.h>
 #include <assert.h>
+#include <string.h>
 
 #include "deque.h"
 
-int DequeAddAtFront(DEQUE *Deque,
-                    int Tag,
-                    void *Object,
-                    size_t Size)
-{
-  int Result = DEQUE_ADD_FAILURE;
-  int ListResult;
-  assert(Deque != NULL);
-  assert(0 == Deque->CheckInit1 && 0 == Deque->CheckInit2);
+int DequeAddAtFront(DEQUE *Deque, int Tag, void *Object, size_t Size) {
+    int Result = DEQUE_ADD_FAILURE;
+    int ListResult;
+    assert(Deque != NULL);
+    assert(0 == Deque->CheckInit1 && 0 == Deque->CheckInit2);
 
-  ListResult = DLAddBefore(&Deque->HeadPtr,
-                           Tag,
-                           Object,
-                           Size);
+    ListResult = DLAddBefore(&Deque->HeadPtr, Tag, Object, Size);
 
-  if(DL_SUCCESS == ListResult)
-  {
-    if(0 == Deque->NumItems)
-    {
-      Deque->TailPtr = Deque->HeadPtr;
-    }
-    else
-    {
-      Deque->HeadPtr = Deque->HeadPtr->Prev;
+    if (DL_SUCCESS == ListResult) {
+        if (0 == Deque->NumItems) {
+            Deque->TailPtr = Deque->HeadPtr;
+        } else {
+            Deque->HeadPtr = Deque->HeadPtr->Prev;
+        }
+
+        Result = DEQUE_SUCCESS;
+        ++Deque->NumItems;
     }
 
-    Result = DEQUE_SUCCESS;
-    ++Deque->NumItems;
-  }
-
-  return Result;
+    return Result;
 }
 
-int DequeAddAtBack(DEQUE *Deque,
-                   int    Tag,
-                   void * Object,
-                   size_t Size)
-{
-  int Result = DEQUE_ADD_FAILURE;
-  int ListResult;
-  assert(Deque != NULL);
-  assert(0 == Deque->CheckInit1 && 0 == Deque->CheckInit2);
+int DequeAddAtBack(DEQUE *Deque, int Tag, void *Object, size_t Size) {
+    int Result = DEQUE_ADD_FAILURE;
+    int ListResult;
+    assert(Deque != NULL);
+    assert(0 == Deque->CheckInit1 && 0 == Deque->CheckInit2);
 
-  ListResult = DLAddAfter(&Deque->TailPtr,
-                          Tag,
-                          Object,
-                          Size);
+    ListResult = DLAddAfter(&Deque->TailPtr, Tag, Object, Size);
 
-  if(DL_SUCCESS == ListResult)
-  {
-    if(0 == Deque->NumItems)
-    {
-      Deque->HeadPtr = Deque->TailPtr;
-    }
-    else
-    {
-      Deque->TailPtr = Deque->TailPtr->Next;
+    if (DL_SUCCESS == ListResult) {
+        if (0 == Deque->NumItems) {
+            Deque->HeadPtr = Deque->TailPtr;
+        } else {
+            Deque->TailPtr = Deque->TailPtr->Next;
+        }
+
+        Result = DEQUE_SUCCESS;
+        ++Deque->NumItems;
     }
 
-    Result = DEQUE_SUCCESS;
-    ++Deque->NumItems;
-  }
-
-  return Result;
+    return Result;
 }
 
-int DequeRemoveFromFront(void *Object, DEQUE *Deque)
-{
-  size_t Size;
-  void *p;
-  DLLIST *Temp;
-  int Result = DEQUE_SUCCESS;
+int DequeRemoveFromFront(void *Object, DEQUE *Deque) {
+    size_t Size;
+    void *p;
+    DLLIST *Temp;
+    int Result = DEQUE_SUCCESS;
 
-  assert(Deque != NULL);
-  assert(0 == Deque->CheckInit1 && 0 == Deque->CheckInit2);
+    assert(Deque != NULL);
+    assert(0 == Deque->CheckInit1 && 0 == Deque->CheckInit2);
 
-  if(Deque->NumItems > 0)
-  {
-    p = DLGetData(Deque->HeadPtr, NULL, &Size);
-    if(p != NULL)
-    {
-      if(Object != NULL)
-      {
-        memcpy(Object, p, Size);
-      }
-      Temp = Deque->HeadPtr->Next;
-      DLDelete(Deque->HeadPtr);
-      Deque->HeadPtr = Temp;
+    if (Deque->NumItems > 0) {
+        p = DLGetData(Deque->HeadPtr, NULL, &Size);
+        if (p != NULL) {
+            if (Object != NULL) {
+                memcpy(Object, p, Size);
+            }
+            Temp = Deque->HeadPtr->Next;
+            DLDelete(Deque->HeadPtr);
+            Deque->HeadPtr = Temp;
 
-      --Deque->NumItems;
-      if(0 == Deque->NumItems)
-      {
-        Deque->TailPtr = NULL;
-      }
+            --Deque->NumItems;
+            if (0 == Deque->NumItems) {
+                Deque->TailPtr = NULL;
+            }
+        } else {
+            Result = DEQUE_DEL_FAILURE;
+        }
+    } else {
+        Result = DEQUE_EMPTY;
     }
-    else
-    {
-      Result = DEQUE_DEL_FAILURE;
+
+    return Result;
+}
+
+int DequeRemoveFromBack(void *Object, DEQUE *Deque) {
+    size_t Size;
+    void *p;
+    DLLIST *Temp;
+    int Result = DEQUE_SUCCESS;
+
+    assert(Deque != NULL);
+    assert(0 == Deque->CheckInit1 && 0 == Deque->CheckInit2);
+
+    if (Deque->NumItems > 0) {
+        p = DLGetData(Deque->TailPtr, NULL, &Size);
+        if (p != NULL) {
+            if (Object != NULL) {
+                memcpy(Object, p, Size);
+            }
+            Temp = Deque->TailPtr->Prev;
+            DLDelete(Deque->TailPtr);
+            Deque->TailPtr = Temp;
+
+            --Deque->NumItems;
+            if (0 == Deque->NumItems) {
+                Deque->HeadPtr = NULL;
+            }
+        } else {
+            Result = DEQUE_DEL_FAILURE;
+        }
+    } else {
+        Result = DEQUE_EMPTY;
     }
-  }
-  else
-  {
-    Result = DEQUE_EMPTY;
-  }
 
-  return Result;
+    return Result;
 }
 
-int DequeRemoveFromBack(void *Object, DEQUE *Deque)
-{
-  size_t Size;
-  void *p;
-  DLLIST *Temp;
-  int Result = DEQUE_SUCCESS;
+void *DequeGetDataFromFront(DEQUE *Deque, int *Tag, size_t *Size) {
+    assert(Deque != NULL);
+    assert(0 == Deque->CheckInit1 && 0 == Deque->CheckInit2);
 
-  assert(Deque != NULL);
-  assert(0 == Deque->CheckInit1 && 0 == Deque->CheckInit2);
-
-  if(Deque->NumItems > 0)
-  {
-    p = DLGetData(Deque->TailPtr, NULL, &Size);
-    if(p != NULL)
-    {
-      if(Object != NULL)
-      {
-        memcpy(Object, p, Size);
-      }
-      Temp = Deque->TailPtr->Prev;
-      DLDelete(Deque->TailPtr);
-      Deque->TailPtr = Temp;
-
-      --Deque->NumItems;
-      if(0 == Deque->NumItems)
-      {
-        Deque->HeadPtr = NULL;
-      }
-    }
-    else
-    {
-      Result = DEQUE_DEL_FAILURE;
-    }
-  }
-  else
-  {
-    Result = DEQUE_EMPTY;
-  }
-
-  return Result;
+    return DLGetData(Deque->HeadPtr, Tag, Size);
 }
 
-void *DequeGetDataFromFront(DEQUE *Deque,
-                            int *Tag,
-                            size_t *Size)
-{
-  assert(Deque != NULL);
-  assert(0 == Deque->CheckInit1 && 0 == Deque->CheckInit2);
+void *DequeGetDataFromBack(DEQUE *Deque, int *Tag, size_t *Size) {
+    assert(Deque != NULL);
+    assert(0 == Deque->CheckInit1 && 0 == Deque->CheckInit2);
 
-  return DLGetData(Deque->HeadPtr, Tag, Size);
+    return DLGetData(Deque->TailPtr, Tag, Size);
 }
 
-void *DequeGetDataFromBack(DEQUE *Deque,
-                           int *Tag,
-                           size_t *Size)
-{
-  assert(Deque != NULL);
-  assert(0 == Deque->CheckInit1 && 0 == Deque->CheckInit2);
-
-  return DLGetData(Deque->TailPtr, Tag, Size);
+size_t DequeCount(DEQUE *Deque) {
+    assert(Deque != NULL);
+    assert(0 == Deque->CheckInit1 && 0 == Deque->CheckInit2);
+    return Deque->NumItems;
 }
 
-size_t DequeCount(DEQUE *Deque)
-{
-  assert(Deque != NULL);
-  assert(0 == Deque->CheckInit1 && 0 == Deque->CheckInit2);
-  return Deque->NumItems;
+void DequeDestroy(DEQUE *Deque) {
+    assert(Deque != NULL);
+    assert(0 == Deque->CheckInit1 && 0 == Deque->CheckInit2);
+    DLDestroy(&Deque->HeadPtr);
+    Deque->TailPtr = NULL;
 }
-
-void DequeDestroy(DEQUE *Deque)
-{
-  assert(Deque != NULL);
-  assert(0 == Deque->CheckInit1 && 0 == Deque->CheckInit2);
-  DLDestroy(&Deque->HeadPtr);
-  Deque->TailPtr = NULL;
-}
-
-

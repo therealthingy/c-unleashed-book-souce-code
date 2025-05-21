@@ -40,40 +40,25 @@
 
 typedef int T;
 
-T **Reallocate(T **OldP,
-               size_t oldm,
-               size_t oldn,
-               size_t newm,
-               size_t newn)
-{
-  T **NewP = NULL;
-  T *p;
-  size_t Row;
+T **Reallocate(T **OldP, size_t oldm, size_t oldn, size_t newm, size_t newn) {
+    T **NewP = NULL;
+    T *p;
+    size_t Row;
 
-  /* Do we need more memory? */
-  if(newm * newn * sizeof **NewP + newm * sizeof *NewP >
-     oldm * oldn * sizeof **OldP + oldm * sizeof *OldP)
-  {
-    /* Yes, so let's go get some */
-    NewP = realloc(OldP,
-                   newm * newn * sizeof **NewP +
-                   newm * sizeof *NewP);
-  }
-  else
-  {
-    NewP = OldP;
-  }
-
-  if(NewP != NULL)
-  {
-    /* Now we have to set up the pointer table again */
-    for(Row = 0, p = (T *)NewP + newm;
-        Row < newm;
-        Row++, p += newn)
-    {
-      NewP[Row] = p;
+    /* Do we need more memory? */
+    if (newm * newn * sizeof **NewP + newm * sizeof *NewP > oldm * oldn * sizeof **OldP + oldm * sizeof *OldP) {
+        /* Yes, so let's go get some */
+        NewP = realloc(OldP, newm * newn * sizeof **NewP + newm * sizeof *NewP);
+    } else {
+        NewP = OldP;
     }
-  }
 
-  return NewP;
+    if (NewP != NULL) {
+        /* Now we have to set up the pointer table again */
+        for (Row = 0, p = (T *)NewP + newm; Row < newm; Row++, p += newn) {
+            NewP[Row] = p;
+        }
+    }
+
+    return NewP;
 }

@@ -33,77 +33,65 @@
 
 typedef int T;
 
-void Release(T **a, size_t m)
-{
-  size_t Row;
+void Release(T **a, size_t m) {
+    size_t Row;
 
-  for(Row = 0; Row < m; Row++)
-  {
-    if(a[Row] != NULL)
-    {
-      free(a[Row]);
+    for (Row = 0; Row < m; Row++) {
+        if (a[Row] != NULL) {
+            free(a[Row]);
+        }
     }
-  }
-  free(a);
+    free(a);
 }
 
+T **Allocate(size_t m, size_t n) {
+    T **a;
+    size_t Row;
+    int Success = 1;
 
-
-T **Allocate(size_t m, size_t n)
-{
-  T **a;
-  size_t Row;
-  int Success = 1;
-
-  a = malloc(m * sizeof *a);
-  if(a != NULL)
-  {
-    for(Row = 0; Row < m; Row++)
-    {
-      a[Row] = malloc(n * sizeof *a[Row]);
-      if(NULL == a[Row])
-      {
-        Success = 0;
-      }
+    a = malloc(m * sizeof *a);
+    if (a != NULL) {
+        for (Row = 0; Row < m; Row++) {
+            a[Row] = malloc(n * sizeof *a[Row]);
+            if (NULL == a[Row]) {
+                Success = 0;
+            }
+        }
+        /* If any inner allocation failed,
+         * we should clean up
+         */
+        if (1 != Success) {
+            Release(a, m);
+            a = NULL;
+        }
     }
-    /* If any inner allocation failed,
-     * we should clean up
-     */
-    if(1 != Success)
-    {
-      Release(a, m);
-      a = NULL;
-    }
-  }
 
-  return a;
+    return a;
 }
 
-int main(void)
-{
-  T **array;
-  int i;
-  int j;
-  int total = 0;
-  int row = 4;
-  int col = 7;
+int main(void) {
+    T **array;
+    int i;
+    int j;
+    int total = 0;
+    int row = 4;
+    int col = 7;
 
-  array = Allocate(row, col);
+    array = Allocate(row, col);
 
-  if(array != NULL)
-  {
-    /* Populating the array */
-    for(i = 0; i < row; i++)
-      for(j = 0; j < col; j++)
-        array[i][j] = i + j;
-    /* Accessing the array */
-    for(i = 0; i < row; i++)
-      for(j = 0; j < col; j++)
-        total += array[i][j];
+    if (array != NULL) {
+        /* Populating the array */
+        for (i = 0; i < row; i++)
+            for (j = 0; j < col; j++)
+                array[i][j] = i + j;
+        /* Accessing the array */
+        for (i = 0; i < row; i++)
+            for (j = 0; j < col; j++)
+                total += array[i][j];
 
-    printf("Total is %d\n", total);
-    Release(array, row);
-  }
+        printf("Total is %d\n", total);
+        Release(array, row);
+    }
 
-  return 0;
+    return 0;
 }

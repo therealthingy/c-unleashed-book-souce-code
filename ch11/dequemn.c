@@ -44,43 +44,32 @@
  * furthest are loaded first.
  */
 
-#define LNUM_CARS 37
-#define RNUM_CARS 63
+#define LNUM_CARS  37
+#define RNUM_CARS  63
 
 #define NUM_CITIES 12
 
-typedef struct CAR
-{
-  char RegNumber[9];
-  int Destination;
+typedef struct CAR {
+    char RegNumber[9];
+    int Destination;
 } CAR;
 
-int Random(int n)
-{
-  double d;
+int Random(int n) {
+    double d;
 
-  d = rand() / (RAND_MAX + 1.0);
-  d *= n;
+    d = rand() / (RAND_MAX + 1.0);
+    d *= n;
 
-  return (int)d;
+    return (int)d;
 }
 
-void RandomiseCar(CAR *c)
-{
-  const char *CarAlphabet =
-    "ABCDEFGHJKLMNPRSTVWXY";
+void RandomiseCar(CAR *c) {
+    const char *CarAlphabet = "ABCDEFGHJKLMNPRSTVWXY";
 
-  sprintf(c->RegNumber,
-          "%c%d%d%d %c%c%c",
-          CarAlphabet[Random(21)],
-          Random(9) + 1,
-          Random(9) + 1,
-          Random(9) + 1,
-          CarAlphabet[Random(21)],
-          CarAlphabet[Random(21)],
-          CarAlphabet[Random(21)]);
+    sprintf(c->RegNumber, "%c%d%d%d %c%c%c", CarAlphabet[Random(21)], Random(9) + 1, Random(9) + 1, Random(9) + 1,
+            CarAlphabet[Random(21)], CarAlphabet[Random(21)], CarAlphabet[Random(21)]);
 
-  c->Destination = Random(NUM_CITIES);
+    c->Destination = Random(NUM_CITIES);
 }
 
 /* A comparison function for qsort, in reverse
@@ -95,154 +84,100 @@ void RandomiseCar(CAR *c)
  * is a good habit to get into and, if we are not
  * careful, easy to get out of!
  */
-int CompareCarsByDest(const void *p1, const void *p2)
-{
-  int Result = 0;
+int CompareCarsByDest(const void *p1, const void *p2) {
+    int Result = 0;
 
-  const CAR *c1 = p1;
-  const CAR *c2 = p2;
+    const CAR *c1 = p1;
+    const CAR *c2 = p2;
 
-  if(c1->Destination < c2->Destination)
-  {
-    Result = 1;
-  }
-  else if(c1->Destination > c2->Destination)
-  {
-    Result = -1;
-  }
+    if (c1->Destination < c2->Destination) {
+        Result = 1;
+    } else if (c1->Destination > c2->Destination) {
+        Result = -1;
+    }
 
-  return Result;
+    return Result;
 }
 
-int main(void)
-{
-  DEQUE Transporter = {0};
+int main(void) {
+    DEQUE Transporter = {0};
 
-  char *City[NUM_CITIES] =
-  {
-    "London",
-    "Watford",
-    "Luton",
-    "Milton Keynes",
-    "Northampton",
-    "Leicester",
-    "Derby",
-    "Chesterfield",
-    "Sheffield",
-    "Leeds",
-    "Newcastle",
-    "Edinburgh"
-  };
+    char *City[NUM_CITIES] = {"London", "Watford",      "Luton",     "Milton Keynes", "Northampton", "Leicester",
+                              "Derby",  "Chesterfield", "Sheffield", "Leeds",         "Newcastle",   "Edinburgh"};
 
-  size_t NumCities = sizeof City / sizeof City[0];
+    size_t NumCities = sizeof City / sizeof City[0];
 
-  CAR LeftCar[LNUM_CARS] = {0};
-  CAR RightCar[RNUM_CARS] = {0};
-  CAR *Car;
+    CAR LeftCar[LNUM_CARS] = {0};
+    CAR RightCar[RNUM_CARS] = {0};
+    CAR *Car;
 
-  int i;
+    int i;
 
-  srand((unsigned)time(NULL));
+    srand((unsigned)time(NULL));
 
-  for(i = 0; i < LNUM_CARS; i++)
-  {
-    RandomiseCar(LeftCar + i);
-  }
-  for(i = 0; i < RNUM_CARS; i++)
-  {
-    RandomiseCar(RightCar + i);
-  }
-
-  qsort(LeftCar,
-        LNUM_CARS,
-        sizeof LeftCar[0],
-        CompareCarsByDest);
-  qsort(RightCar,
-        RNUM_CARS,
-        sizeof RightCar[0],
-        CompareCarsByDest);
-
-  puts("Welcome to Dover. The automatic car-loading");
-  puts("process is about to begin.\n");
-
-  for(i = 0; i < LNUM_CARS; i++)
-  {
-    if(DEQUE_SUCCESS != DequeAddAtFront(&Transporter,
-                                        0,
-                                        LeftCar + i,
-                                        sizeof LeftCar[i]))
-    {
-      puts("Car crash? Insufficient memory.");
-      exit(EXIT_FAILURE);
+    for (i = 0; i < LNUM_CARS; i++) {
+        RandomiseCar(LeftCar + i);
     }
-    printf("%s, bound for %s, added at front.\n",
-           LeftCar[i].RegNumber,
-           City[LeftCar[i].Destination]);
-
-  }
-
-  for(i = 0; i < RNUM_CARS; i++)
-  {
-    if(DEQUE_SUCCESS != DequeAddAtBack(&Transporter,
-                                       0,
-                                       RightCar + i,
-                                       sizeof RightCar[i]))
-    {
-      puts("Crunch! Insufficient memory.");
-      exit(EXIT_FAILURE);
-    }
-    printf("%s, bound for %s, added at back.\n",
-           RightCar[i].RegNumber,
-           City[RightCar[i].Destination]);
-
-  }
-
-  printf("Okay, we're on our way to %s!\n", City[0]);
-
-  for(i = 0;
-      DequeCount(&Transporter) > 0 && i < NUM_CITIES;
-      i++)
-  {
-    puts("Deedle-dee-DEE, Deedle-dee-DAH...");
-    printf("Okay, we've arrived at %s.\n", City[i]);
-
-    Car = DequeGetDataFromFront(&Transporter, NULL, NULL);
-
-    if(Car == NULL)
-    {
-      puts("We seem to have run out of cars,");
-      puts("so I guess the journey is over.");
-      exit(0);
-    }
-    
-    while(Car != NULL &&
-          DequeCount(&Transporter) > 0 &&
-          Car->Destination == i)
-    {
-      printf("Unloading %s from front.\n", Car->RegNumber);
-      DequeRemoveFromFront(NULL, &Transporter);
-      Car = DequeGetDataFromFront(&Transporter, NULL, NULL);
+    for (i = 0; i < RNUM_CARS; i++) {
+        RandomiseCar(RightCar + i);
     }
 
-    Car = DequeGetDataFromBack(&Transporter, NULL, NULL);
+    qsort(LeftCar, LNUM_CARS, sizeof LeftCar[0], CompareCarsByDest);
+    qsort(RightCar, RNUM_CARS, sizeof RightCar[0], CompareCarsByDest);
 
-    while(Car != NULL &&
-          DequeCount(&Transporter) > 0 &&
-          Car->Destination == i)
-    {
-      printf("Unloading %s from back.\n", Car->RegNumber);
-      DequeRemoveFromBack(NULL, &Transporter);
-      Car = DequeGetDataFromBack(&Transporter, NULL, NULL);
+    puts("Welcome to Dover. The automatic car-loading");
+    puts("process is about to begin.\n");
+
+    for (i = 0; i < LNUM_CARS; i++) {
+        if (DEQUE_SUCCESS != DequeAddAtFront(&Transporter, 0, LeftCar + i, sizeof LeftCar[i])) {
+            puts("Car crash? Insufficient memory.");
+            exit(EXIT_FAILURE);
+        }
+        printf("%s, bound for %s, added at front.\n", LeftCar[i].RegNumber, City[LeftCar[i].Destination]);
     }
 
-    if(i < NUM_CITIES - 1)
-    {
-      printf("All done, so we're off to %s!\n",
-             City[i + 1]);
+    for (i = 0; i < RNUM_CARS; i++) {
+        if (DEQUE_SUCCESS != DequeAddAtBack(&Transporter, 0, RightCar + i, sizeof RightCar[i])) {
+            puts("Crunch! Insufficient memory.");
+            exit(EXIT_FAILURE);
+        }
+        printf("%s, bound for %s, added at back.\n", RightCar[i].RegNumber, City[RightCar[i].Destination]);
     }
-  }
 
-  printf("That's it - journey's end.\n");
+    printf("Okay, we're on our way to %s!\n", City[0]);
 
-  return 0;
+    for (i = 0; DequeCount(&Transporter) > 0 && i < NUM_CITIES; i++) {
+        puts("Deedle-dee-DEE, Deedle-dee-DAH...");
+        printf("Okay, we've arrived at %s.\n", City[i]);
+
+        Car = DequeGetDataFromFront(&Transporter, NULL, NULL);
+
+        if (Car == NULL) {
+            puts("We seem to have run out of cars,");
+            puts("so I guess the journey is over.");
+            exit(0);
+        }
+
+        while (Car != NULL && DequeCount(&Transporter) > 0 && Car->Destination == i) {
+            printf("Unloading %s from front.\n", Car->RegNumber);
+            DequeRemoveFromFront(NULL, &Transporter);
+            Car = DequeGetDataFromFront(&Transporter, NULL, NULL);
+        }
+
+        Car = DequeGetDataFromBack(&Transporter, NULL, NULL);
+
+        while (Car != NULL && DequeCount(&Transporter) > 0 && Car->Destination == i) {
+            printf("Unloading %s from back.\n", Car->RegNumber);
+            DequeRemoveFromBack(NULL, &Transporter);
+            Car = DequeGetDataFromBack(&Transporter, NULL, NULL);
+        }
+
+        if (i < NUM_CITIES - 1) {
+            printf("All done, so we're off to %s!\n", City[i + 1]);
+        }
+    }
+
+    printf("That's it - journey's end.\n");
+
+    return 0;
 }

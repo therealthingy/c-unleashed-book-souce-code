@@ -29,55 +29,45 @@
 #include <stdio.h>
 #include <string.h>
 
-unsigned int even_parity(unsigned int ch)
-{
-  int temp = 0;
-  int count;
+unsigned int even_parity(unsigned int ch) {
+    int temp = 0;
+    int count;
 
-  /* trim to 7 bit ASCII  */
-  ch &= 0x7f;
+    /* trim to 7 bit ASCII  */
+    ch &= 0x7f;
 
-  /* set temp to 0 for even parity or 1 for odd parity  */
-  for (count = 0; count < 8; ++count)
-  {
-      temp ^= ((ch >> count) & 1);
-  }
+    /* set temp to 0 for even parity or 1 for odd parity  */
+    for (count = 0; count < 8; ++count) {
+        temp ^= ((ch >> count) & 1);
+    }
 
-  if (temp)
-  {
-    ch |= 0x80;
-  }
+    if (temp) {
+        ch |= 0x80;
+    }
 
-  return ch;
+    return ch;
 }
 
-int main(void)
-{
-  char buff[22];
-  char *cp;
+int main(void) {
+    char buff[22];
+    char *cp;
 
-  for ( ; ; )
-  {
-    printf("\nEnter up to 20 characters: ");
-    fflush(stdout);
+    for (;;) {
+        printf("\nEnter up to 20 characters: ");
+        fflush(stdout);
 
-    if (fgets(buff, sizeof buff, stdin) == NULL ||
-          buff [0] == '\n')
-    {
-      puts("Goodbye!");
-      return 0;
+        if (fgets(buff, sizeof buff, stdin) == NULL || buff[0] == '\n') {
+            puts("Goodbye!");
+            return 0;
+        }
+
+        /* remove newline from string if present  */
+        if ((cp = strchr(buff, '\n')) != NULL) {
+            *cp = '\0';
+        }
+
+        for (cp = buff; *cp != '\0'; ++cp) {
+            printf("0x%02X is 0x%02X with even parity\n", *cp & 0x7f, even_parity(*cp & 0x7f));
+        }
     }
-
-    /* remove newline from string if present  */
-    if ((cp = strchr(buff, '\n')) != NULL)
-    {
-      *cp = '\0';
-    }
-
-    for (cp = buff; *cp != '\0'; ++cp)
-    {
-      printf("0x%02X is 0x%02X with even parity\n",
-        *cp & 0x7f, even_parity(*cp & 0x7f));
-    }
-  }
 }

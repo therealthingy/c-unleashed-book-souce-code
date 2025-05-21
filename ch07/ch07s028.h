@@ -2,9 +2,10 @@
 #ifndef CFOLLOW_H__
 #define CFOLLOW_H__
 
-#define CFOLLOW_MAXLINE 100000L /* Max lines that will
-                                 * appear in trace file
-                                 */
+#define CFOLLOW_MAXLINE             \
+    100000L /* Max lines that will  \
+             * appear in trace file \
+             */
 
 /* Tracing is turned off by default. To enable it, you
  * could change #if 0 to #if 1 (below) but a better
@@ -15,168 +16,81 @@
  */
 
 #if 0
-#define CFOLLOW_ON__
+#    define CFOLLOW_ON__
 #endif
 
 #ifdef CFOLLOW_ON__
 
 /* S for string */
-#define S_FOLLOW(svar) CFollow(__FILE__,\
-                               __LINE__,\
-                               0,\
-                               #svar"=[%s]",\
-                               svar)
+#    define S_FOLLOW(svar) CFollow(__FILE__, __LINE__, 0, #svar "=[%s]", svar)
 
 /* A for array (of char, not necessarily terminated) */
-#define A_FOLLOW(avar, bytes) CFollow(__FILE__,\
-                                      __LINE__,\
-                                      0,\
-                #avar"(first %d bytes) =[%*.*s]",\
-                                      (int)bytes,\
-                                      (int)bytes,\
-                                      (int)bytes,\
-                                      avar)
+#    define A_FOLLOW(avar, bytes) \
+        CFollow(__FILE__, __LINE__, 0, #avar "(first %d bytes) =[%*.*s]", (int)bytes, (int)bytes, (int)bytes, avar)
 /* I for Int */
-#define I_FOLLOW(ivar) CFollow(__FILE__,\
-                               __LINE__,\
-                               0,\
-                               #ivar"=[%d]",\
-                               ivar)
+#    define I_FOLLOW(ivar)                   CFollow(__FILE__, __LINE__, 0, #ivar "=[%d]", ivar)
 /* U for Unsigned int */
-#define U_FOLLOW(uvar) CFollow(__FILE__,\
-                               __LINE__,\
-                               0,\
-                               #uvar"=[%u]",\
-                               uvar)
+#    define U_FOLLOW(uvar)                   CFollow(__FILE__, __LINE__, 0, #uvar "=[%u]", uvar)
 /* HI for sHort Int */
-#define HI_FOLLOW(sivar) CFollow(__FILE__,\
-                                 __LINE__,\
-                                 0,\
-                                 #sivar"=[%hd]",\
-                                 sivar)
+#    define HI_FOLLOW(sivar)                 CFollow(__FILE__, __LINE__, 0, #sivar "=[%hd]", sivar)
 /* HU sHort Unsigned int */
-#define HU_FOLLOW(suvar) CFollow(__FILE__,\
-                                 __LINE__,\
-                                 0,\
-                                 #suvar"=[%hu]",\
-                                 suvar)
+#    define HU_FOLLOW(suvar)                 CFollow(__FILE__, __LINE__, 0, #suvar "=[%hu]", suvar)
 /* LI for Long Int */
-#define LI_FOLLOW(lvar) CFollow(__FILE__,\
-                                __LINE__,\
-                                0,\
-                                #lvar"=[%ld]",\
-                                lvar)
+#    define LI_FOLLOW(lvar)                  CFollow(__FILE__, __LINE__, 0, #lvar "=[%ld]", lvar)
 /* LU for long unsigned int */
-#define LU_FOLLOW(ulvar) CFollow(__FILE__,\
-                                 __LINE__,\
-                                 0,\
-                                 #ulvar"=[%lu]",\
-                                 ulvar)
+#    define LU_FOLLOW(ulvar)                 CFollow(__FILE__, __LINE__, 0, #ulvar "=[%lu]", ulvar)
 
 /* D for Double */
-#define D_FOLLOW(dvar) CFollow(__FILE__,\
-                               __LINE__,\
-                               0,\
-                               #dvar"=[%f]",\
-                               dvar)
+#    define D_FOLLOW(dvar)                   CFollow(__FILE__, __LINE__, 0, #dvar "=[%f]", dvar)
 /* B for Boolean condition (true/false) */
-#define B_FOLLOW(cond) CFollow(__FILE__,\
-                               __LINE__,\
-                               0,\
-                               "Condition "#cond" = %s",\
-                               (cond) ? "TRUE" : "FALSE")
+#    define B_FOLLOW(cond)                   CFollow(__FILE__, __LINE__, 0, "Condition " #cond " = %s", (cond) ? "TRUE" : "FALSE")
 /* P for pointer */
-#define P_FOLLOW(ptr) CFollow(__FILE__,\
-                              __LINE__,\
-                              0,\
-                              "Pointer "#ptr" = %p",\
-                              (void *)(ptr))
+#    define P_FOLLOW(ptr)                    CFollow(__FILE__, __LINE__, 0, "Pointer " #ptr " = %p", (void *)(ptr))
 /* F for user-specified Format
  * integer suffix indicates
  * number of extra args
  */
-#define F_FOLLOW0(s) CFollow(__FILE__,\
-                             __LINE__,\
-                             0,\
-                             s)
-#define F_FOLLOW1(format, a) \
-                        CFollow(__FILE__,\
-                                __LINE__,\
-                                0,\
-                                format,\
-                                a)
-#define F_FOLLOW2(format, a, b) \
-                        CFollow(__FILE__,\
-                                __LINE__,\
-                                0,\
-                                format,\
-                                a, b)
-#define F_FOLLOW3(format, a, b, c) \
-                        CFollow(__FILE__,\
-                                __LINE__,\
-                                0,\
-                                format,\
-                                a, b, c)
-#define F_FOLLOW4(format, a, b, c, d) \
-                        CFollow(__FILE__,\
-                                __LINE__,\
-                                0,\
-                                format,\
-                                a, b, c, d)
-#define F_FOLLOW5(format, a, b, c, d, e) \
-                        CFollow(__FILE__,\
-                                __LINE__,\
-                                0,\
-                                format,\
-                                a, b, c, d, e)
+#    define F_FOLLOW0(s)                     CFollow(__FILE__, __LINE__, 0, s)
+#    define F_FOLLOW1(format, a)             CFollow(__FILE__, __LINE__, 0, format, a)
+#    define F_FOLLOW2(format, a, b)          CFollow(__FILE__, __LINE__, 0, format, a, b)
+#    define F_FOLLOW3(format, a, b, c)       CFollow(__FILE__, __LINE__, 0, format, a, b, c)
+#    define F_FOLLOW4(format, a, b, c, d)    CFollow(__FILE__, __LINE__, 0, format, a, b, c, d)
+#    define F_FOLLOW5(format, a, b, c, d, e) CFollow(__FILE__, __LINE__, 0, format, a, b, c, d, e)
 
-#define CF_CODE(code) code
-#define CF_FUNCIN(funcname) CFollow(__FILE__,\
-                                    __LINE__,\
-                                    1,\
-         "Function %s() entry point.",\
-                                    #funcname)
+#    define CF_CODE(code)                    code
+#    define CF_FUNCIN(funcname)              CFollow(__FILE__, __LINE__, 1, "Function %s() entry point.", #funcname)
 
-#define CF_FUNCOUT(funcname, typespec, rval) \
-                    CFollow(__FILE__,\
-                            __LINE__,\
-                            -1,\
-         "Function %s() returns [%"#typespec"].",\
-                            #funcname,\
-                            rval)
-#define CFOLLOW_CLOSEDOWN CFollow(NULL, 0, 0, NULL)
+#    define CF_FUNCOUT(funcname, typespec, rval) \
+        CFollow(__FILE__, __LINE__, -1, "Function %s() returns [%" #typespec "].", #funcname, rval)
+#    define CFOLLOW_CLOSEDOWN CFollow(NULL, 0, 0, NULL)
 
-void CFollow(char *FileName,
-             int   LineNumber,
-             int   DepthModifier,
-             char *FormatString,
-             ...);
+void CFollow(char *FileName, int LineNumber, int DepthModifier, char *FormatString, ...);
 
 #else
 
-#define S_FOLLOW(svar)
-#define A_FOLLOW(avar, bytes)
-#define I_FOLLOW(ivar)
-#define U_FOLLOW(uvar)
-#define HI_FOLLOW(sivar)
-#define HU_FOLLOW(suvar)
-#define LI_FOLLOW(lvar)
-#define LU_FOLLOW(ulvar)
-#define D_FOLLOW(dvar)
-#define B_FOLLOW(cond)
-#define P_FOLLOW(ptr)
-#define F_FOLLOW0(s)
-#define F_FOLLOW1(format, a)
-#define F_FOLLOW2(format, a, b)
-#define F_FOLLOW3(format, a, b, c)
-#define F_FOLLOW4(format, a, b, c, d)
-#define F_FOLLOW5(format, a, b, c, d, e)
+#    define S_FOLLOW(svar)
+#    define A_FOLLOW(avar, bytes)
+#    define I_FOLLOW(ivar)
+#    define U_FOLLOW(uvar)
+#    define HI_FOLLOW(sivar)
+#    define HU_FOLLOW(suvar)
+#    define LI_FOLLOW(lvar)
+#    define LU_FOLLOW(ulvar)
+#    define D_FOLLOW(dvar)
+#    define B_FOLLOW(cond)
+#    define P_FOLLOW(ptr)
+#    define F_FOLLOW0(s)
+#    define F_FOLLOW1(format, a)
+#    define F_FOLLOW2(format, a, b)
+#    define F_FOLLOW3(format, a, b, c)
+#    define F_FOLLOW4(format, a, b, c, d)
+#    define F_FOLLOW5(format, a, b, c, d, e)
 
-#define CF_CODE(code) /* no code! */
-#define CF_FUNCIN(funcname)
-#define CF_FUNCOUT(funcname, typespec, rval)
+#    define CF_CODE(code) /* no code! */
+#    define CF_FUNCIN(funcname)
+#    define CF_FUNCOUT(funcname, typespec, rval)
 
-#define CFOLLOW_CLOSEDOWN
+#    define CFOLLOW_CLOSEDOWN
 
 #endif /* Trace statements are on/off */
 

@@ -1,5 +1,4 @@
-int foo(char *bar)
-{
-  assert(bar);
-  /* ... */
+int foo(char *bar) {
+    assert(bar);
+    /* ... */
 }

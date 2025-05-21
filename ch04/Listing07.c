@@ -7,7 +7,7 @@
  * t - a pointer to a struct tm in which the following members must be set and
  *     normalised to the standard ranges specified (as standard library
  *     functions gmtime, localtime and mktime should do):
- *     
+ *
  *     tm_wday - The day of the week of the day in question:
  *               0-Sunday -> 6-Saturday
  *
@@ -56,18 +56,17 @@
 
 #define is_leap(year) (!((year) % 4) && (((year) % 100) || !((year) % 400)))
 
-int weeknum_ISO8601(const struct tm *t, int firstDOW)
-{
+int weeknum_ISO8601(const struct tm *t, int firstDOW) {
     const int tmp1 = firstDOW - t->tm_wday;
     const int tmp2 = t->tm_yday + ((tmp1 > 0) ? 3 : 10) + tmp1;
     const int fourthdaynum = tmp2 % 7;
-    int       weeknum = tmp2 / 7;
+    int weeknum = tmp2 / 7;
 
     if (weeknum == 0) {
 #ifdef XPG4_WEEKNUMS
         weeknum = 53;
 #else
-        const int yearnum = t->tm_year + (1900 % 400)-1;
+        const int yearnum = t->tm_year + (1900 % 400) - 1;
 
         weeknum = (fourthdaynum + is_leap(yearnum) >= 6) ? 53 : 52;
 #endif

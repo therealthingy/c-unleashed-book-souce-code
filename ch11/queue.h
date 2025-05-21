@@ -33,30 +33,26 @@
 
 #include "sllist.h"
 
-#define QUEUE_SUCCESS       0
-#define QUEUE_ADD_FAILURE   1
-#define QUEUE_DEL_FAILURE   2
-#define QUEUE_EMPTY         3
+#define QUEUE_SUCCESS     0
+#define QUEUE_ADD_FAILURE 1
+#define QUEUE_DEL_FAILURE 2
+#define QUEUE_EMPTY       3
 
-typedef struct QUEUE
-{
+typedef struct QUEUE {
 #ifndef NDEBUG
-  int CheckInit1;
+    int CheckInit1;
 #endif
 
-  SLLIST *HeadPtr;
-  SLLIST *TailPtr;
-  size_t NumItems;
+    SLLIST *HeadPtr;
+    SLLIST *TailPtr;
+    size_t NumItems;
 
 #ifndef NDEBUG
-  int CheckInit2;
+    int CheckInit2;
 #endif
 } QUEUE;
 
-int QueueAdd(QUEUE *Queue,
-             int Tag,
-             void *Object,
-             size_t Size);
+int QueueAdd(QUEUE *Queue, int Tag, void *Object, size_t Size);
 int QueueRemove(void *Object, QUEUE *Queue);
 
 void *QueueGetData(QUEUE *Queue, int *Tag, size_t *Size);

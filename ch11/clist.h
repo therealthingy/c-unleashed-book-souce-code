@@ -28,45 +28,34 @@
  *
  */
 
-
 #ifndef CLIST_H__
 #define CLIST_H__
 
-#define CL_SUCCESS    0
-#define CL_NO_MEM     1
-#define CL_EMPTY      2
-#define CL_ZERO_SIZE  3
+#define CL_SUCCESS   0
+#define CL_NO_MEM    1
+#define CL_EMPTY     2
+#define CL_ZERO_SIZE 3
 
-typedef struct CL_ITEM
-{
-  int Tag;
-  struct CL_ITEM *Prev;
-  struct CL_ITEM *Next;
-  void *Object;
-  size_t Size;
+typedef struct CL_ITEM {
+    int Tag;
+    struct CL_ITEM *Prev;
+    struct CL_ITEM *Next;
+    void *Object;
+    size_t Size;
 } CL_ITEM;
 
-typedef struct CLIST
-{
-  CL_ITEM *CurrentItem;
-  size_t NumItems;
+typedef struct CLIST {
+    CL_ITEM *CurrentItem;
+    size_t NumItems;
 } CLIST;
 
 CL_ITEM *CLCreate(int Tag, void *Object, size_t Size);
 
-int CLAddItem(CLIST *List,
-              int Tag,
-              void *Object,
-              size_t Size);
+int CLAddItem(CLIST *List, int Tag, void *Object, size_t Size);
 
-int CLUpdate(CLIST *List,
-             int NewTag,
-             void *NewObject,
-             size_t NewSize);
+int CLUpdate(CLIST *List, int NewTag, void *NewObject, size_t NewSize);
 
-void *CLGetData(CLIST *List,
-                int *Tag,
-                size_t *Size);
+void *CLGetData(CLIST *List, int *Tag, size_t *Size);
 
 void CLRotate(CLIST *List, int Places);
 
@@ -74,7 +63,5 @@ int CLDelete(CLIST *List);
 
 void CLDestroy(CLIST *List);
 
-int CLWalk(CLIST *List,
-           int(*Func)(int, void *, void *),
-           void *Args);
+int CLWalk(CLIST *List, int (*Func)(int, void *, void *), void *Args);
 #endif

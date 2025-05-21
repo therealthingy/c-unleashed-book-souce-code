@@ -28,30 +28,29 @@
 **                                                                       **
 **************************************************************************/
 
-#include <stdio.h>
 #include "sparse.h"
+#include <stdio.h>
 
 SP_NODE *sp_get_node_list(SPARSE_MATRIX *sp, int dim, int seq)
 /* SPARSE_MATRIX *sp The sparse matrix in which to find the header list */
 /* int dim           The dimension number of the header list */
 /*     seq           The sequence number of the header list element */
 {
-  SP_HDR_ELEMENT *header_element;
+    SP_HDR_ELEMENT *header_element;
 
-  /* If the sparse matrix passed is empty, then there are no nodes to 
-     be found */
-  if (sp == (SPARSE_MATRIX *)NULL)
-    return ((SP_NODE *)NULL);
+    /* If the sparse matrix passed is empty, then there are no nodes to
+       be found */
+    if (sp == (SPARSE_MATRIX *)NULL)
+        return ((SP_NODE *)NULL);
 
-  sp->error_no = SP_NOERR;
+    sp->error_no = SP_NOERR;
 
-  /* Retrieve the header list element associated with the dimension and 
-     sequence*/
-  header_element = sp_hdr_list_element_get(sp, dim, seq);
-  if ((sp->error_no != SP_NOERR) || (header_element == (SP_HDR_ELEMENT *)NULL))
-  {
-    return((SP_NODE *)NULL);
-  }
+    /* Retrieve the header list element associated with the dimension and
+       sequence*/
+    header_element = sp_hdr_list_element_get(sp, dim, seq);
+    if ((sp->error_no != SP_NOERR) || (header_element == (SP_HDR_ELEMENT *)NULL)) {
+        return ((SP_NODE *)NULL);
+    }
 
-  return(header_element->first);
+    return (header_element->first);
 }

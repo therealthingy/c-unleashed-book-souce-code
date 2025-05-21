@@ -4,18 +4,17 @@
 ** This code is Copyright 1999 by Dann Corbit
 */
 
-
 /*
 ** This is a sort of "Poor-man's template for C" used to generate
 ** algorithms for sorting.
 */
-#include <math.h>
+#include "mtrand.h"
 #include <assert.h>
 #include <limits.h>
+#include <math.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdio.h>
-#include "mtrand.h"
 
 /* This works best for ME.  YMMV. */
 
@@ -53,73 +52,70 @@ static const unsigned long LargeCutoff = 200000;
 ** template) to define a sort for the named
 ** data type will be created.
 */
-#if defined(ETYPE_UNSIGNED_INT)
-#include "uicomp.h"
-#elif defined(ETYPE_SIGNED_INT)
-#include "sicomp.h"
-#elif defined(ETYPE_UNSIGNED_LONG)
-#include "ulcomp.h"
-#elif defined(ETYPE_SIGNED_LONG)
-#include "slcomp.h"
-#elif defined(ETYPE_UNSIGNED_CHAR)
-#include "uccomp.h"
-#elif defined(ETYPE_SIGNED_CHAR)
-#include "sccomp.h"
-#elif defined(ETYPE_UNSIGNED_LONG_LONG)
-#include "ullcomp.h"
-#elif defined(ETYPE_SIGNED_LONG_LONG)
-#include "sllcomp.h"
-#elif defined(ETYPE_FLOAT)
-#include "fcomp.h"
-#elif defined(ETYPE_DOUBLE)
-#include "dcomp.h"
-#elif defined(ETYPE_LONG_DOUBLE)
-#include "ldcomp.h"
-#elif defined(ETYPE_P2_UNSIGNED_INT)
-#include "puicomp.h"
-#elif defined(ETYPE_P2_SIGNED_INT)
-#include "psicomp.h"
-#elif defined(ETYPE_P2_UNSIGNED_LONG)
-#include "pulcomp.h"
-#elif defined(ETYPE_P2_SIGNED_LONG)
-#include "pslcomp.h"
-#elif defined(ETYPE_P2_UNSIGNED_CHAR)
-#include "puccomp.h"
-#elif defined(ETYPE_P2_SIGNED_CHAR)
-#include "psccomp.h"
-#elif defined(ETYPE_P2_UNSIGNED_LONG_LONG)
-#include "pullcomp.h"
-#elif defined(ETYPE_P2_SIGNED_LONG_LONG)
-#include "psllcomp.h"
-#elif defined(ETYPE_P2_FLOAT)
-#include "pfcomp.h"
-#elif defined(ETYPE_P2_DOUBLE)
-#include "pdcomp.h"
-#elif defined(ETYPE_P2_LONG_DOUBLE)
-#include "pldcomp.h"
-#elif defined(ETYPE_STRING)
-#include "strcomp.h"
-#elif defined(ETYPE_COLLATED_STRING)
-#include "cstr_comp.h"
+#if defined(E_TYPE_UNSIGNED_INT)
+#    include "uicomp.h"
+#elif defined(E_TYPE_SIGNED_INT)
+#    include "sicomp.h"
+#elif defined(E_TYPE_UNSIGNED_LONG)
+#    include "ulcomp.h"
+#elif defined(E_TYPE_SIGNED_LONG)
+#    include "slcomp.h"
+#elif defined(E_TYPE_UNSIGNED_CHAR)
+#    include "uccomp.h"
+#elif defined(E_TYPE_SIGNED_CHAR)
+#    include "sccomp.h"
+#elif defined(E_TYPE_UNSIGNED_LONG_LONG)
+#    include "ullcomp.h"
+#elif defined(E_TYPE_SIGNED_LONG_LONG)
+#    include "sllcomp.h"
+#elif defined(E_TYPE_FLOAT)
+#    include "fcomp.h"
+#elif defined(E_TYPE_DOUBLE)
+#    include "dcomp.h"
+#elif defined(E_TYPE_LONG_DOUBLE)
+#    include "ldcomp.h"
+#elif defined(E_TYPE_P2_UNSIGNED_INT)
+#    include "puicomp.h"
+#elif defined(E_TYPE_P2_SIGNED_INT)
+#    include "psicomp.h"
+#elif defined(E_TYPE_P2_UNSIGNED_LONG)
+#    include "pulcomp.h"
+#elif defined(E_TYPE_P2_SIGNED_LONG)
+#    include "pslcomp.h"
+#elif defined(E_TYPE_P2_UNSIGNED_CHAR)
+#    include "puccomp.h"
+#elif defined(E_TYPE_P2_SIGNED_CHAR)
+#    include "psccomp.h"
+#elif defined(E_TYPE_P2_UNSIGNED_LONG_LONG)
+#    include "pullcomp.h"
+#elif defined(E_TYPE_P2_SIGNED_LONG_LONG)
+#    include "psllcomp.h"
+#elif defined(E_TYPE_P2_FLOAT)
+#    include "pfcomp.h"
+#elif defined(E_TYPE_P2_DOUBLE)
+#    include "pdcomp.h"
+#elif defined(E_TYPE_P2_LONG_DOUBLE)
+#    include "pldcomp.h"
+#elif defined(E_TYPE_STRING)
+#    include "strcomp.h"
+#elif defined(E_TYPE_COLLATED_STRING)
+#    include "cstr_comp.h"
 
 #else
-#error "PLEASE DEFINE SOME TYPE!"
-#endif          /* defined(ETYPE_... */
+#    error "PLEASE DEFINE SOME TYPE!"
+#endif /* defined(E_TYPE_... */
 
 /*
 ** Prototypes for sorting
 */
 #include "genproto.h"
 
-
-
 /*
 For partitions of zero length, there is nothing to do.
 This is the optimal sort for zero items.
 */
 PRELUDE
-void            INSERTZERO(Etype array[])
-{
+void INSERTZERO(Etype array[]) {
     return;
 }
 
@@ -128,8 +124,7 @@ For partitions of length one, there is nothing to do.
 This is the optimal sort for one item.
 */
 PRELUDE
-void            INSERTONE(Etype array[])
-{
+void INSERTONE(Etype array[]) {
     return;
 }
 
@@ -138,8 +133,7 @@ For partitions of length two, we either reverse it or leave it alone.
 This is the optimal sort for two items.
 */
 PRELUDE
-void            INSERTTWO(Etype array[])
-{
+void INSERTTWO(Etype array[]) {
     if (GT(array[0], array[1]))
         SWAP(&array[0], &array[1]);
     return;
@@ -150,15 +144,14 @@ Optimal treatment for small partitions of length 3.
 This is the optimal sort for three items.
 */
 PRELUDE
-void            INSERTTHREE(Etype array[])
-{
+void INSERTTHREE(Etype array[]) {
     if (LT(array[0], array[1])) {
         if (LT(array[1], array[2]))
             return;
         else if (LT(array[0], array[2]))
             SWAP(&array[1], &array[2]);
         else {
-            Etype           Tmp = array[0];
+            Etype Tmp = array[0];
             array[0] = array[2];
             array[2] = array[1];
             array[1] = Tmp;
@@ -167,7 +160,7 @@ void            INSERTTHREE(Etype array[])
         if (LT(array[0], array[2]))
             SWAP(&array[0], &array[1]);
         else if (LT(array[1], array[2])) {
-            Etype           Tmp = array[0];
+            Etype Tmp = array[0];
             array[0] = array[1];
             array[1] = array[2];
             array[2] = Tmp;
@@ -182,9 +175,8 @@ Optimal treatment for small partitions of length 4.
 This is the optimal sort for four items.
 */
 PRELUDE
-void            INSERTFOUR(Etype array[])
-{
-    Etype           temp;
+void INSERTFOUR(Etype array[]) {
+    Etype temp;
     if (GT(array[0], array[1])) {
         temp = array[0];
         array[0] = array[1];
@@ -226,9 +218,8 @@ In practice, this "optimal" treatment for partitions of length 5
 seem to slow the sort down rather than speed it up.
 */
 #ifdef MY_CACHE_IS_ENORMOUS
-#include "sort5.h"
+#    include "sort5.h"
 #endif
-
 
 /*
 ** Algorithm M, from:
@@ -243,35 +234,24 @@ seem to slow the sort down rather than speed it up.
 ** on very tiny partitions (specifically 256 items or less)
 */
 static const unsigned shiftedbit[] =
-{                               /* First two items are just placeholders */
-    0, 0, 1, 2, 2, 4, 4, 4, 4, 8, 8, 8, 8, 8, 8, 8, 8,
-    16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 32,
-    32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32,
-    32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 64, 64, 64,
-    64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64,
-    64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64,
-    64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64,
-    64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 128, 128, 128, 128, 128,
-    128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128,
-    128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128,
-    128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128,
-    128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128,
-    128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128,
-    128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128,
-    128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128,
-    128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128,
-    128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128,
-    128, 128, 128, 128, 128, 128
-};
+    {/* First two items are just placeholders */
+     0,   0,   1,   2,   2,   4,   4,   4,   4,   8,   8,   8,   8,   8,   8,   8,   8,   16,  16,  16,  16,  16,
+     16,  16,  16,  16,  16,  16,  16,  16,  16,  16,  16,  32,  32,  32,  32,  32,  32,  32,  32,  32,  32,  32,
+     32,  32,  32,  32,  32,  32,  32,  32,  32,  32,  32,  32,  32,  32,  32,  32,  32,  32,  32,  32,  32,  64,
+     64,  64,  64,  64,  64,  64,  64,  64,  64,  64,  64,  64,  64,  64,  64,  64,  64,  64,  64,  64,  64,  64,
+     64,  64,  64,  64,  64,  64,  64,  64,  64,  64,  64,  64,  64,  64,  64,  64,  64,  64,  64,  64,  64,  64,
+     64,  64,  64,  64,  64,  64,  64,  64,  64,  64,  64,  64,  64,  64,  64,  64,  64,  64,  64,  128, 128, 128,
+     128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128,
+     128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128,
+     128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128,
+     128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128,
+     128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128,
+     128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128};
 
 PRELUDE
-void            BATCHER(Etype A[], int N)
-{
-    unsigned        p,
-                    q,
-                    r,
-                    d;
-    unsigned        i;
+void BATCHER(Etype A[], int N) {
+    unsigned p, q, r, d;
+    unsigned i;
 
     switch (N) {
     case 0:
@@ -296,17 +276,17 @@ void            BATCHER(Etype A[], int N)
 
         assert(N <= 256);
 
-/* M1: */
+        /* M1: */
         p = shiftedbit[N];
-/* M2: */
+        /* M2: */
         do {
             q = shiftedbit[N];
             r = 0;
             d = p;
-    M3:
+        M3:
             for (i = 0; i < N - d; i++) {
                 if ((i & p) == r) {
-                    Etype           tmp;
+                    Etype tmp;
                     /* M4: */
                     if (GT(A[i], A[i + d])) {
                         tmp = A[i];
@@ -315,17 +295,16 @@ void            BATCHER(Etype A[], int N)
                     }
                 }
             }
-/* M5: */
+            /* M5: */
             if (q != p) {
                 d = q - p;
                 q >>= 1;
                 r = p;
-                goto M3;        /* Are you going to argue with Knuth? */
+                goto M3; /* Are you going to argue with Knuth? */
             }
-/* M6: */
+            /* M6: */
             p >>= 1;
-        }
-        while (p > 0);
+        } while (p > 0);
     }
 }
 
@@ -334,13 +313,11 @@ Straightforward linear insertion.  Binary insertion is better, and
 Shell-sort is better yet.  Don't use this for real sorting work.
 */
 PRELUDE
-void            LINEARINSERTION(Etype a[], unsigned long n)
-{
-    unsigned long   i,
-                    j;
-    Etype           tmp;
+void LINEARINSERTION(Etype a[], unsigned long n) {
+    unsigned long i, j;
+    Etype tmp;
 
-    for (i = 1; i < n; i++)     /* look for insertion point. */
+    for (i = 1; i < n; i++) /* look for insertion point. */
         for (j = i; j > 0 && GT(a[j - 1], a[j]); j--) {
             /* Move the others down and insert it. */
             tmp = a[j];
@@ -357,16 +334,15 @@ want to benchmark both binary insertion and shell-sort, but I suspect
 shell-sort will outperform binary insertion on most systems.
 */
 PRELUDE
-void            INSERTIONSORT(Etype array[], unsigned long count)
-{
-    unsigned long   partition;  /* The end of a new partition */
-    long            beg;        /* Search beginning here (this moves toward
-                                 * ipg) */
-    long            ipg;        /* Current guess for the insertion point
-                                 * (average of beg+end) */
-    long            end;        /* Search ending here (this moves toward ipg) */
-    Etype           temp;       /* Hold one elemennt of the array in
-                                 * temporary storage */
+void INSERTIONSORT(Etype array[], unsigned long count) {
+    unsigned long partition; /* The end of a new partition */
+    long beg;                /* Search beginning here (this moves toward
+                              * ipg) */
+    long ipg;                /* Current guess for the insertion point
+                              * (average of beg+end) */
+    long end;                /* Search ending here (this moves toward ipg) */
+    Etype temp;              /* Hold one elemennt of the array in
+                              * temporary storage */
     /* * One element is sorted by definition. * Form larger and larger
      * ordered partitions * until the entire array is correctly ordered */
     switch (count) {
@@ -390,29 +366,29 @@ void            INSERTIONSORT(Etype array[], unsigned long count)
 
     default:
 
-/* Seems like a good idea, but it does not really help.
-I left this in here so you won't bother with it.  Or if
-you do want to try it, you can just remove the comments.
+        /* Seems like a good idea, but it does not really help.
+        I left this in here so you won't bother with it.  Or if
+        you do want to try it, you can just remove the comments.
 
-   if (ARRAYISREVERSED(array, 0, count-1)) {
-     REVERSEARRAY(array, 0, count-1);
-     return;
-   }
- */
+           if (ARRAYISREVERSED(array, 0, count-1)) {
+             REVERSEARRAY(array, 0, count-1);
+             return;
+           }
+         */
         for (partition = 1; partition < count; partition++) {
             /* inline binary search to find point of insertion */
-            beg = ipg = 0;      /* The first element of the ordered part of
-                                 * the array is element 0 */
-            end = partition - 1;/* The last element already ordered is
-                                 * element partition-1 */
+            beg = ipg = 0;       /* The first element of the ordered part of
+                                  * the array is element 0 */
+            end = partition - 1; /* The last element already ordered is
+                                  * element partition-1 */
 
             /* Without this check, loop terminates only if an equal element
              * is already sorted */
             while (end >= beg) {
                 /* insertion point guess of halfway between beginning and
                  * ending */
-                ipg = ((end + beg) >> 1);       /* BUGBUG: we can't sort sets
-                                                 * > (MAX_LONG)/2 elements */
+                ipg = ((end + beg) >> 1); /* BUGBUG: we can't sort sets
+                                           * > (MAX_LONG)/2 elements */
                 /* However, this sort should *NEVER* be used for anything but
                  * tiny partitions */
 
@@ -427,20 +403,19 @@ you do want to try it, you can just remove the comments.
             }
             /* make room at array[ipg] for array[i] */
             /* It might already be in the right place */
-            if (partition != (unsigned long) ipg) {
-                temp = array[partition];        /* Save the new element we
-                                                 * are ready to insert */
+            if (partition != (unsigned long)ipg) {
+                temp = array[partition]; /* Save the new element we
+                                          * are ready to insert */
                 /* Move the data from the insertion point downward.  We can't
                 ** use memcpy()!
                 ** For C++, you will have to replace this because memmove
                 ** does not fire constructors!  Shell-sort is better anyway.
                 */
                 memmove(&array[ipg + 1], &array[ipg], (partition - ipg) * sizeof(Etype));
-                array[ipg] = temp;      /* Put the new element in its sorted
-                                         * order */
+                array[ipg] = temp; /* Put the new element in its sorted
+                                    * order */
             }
         }
-
     }
     return;
 }
@@ -459,12 +434,9 @@ you do want to try it, you can just remove the comments.
 ** you may get your name up in lights.
 */
 PRELUDE
-void            SHELLSORT(Etype array[], size_t count)
-{
-    size_t          i,
-                    inc,
-                    j;
-    Etype           tmp;
+void SHELLSORT(Etype array[], size_t count) {
+    size_t i, inc, j;
+    Etype tmp;
 
     switch (count) {
     case 0:
@@ -496,18 +468,17 @@ void            SHELLSORT(Etype array[], size_t count)
                     j -= inc;
                 }
                 array[j] = tmp;
-            }                   /* Calculate the next h-increment */
-            inc = (size_t) ((inc > 1) && (inc < 5)) ? 1 : 5 * inc / 11;
+            } /* Calculate the next h-increment */
+            inc = (size_t)((inc > 1) && (inc < 5)) ? 1 : 5 * inc / 11;
         }
     }
 }
 
 /* Test to see if segment [Lo, ... Hi] is sorted already */
 PRELUDE
-long            ARRAYISSORTED(Etype A[], unsigned long Lo, unsigned long Hi)
-{
-    unsigned long   i;
-    unsigned int    ascending;
+long ARRAYISSORTED(Etype A[], unsigned long Lo, unsigned long Hi) {
+    unsigned long i;
+    unsigned int ascending;
     if (Lo == Hi)
         return 1;
     if ((ascending = (LE(A[Lo], A[Lo + 1]))))
@@ -521,7 +492,7 @@ long            ARRAYISSORTED(Etype A[], unsigned long Lo, unsigned long Hi)
                         /* It was reversed.  Invert it and we are done! */
                         REVERSEARRAY(A, Lo, Hi);
                         return 1;
-                    } else {    /* Nope.  The partition is not reversed */
+                    } else { /* Nope.  The partition is not reversed */
                         return 0;
                     }
                 else
@@ -540,9 +511,8 @@ long            ARRAYISSORTED(Etype A[], unsigned long Lo, unsigned long Hi)
 
 /* Test to see if segment [Lo, ... Hi] is reverse sorted already */
 PRELUDE
-long            ARRAYISREVERSED(Etype A[], unsigned long Lo, unsigned long Hi)
-{
-    unsigned long   i;
+long ARRAYISREVERSED(Etype A[], unsigned long Lo, unsigned long Hi) {
+    unsigned long i;
     for (i = Lo; i < Hi; i++) {
         if (LE(A[i], A[i + 1]))
             return 0;
@@ -553,11 +523,10 @@ long            ARRAYISREVERSED(Etype A[], unsigned long Lo, unsigned long Hi)
 Reverse the order of a partition.
 */
 PRELUDE
-void            REVERSEARRAY(Etype * A, unsigned long Lo, unsigned long Hi)
-{
-    Etype          *r = A + Lo;
+void REVERSEARRAY(Etype *A, unsigned long Lo, unsigned long Hi) {
+    Etype *r = A + Lo;
     for (r = A + (Hi - Lo); A < r; A++, r--) {
-        Etype           Tmp = *A;
+        Etype Tmp = *A;
         *A = *r;
         *r = Tmp;
     }
@@ -568,15 +537,12 @@ Primitive quicksort.  This is a bad algorithm for general purposes.
 Don't use it.  Use IQSORT5 instead.  This thing is a bomb waiting to go off.
 */
 PRELUDE
-void            QSORTB(Etype * A, int l, int r)
-{
-    int             loc;
+void QSORTB(Etype *A, int l, int r) {
+    int loc;
 
     if (l < r) {
-        int             i = l,
-                        j = r;
-        Etype           tmp,
-                        pivot = A[l];
+        int i = l, j = r;
+        Etype tmp, pivot = A[l];
         /* Divide piles into partitions */
         for (;;) {
             while ((GE(A[j], pivot)) && (j > l))
@@ -598,23 +564,17 @@ void            QSORTB(Etype * A, int l, int r)
     }
 }
 
-
 /*
 Find the median of 3, with a bit of stirring.
 */
 PRELUDE
-void            MEDIAN(Etype A[], unsigned long n)
-{
-    unsigned long   m,
-                    x,
-                    i,
-                    j,
-                    k;
-    Etype           t;
-    i = (mtrand() + 1) % n;     /* We randomly stir the pot up a bit... */
-    j = (mtrand() + 1) % n;     /* We randomly stir the pot up a bit... */
-    k = n / 2;                  /* The middle element of a partition is a
-                                 * good guess */
+void MEDIAN(Etype A[], unsigned long n) {
+    unsigned long m, x, i, j, k;
+    Etype t;
+    i = (mtrand() + 1) % n; /* We randomly stir the pot up a bit... */
+    j = (mtrand() + 1) % n; /* We randomly stir the pot up a bit... */
+    k = n / 2;              /* The middle element of a partition is a
+                             * good guess */
     /* Pick the center of these three */
     if (LE(A[i], A[j])) {
         if (LE(A[j], A[k])) {
@@ -659,11 +619,9 @@ instead of insertion sort.  It is always better for a broad
 variety of distributions, according to my tests. YMMV.
 */
 PRELUDE
-void            IQSORT5(Etype A[], unsigned long n)
-{
-    unsigned long   i,
-                    j;
-    Etype           t;
+void IQSORT5(Etype A[], unsigned long n) {
+    unsigned long i, j;
+    Etype t;
     /* Change algorithm for small partitions */
     if (n < SmallCutoff) {
         SHELLSORT(A, n);
@@ -717,11 +675,10 @@ void            IQSORT5(Etype A[], unsigned long n)
 ** testing purposes only.
 */
 PRELUDE
-long            INSORT(Etype A[], unsigned long Hi)
-{
-    unsigned long   i;
-    for (i = 0; i < Hi - 1; i++) {      /* Is the next item bigger than this
-                                         * one? */
+long INSORT(Etype A[], unsigned long Hi) {
+    unsigned long i;
+    for (i = 0; i < Hi - 1; i++) { /* Is the next item bigger than this
+                                    * one? */
         if (GT(A[i], A[i + 1])) {
             return 0;
         }
@@ -741,12 +698,11 @@ Page 228.
 It is simple and interesting, but quick-sort is better than heap-sort.
 */
 
-#define LeftChild( i )  ( 2 * ( i ) + 1 )
+#define LeftChild(i) (2 * (i) + 1)
 
-void            PERCDOWN(Etype A[], int i, int N)
-{
-    int             Child;
-    Etype           Tmp;
+void PERCDOWN(Etype A[], int i, int N) {
+    int Child;
+    Etype Tmp;
 
     for (Tmp = A[i]; LeftChild(i) < N; i = Child) {
         Child = LeftChild(i);
@@ -760,9 +716,8 @@ void            PERCDOWN(Etype A[], int i, int N)
     A[i] = Tmp;
 }
 
-void            HEAPSORT(Etype A[], int N)
-{
-    int             i;
+void HEAPSORT(Etype A[], int N) {
+    int i;
 
     for (i = N / 2; i >= 0; i--)
         /* BuildHeap */
@@ -774,7 +729,6 @@ void            HEAPSORT(Etype A[], int N)
     }
 }
 
-
 /*
 ** The purpose of this routine is to discover partitions in the data.
 ** This is a two state FSM.
@@ -785,11 +739,10 @@ void            HEAPSORT(Etype A[], int N)
 **
 */
 PRELUDE
-int             PARSCAN(Etype * array, unsigned long n, partition ps[], long max_par)
-{
-    unsigned long   i;
-    char            direction;
-    long            pcount = 0;
+int PARSCAN(Etype *array, unsigned long n, partition ps[], long max_par) {
+    unsigned long i;
+    char direction;
+    long pcount = 0;
 
     ps[pcount].start = 0;
     ps[pcount].ascending = GE(array[1], array[0]);
@@ -816,9 +769,8 @@ int             PARSCAN(Etype * array, unsigned long n, partition ps[], long max
 ** Remove the smallest item from a partition.
 */
 PRELUDE
-Etype PDELETEMIN(partition * p, char *end, Etype data[])
-{
-    Etype           e;
+Etype PDELETEMIN(partition *p, char *end, Etype data[]) {
+    Etype e;
     if (p->start < p->end) {
         *end = 0;
     } else {
@@ -839,9 +791,8 @@ Etype PDELETEMIN(partition * p, char *end, Etype data[])
 ** Retrieve the smallest item from a partition.
 */
 PRELUDE
-Etype PGETMIN(partition p, Etype data[])
-{
-    Etype           e;
+Etype PGETMIN(partition p, Etype data[]) {
+    Etype e;
     if (p.ascending) {
         e = data[p.start];
     } else {
@@ -855,14 +806,11 @@ Etype PGETMIN(partition p, Etype data[])
 ** than on simple data elements.
 */
 PRELUDE
-void            PSHELLSORT(partition array[], size_t count, Etype * data)
-{
-    size_t          i,
-                    inc,
-                    j;
+void PSHELLSORT(partition array[], size_t count, Etype *data) {
+    size_t i, inc, j;
 
-    partition       tmp;
-    Etype           etmp;
+    partition tmp;
+    Etype etmp;
 
     for (inc = count; inc > 0;) {
         for (i = inc; i < count; i++) {
@@ -874,8 +822,8 @@ void            PSHELLSORT(partition array[], size_t count, Etype * data)
                 j -= inc;
             }
             array[j] = tmp;
-        }                       /* Calculate the next h-increment */
-        inc = (size_t) ((inc > 1) && (inc < 5)) ? 1 : 5 * inc / 11;
+        } /* Calculate the next h-increment */
+        inc = (size_t)((inc > 1) && (inc < 5)) ? 1 : 5 * inc / 11;
     }
 }
 
@@ -884,25 +832,24 @@ void            PSHELLSORT(partition array[], size_t count, Etype * data)
 ** location.
 */
 PRELUDE
-void            PNORMALIZE(partition * array, size_t count, Etype data[])
-{
-    long            beg;        /* Search beginning here (this moves toward
-                                 * ipg) */
-    long            ipg;        /* Current guess for the insertion point */
-    long            end;        /* Search ending here (this moves toward ipg) */
-    partition       temp;       /* Hold one partition in temporary storage */
-    long            i;
+void PNORMALIZE(partition *array, size_t count, Etype data[]) {
+    long beg;       /* Search beginning here (this moves toward
+                     * ipg) */
+    long ipg;       /* Current guess for the insertion point */
+    long end;       /* Search ending here (this moves toward ipg) */
+    partition temp; /* Hold one partition in temporary storage */
+    long i;
 
-    Etype           McGuffin = PGETMIN(array[0], data);
+    Etype McGuffin = PGETMIN(array[0], data);
     /* Maybe we don't need to do anything (I'm an optimist) */
     if (count < 2 || LE(McGuffin, PGETMIN(array[1], data)))
         return;
 
     /* inline binary search to find point of insertion */
-    beg = ipg = 1;              /* The first element of the ordered part of
-                                 * the data is element 0 */
-    end = count - 1;            /* The last element already ordered is
-                                 * element partition */
+    beg = ipg = 1;   /* The first element of the ordered part of
+                      * the data is element 0 */
+    end = count - 1; /* The last element already ordered is
+                      * element partition */
     /* Without this check, loop terminates only if an equal element is
      * already sorted */
     while (end >= beg) {
@@ -914,11 +861,11 @@ void            PNORMALIZE(partition * array, size_t count, Etype data[])
             beg = ++ipg;
     }
     /* make room at data[ipg] for data[0] */
-    temp = array[0];            /* Save the new element we are ready to
-                                 * insert */
+    temp = array[0]; /* Save the new element we are ready to
+                      * insert */
     for (i = 0; i < ipg; i++)
         array[i] = array[i + 1];
-    array[ipg - 1] = temp;      /* Put the new element in its sorted order */
+    array[ipg - 1] = temp; /* Put the new element in its sorted order */
     return;
 }
 
@@ -935,21 +882,18 @@ proper order of significance.
 */
 #ifndef RADIX_MISSING
 
-#define bin(A) l+count[A]
+#    define bin(A) l + count[A]
 
 PRELUDE
-void            RADIXMSD(Etype a[], long l, long r, unsigned w)
-{
+void RADIXMSD(Etype a[], long l, long r, unsigned w) {
     if (w > KEYSIZE || r <= l)
         return;
     if (r - l <= LargeCutoff * COST) {
         IQSORT5(a + l, r - l + 1);
         return;
     } else {
-        long            i,
-                        j,
-                        count[R + 1] = {0};
-        Etype          *b = malloc((r - l + 1) * sizeof(Etype));
+        long i, j, count[R + 1] = {0};
+        Etype *b = malloc((r - l + 1) * sizeof(Etype));
 
         /* Use standard comparison sort if allocation fails */
         if (b == NULL) {
@@ -980,7 +924,6 @@ void            RADIXMSD(Etype a[], long l, long r, unsigned w)
             /* Process the next chunk of the key for the rest of the  bins */
             RADIXMSD(a, bin(j), bin(j + 1) - 1, w + 1);
         }
-
     }
 }
 /*
@@ -997,12 +940,9 @@ There is also a CHUNKS operator that finds all single chunks
 in the data object at once.
 */
 PRELUDE
-void            RADIXLSD(Etype a[], long l, long r, size_t keysize)
-{
-    int             i,
-                    j,
-                    w;
-    Etype          *b;
+void RADIXLSD(Etype a[], long l, long r, size_t keysize) {
+    int i, j, w;
+    Etype *b;
 
     if (r - l <= LargeCutoff * COST) {
         IQSORT5(a + l, r - l + 1);
@@ -1013,7 +953,7 @@ void            RADIXLSD(Etype a[], long l, long r, size_t keysize)
         RADIXMSD(a, l, r, 0);
         return;
     } else {
-        unsigned long   cnts[R + 1][8] = {0};
+        unsigned long cnts[R + 1][8] = {0};
         b = malloc((r - l + 1) * sizeof(Etype));
 
         /* Use standard comparison sort if allocation fails */
@@ -1029,10 +969,8 @@ void            RADIXLSD(Etype a[], long l, long r, size_t keysize)
             for (j = 1; j < R; j++)
                 cnts[j][w] += cnts[j - 1][w];
 
-
         for (w = KEYSIZE - 1; w >= 0; w--) {
-            long            count[R + 1] =
-            {0};
+            long count[R + 1] = {0};
 
             /* Distribute according to bin positions */
             for (i = l; i <= r; i++) {
@@ -1047,7 +985,6 @@ void            RADIXLSD(Etype a[], long l, long r, size_t keysize)
 }
 #endif
 
-
 /*
 ** This merge sort is *almost* actually useful.
 ** The file I/O based version does have a real purpose.
@@ -1055,12 +992,11 @@ void            RADIXLSD(Etype a[], long l, long r, size_t keysize)
 ** quick-sort beats it hands-down and does not need extra memory.
 */
 PRELUDE
-void            MERGE_SORT(Etype a[], unsigned long count, partition * pset, unsigned long max_par)
-{
-    long            pcount;
-    Etype          *alternate = NULL;
-    unsigned long   current = 0;
-    unsigned long   increment = 0;
+void MERGE_SORT(Etype a[], unsigned long count, partition *pset, unsigned long max_par) {
+    long pcount;
+    Etype *alternate = NULL;
+    unsigned long current = 0;
+    unsigned long increment = 0;
 
     /*
     ** -- PURE DISCOVERY of partitions --
@@ -1072,7 +1008,7 @@ void            MERGE_SORT(Etype a[], unsigned long count, partition * pset, uns
     ** -- COOKIE CUTTER if we ran out of partitions --
     */
     if (pcount < 0) {
-        unsigned long   j;
+        unsigned long j;
         increment = count / (max_par) + 1;
         if (increment < SmallCutoff)
             increment = SmallCutoff;
@@ -1085,7 +1021,6 @@ void            MERGE_SORT(Etype a[], unsigned long count, partition * pset, uns
         ** just a toy anyway.  The real partition merge-sort is elsewhere.
         */
         pcount = PARSCAN(a, count, pset, max_par);
-
     }
     /*
     ** If we have a single partition we can save some time
@@ -1106,8 +1041,8 @@ void            MERGE_SORT(Etype a[], unsigned long count, partition * pset, uns
          * largest */
         PSHELLSORT(pset, pcount, a);
         {
-            char            end = 0;
-            Etype           e;
+            char end = 0;
+            Etype e;
             while (current < count) {
                 e = PDELETEMIN(pset, &end, a);
                 alternate[current++] = e;
@@ -1130,11 +1065,10 @@ void            MERGE_SORT(Etype a[], unsigned long count, partition * pset, uns
 ** form of merge-sort.   Here, we actually join the ordered data
 */
 PRELUDE
-void            MMERGE(Etype A[], Etype B[], size_t l, size_t m, size_t r)
-{
-    size_t          i = l;
-    size_t          j = m + 1;
-    size_t          k = l;
+void MMERGE(Etype A[], Etype B[], size_t l, size_t m, size_t r) {
+    size_t i = l;
+    size_t j = m + 1;
+    size_t k = l;
     /* Put the smallest thing into array B */
     while ((i <= m) && (j <= r)) {
         if (LT(A[i], A[j]))
@@ -1157,15 +1091,14 @@ void            MMERGE(Etype A[], Etype B[], size_t l, size_t m, size_t r)
 
 /* Helper function for icky(tm) merge sort */
 PRELUDE
-void            MSORT(Etype A[], Etype B[], size_t l, size_t r)
-{
-    size_t          m;          /* The middle */
-    if (l < r) {                /* Cut problem to half size until 1 unit */
+void MSORT(Etype A[], Etype B[], size_t l, size_t r) {
+    size_t m;    /* The middle */
+    if (l < r) { /* Cut problem to half size until 1 unit */
         /* Divide partition by 2, sort and merge */
         m = ((l + r) >> 1);
         MSORT(A, B, l, m);
         MSORT(A, B, m + 1, r);
-        MMERGE(A, B, l, m, r);  /* A single element is ordered */
+        MMERGE(A, B, l, m, r); /* A single element is ordered */
     }
 }
 /*
@@ -1173,13 +1106,12 @@ This is a really bad merge sort.  Please don't use it.
 It is for educational purposes only.
 */
 PRELUDE
-void            MERGESORTB(Etype A[], size_t count)
-{
-    Etype          *B;
+void MERGESORTB(Etype A[], size_t count) {
+    Etype *B;
     if ((B = malloc(count * sizeof(Etype)))) {
         MSORT(A, B, 0, count - 1);
         free(B);
-    } else                      /* Hopefully, we will fail and use a good
-                                 * sort. ;-) */
+    } else /* Hopefully, we will fail and use a good
+            * sort. ;-) */
         IQSORT5(A, count);
 }

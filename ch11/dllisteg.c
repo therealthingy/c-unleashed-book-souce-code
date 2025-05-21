@@ -28,52 +28,45 @@
  *
  */
 
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <assert.h>
 
 #include "dllist.h"
 
-typedef struct EMAIL
-{
-  char Name[30];
-  char Address[30];
+typedef struct EMAIL {
+    char Name[30];
+    char Address[30];
 } EMAIL;
 
-int PrintEmail(int Tag, void *Memory, void *Args)
-{
-  EMAIL *e = Memory;
+int PrintEmail(int Tag, void *Memory, void *Args) {
+    EMAIL *e = Memory;
 
-  assert(Tag == 0);
+    assert(Tag == 0);
 
-  printf("%s:%s\n",
-         e->Name,
-         e->Address);
+    printf("%s:%s\n", e->Name, e->Address);
 
-  return 0;
+    return 0;
 }
 
-int ParseEmail(EMAIL *e, char *Buffer)
-{
-  char *Token;
-  int Result = 0;
+int ParseEmail(EMAIL *e, char *Buffer) {
+    char *Token;
+    int Result = 0;
 
-  assert(e != NULL);
+    assert(e != NULL);
 
-  Token = strtok(Buffer, ":\t\n");
+    Token = strtok(Buffer, ":\t\n");
 
-  if(Token != NULL)
-  {
-    strcpy(e->Name, Token);
-    Token = strtok(NULL, ":\t\n");
-    if(Token != NULL)
-    {
-      strcpy(e->Address, Token);
-      Result = 1;
+    if (Token != NULL) {
+        strcpy(e->Name, Token);
+        Token = strtok(NULL, ":\t\n");
+        if (Token != NULL) {
+            strcpy(e->Address, Token);
+            Result = 1;
+        }
     }
-  }
-  return Result;
+    return Result;
 }
 
 /* This function merely exercises the linked
@@ -82,41 +75,32 @@ int ParseEmail(EMAIL *e, char *Buffer)
  *
  * (I have to say that, or Dann will poleaxe me.)
  */
-DLLIST *SortList(DLLIST *List)
-{
-  DLLIST *Outer;
-  DLLIST *Inner;
-  DLLIST *Temp;
-  EMAIL *OuterKey;
-  EMAIL *InnerKey;
+DLLIST *SortList(DLLIST *List) {
+    DLLIST *Outer;
+    DLLIST *Inner;
+    DLLIST *Temp;
+    EMAIL *OuterKey;
+    EMAIL *InnerKey;
 
-  int Items = DLCount(List);
+    int Items = DLCount(List);
 
-  if(Items > 1)
-  {
-    for(Outer = DLGetFirst(List);
-        Outer != NULL;
-        Outer = DLGetNext(Outer))
-    {
-      OuterKey = DLGetData(Outer, NULL, NULL);
-      for(Inner = DLGetNext(Outer);
-          Inner != NULL;
-          Inner = DLGetNext(Inner))
-      {
-        InnerKey = DLGetData(Inner, NULL, NULL);
+    if (Items > 1) {
+        for (Outer = DLGetFirst(List); Outer != NULL; Outer = DLGetNext(Outer)) {
+            OuterKey = DLGetData(Outer, NULL, NULL);
+            for (Inner = DLGetNext(Outer); Inner != NULL; Inner = DLGetNext(Inner)) {
+                InnerKey = DLGetData(Inner, NULL, NULL);
 
-        if(strcmp(OuterKey->Name, InnerKey->Name) > 0)
-        {
-          DLExchange(Outer, Inner);
-          Temp = Outer;
-          Outer = Inner;
-          Inner = Temp;
-          OuterKey = InnerKey;
+                if (strcmp(OuterKey->Name, InnerKey->Name) > 0) {
+                    DLExchange(Outer, Inner);
+                    Temp = Outer;
+                    Outer = Inner;
+                    Inner = Temp;
+                    OuterKey = InnerKey;
+                }
+            }
         }
-      }
     }
-  }
-  return List;
+    return List;
 }
 
 /* This test driver is illustrative,
@@ -124,53 +108,42 @@ DLLIST *SortList(DLLIST *List)
  * expected in the format Name:email
  * e.g. Richard:binary@eton.powernet.co.uk
  */
-int main(void)
-{
-  EMAIL Email = {0};
-  EMAIL *e = NULL;
-  DLLIST *List = NULL;
-  char Buffer[sizeof(EMAIL) + sizeof '\n'] = {0};
-  int AllsWell = 1;
+int main(void) {
+    EMAIL Email = {0};
+    EMAIL *e = NULL;
+    DLLIST *List = NULL;
+    char Buffer[sizeof(EMAIL) + sizeof '\n'] = {0};
+    int AllsWell = 1;
 
-  while(AllsWell &&
-        NULL != fgets(Buffer,
-                      sizeof Buffer,
-                      stdin))
-  {
-    if(ParseEmail(&Email, Buffer))
-    {
-      if(DL_SUCCESS !=
-          DLAddAfter(&List, 0, &Email, sizeof Email))
-      {
-        puts("Couldn't allocate enough memory.");
-        AllsWell = 0;
-      }
+    while (AllsWell && NULL != fgets(Buffer, sizeof Buffer, stdin)) {
+        if (ParseEmail(&Email, Buffer)) {
+            if (DL_SUCCESS != DLAddAfter(&List, 0, &Email, sizeof Email)) {
+                puts("Couldn't allocate enough memory.");
+                AllsWell = 0;
+            }
+        } else {
+            printf("Couldn't parse line, data [%s].", Buffer);
+            AllsWell = 0;
+        }
     }
-    else
-    {
-      printf("Couldn't parse line, data [%s].", Buffer);
-      AllsWell = 0;
+
+    if (AllsWell) {
+        /* Print the list, unsorted */
+
+        printf("\nUnsorted list\n\n");
+        DLWalk(List, PrintEmail, NULL);
+
+        /* Sort the list (peace, Dann!) */
+        List = SortList(List);
+
+        /* Print the list, sorted */
+
+        printf("\nSorted list\n\n");
+        DLWalk(List, PrintEmail, NULL);
     }
-  }
 
-  if(AllsWell)
-  {
-    /* Print the list, unsorted */
+    /* Destroy the list */
+    DLDestroy(&List);
 
-    printf("\nUnsorted list\n\n");
-    DLWalk(List, PrintEmail, NULL);
-
-    /* Sort the list (peace, Dann!) */
-    List = SortList(List);
-
-    /* Print the list, sorted */
-
-    printf("\nSorted list\n\n");
-    DLWalk(List, PrintEmail, NULL);
-  }
-
-  /* Destroy the list */
-  DLDestroy(&List);
-
-  return 0;
+    return 0;
 }

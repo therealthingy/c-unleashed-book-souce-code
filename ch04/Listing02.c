@@ -2,8 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-int main(void)
-{
+int main(void) {
     time_t timeval;
     struct tm *tmptr;
 
@@ -15,6 +14,6 @@ int main(void)
         printf("UTC time not available\n");
     else
         printf("Time as UTC time is %s", asctime(tmptr));
-    
+
     return 0;
 }

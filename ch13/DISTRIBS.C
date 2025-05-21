@@ -4,38 +4,35 @@
 ** This code is Copyright 1999 by Dann Corbit
 */
 
-
 /*
 ** Create a bunch of different kinds of distributions for testing
 */
-#include <stdio.h>
-#include <float.h>
-#include <math.h>
-#include <stdlib.h>
-#include <string.h>
-#include <limits.h>
 #include "distribs.h"
 #include "mtrand.h"
+#include <float.h>
+#include <limits.h>
+#include <math.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-static sortfile dn[] =
-{
+static sortfile dn[] = {
     {"constant", "constant.dbl", "constant.int", NULL, NULL},
-    {"five", "five.dbl", "five.int", NULL, NULL},
+    {    "five",     "five.dbl",     "five.int", NULL, NULL},
     {"perverse", "perverse.dbl", "perverse.int", NULL, NULL},
-    {"ramp", "ramp.dbl", "ramp.int", NULL, NULL},
-    {"random", "random.dbl", "random.int", NULL, NULL},
-    {"reverse", "reverse.dbl", "reverse.int", NULL, NULL},
-    {"sorted", "sorted.dbl", "sorted.int", NULL, NULL},
-    {"ten", "ten.dbl", "ten.int", NULL, NULL},
-    {"trig", "trig.dbl", "trig.int", NULL, NULL},
-    {"twenty", "twenty.dbl", "twenty.int", NULL, NULL},
-    {"two", "two.dbl", "two.int", NULL, NULL},
-    {NULL, NULL, NULL, NULL, NULL}
+    {    "ramp",     "ramp.dbl",     "ramp.int", NULL, NULL},
+    {  "random",   "random.dbl",   "random.int", NULL, NULL},
+    { "reverse",  "reverse.dbl",  "reverse.int", NULL, NULL},
+    {  "sorted",   "sorted.dbl",   "sorted.int", NULL, NULL},
+    {     "ten",      "ten.dbl",      "ten.int", NULL, NULL},
+    {    "trig",     "trig.dbl",     "trig.int", NULL, NULL},
+    {  "twenty",   "twenty.dbl",   "twenty.int", NULL, NULL},
+    {     "two",      "two.dbl",      "two.int", NULL, NULL},
+    {      NULL,           NULL,           NULL, NULL, NULL}
 };
 
-int             dopen(void)
-{
-    int             start = 0;
+int dopen(void) {
+    int start = 0;
     while (dn[start].dtype) {
         if ((dn[start].fdbl = fopen(dn[start].dname, "rb")) == NULL) {
             printf("failed to open file %s for reading.\n", dn[start].dname);
@@ -50,9 +47,8 @@ int             dopen(void)
     return 1;
 }
 
-int             dclose(void)
-{
-    int             start = 0;
+int dclose(void) {
+    int start = 0;
     while (dn[start].dtype) {
         fclose(dn[start].fdbl);
         fclose(dn[start].fint);
@@ -61,13 +57,12 @@ int             dclose(void)
     return 1;
 }
 
-void            dsave(int a[], double d[], size_t n, const char *name)
-{
-    FILE           *fint;
-    FILE           *fdbl;
-    size_t          written;
-    char            nameint[FILENAME_MAX];
-    char            namedbl[FILENAME_MAX];
+void dsave(int a[], double d[], size_t n, const char *name) {
+    FILE *fint;
+    FILE *fdbl;
+    size_t written;
+    char nameint[FILENAME_MAX];
+    char namedbl[FILENAME_MAX];
     sprintf(nameint, "%s.int", name);
     sprintf(namedbl, "%s.dbl", name);
     fint = fopen(nameint, "wb");
@@ -89,12 +84,11 @@ void            dsave(int a[], double d[], size_t n, const char *name)
         printf("tried to write %d items to %s but only wrote %d items\n", n, namedbl, written);
     }
 }
-long            dload(int a[], double d[], size_t n, const char *name)
-{
-    size_t          ricount = 0;
-    size_t          rdcount = 0;
+long dload(int a[], double d[], size_t n, const char *name) {
+    size_t ricount = 0;
+    size_t rdcount = 0;
 
-    int             start = 0;
+    int start = 0;
     if (!name)
         return 0;
     while (dn[start].dtype && strcmp(dn[start].dtype, name)) {
@@ -113,20 +107,16 @@ long            dload(int a[], double d[], size_t n, const char *name)
             printf("tried to read %ld items from %s but only read %ld items\n", n, dn[start].iname, rdcount);
         }
         if (ricount != rdcount) {
-            printf("inconsistent values for item counts %lu != %lu.\n", (unsigned long) ricount, (unsigned long) rdcount);
+            printf("inconsistent values for item counts %lu != %lu.\n", (unsigned long)ricount, (unsigned long)rdcount);
         }
     }
     return ricount > rdcount ? ricount : rdcount;
 }
 
 /*------------------------------------------------------------------*/
-int             drandom(int old)
-{
-    static int      a = 16807,
-                    m = 2147483647,
-                    q = 127773,
-                    r = 2836;
-    int             inew;
+int drandom(int old) {
+    static int a = 16807, m = 2147483647, q = 127773, r = 2836;
+    int inew;
     inew = a * (old % q) - r * (old / q);
     if (inew > 0)
         return inew;
@@ -134,10 +124,8 @@ int             drandom(int old)
         return (inew + m);
 }
 /*------------------------------------------------------------------*/
-void            init_random(int a[], double d[], int const n, int const seed, int const max)
-{
-    int             index,
-                    the_int = seed;
+void init_random(int a[], double d[], int const n, int const seed, int const max) {
+    int index, the_int = seed;
 
     for (index = 0; index < n; index++) {
         the_int = drandom(the_int);
@@ -146,10 +134,8 @@ void            init_random(int a[], double d[], int const n, int const seed, in
     }
 }
 /*------------------------------------------------------------------*/
-void            init_two(int a[], double d[], int const n, int const seed)
-{
-    int             index,
-                    the_int = seed;
+void init_two(int a[], double d[], int const n, int const seed) {
+    int index, the_int = seed;
 
     for (index = 0; index < n; index++) {
         the_int = drandom(the_int);
@@ -162,11 +148,9 @@ void            init_two(int a[], double d[], int const n, int const seed)
     }
 }
 /*------------------------------------------------------------------*/
-void            init_five(int a[], double d[], int const n, int const seed)
-{
-    int             index,
-                    the_int = seed;
-    int             value;
+void init_five(int a[], double d[], int const n, int const seed) {
+    int index, the_int = seed;
+    int value;
 
     for (index = 0; index < n; index++) {
         the_int = drandom(the_int);
@@ -186,11 +170,9 @@ void            init_five(int a[], double d[], int const n, int const seed)
     }
 }
 /*------------------------------------------------------------------*/
-void            init_ten(int a[], double d[], int const n, int const seed)
-{
-    int             index,
-                    the_int = seed;
-    int             value;
+void init_ten(int a[], double d[], int const n, int const seed) {
+    int index, the_int = seed;
+    int value;
 
     for (index = 0; index < n; index++) {
         the_int = drandom(the_int);
@@ -217,15 +199,12 @@ void            init_ten(int a[], double d[], int const n, int const seed)
             a[index] = 1;
 
         d[index] = a[index];
-
     }
 }
 /*------------------------------------------------------------------*/
-void            init_twenty(int a[], double d[], int const n, int const seed)
-{
-    int             index,
-                    the_int = seed;
-    int             value;
+void init_twenty(int a[], double d[], int const n, int const seed) {
+    int index, the_int = seed;
+    int value;
 
     for (index = 0; index < n; index++) {
         the_int = drandom(the_int);
@@ -272,14 +251,11 @@ void            init_twenty(int a[], double d[], int const n, int const seed)
             a[index] = 1;
 
         d[index] = a[index];
-
     }
 }
 /*------------------------------------------------------------------*/
-void            init_sorted(int a[], double d[], int const n, int const first, int const diff)
-{
-    int             index,
-                    the_int = first;
+void init_sorted(int a[], double d[], int const n, int const first, int const diff) {
+    int index, the_int = first;
 
     for (index = 0; index < n; index++) {
         a[index] = the_int;
@@ -287,63 +263,52 @@ void            init_sorted(int a[], double d[], int const n, int const first, i
     }
 }
 /*------------------------------------------------------------------*/
-void            init_reverse(int a[], double d[], int const n)
-{
-    int             index;
+void init_reverse(int a[], double d[], int const n) {
+    int index;
 
     for (index = 0; index < n; index++) {
         a[index] = n - index;
         d[index] = a[index];
-
     }
 }
 /*------------------------------------------------------------------*/
-void            init_constant(int a[], double d[], int const n, int const value)
-{
-    int             index;
+void init_constant(int a[], double d[], int const n, int const value) {
+    int index;
     for (index = 0; index < n; index++) {
         a[index] = value;
         d[index] = a[index];
-
     }
 }
 /*------------------------------------------------------------------*/
-void            init_ramp(int a[], double d[], int const n, int const first, int const diff)
-{
-    int             index,
-                    the_int = first,
-                    mid = n / 2;
+void init_ramp(int a[], double d[], int const n, int const first, int const diff) {
+    int index, the_int = first, mid = n / 2;
 
     for (index = 0; index < mid; index++) {
         a[index] = the_int;
         the_int += diff;
         d[index] = a[index];
-
     }
     for (index = mid; index < n; index++) {
         a[index] = the_int;
         the_int -= diff;
         d[index] = a[index];
-
     }
 }
 /*------------------------------------------------------------------*/
 #define TWO_PI 6.283185307179586476925286766559
-void            init_trig(int a[], double d[], int const n)
-{
-    int             i;
-    double          dtheta = TWO_PI / 3600;
-    double          cosdtheta = cos(dtheta);
+void init_trig(int a[], double d[], int const n) {
+    int i;
+    double dtheta = TWO_PI / 3600;
+    double cosdtheta = cos(dtheta);
     d[0] = 1.;
     d[1] = cosdtheta;
     for (i = 2; i < n; i++) {
         d[i] = 2 * d[i - 1] * cosdtheta - d[i - 2];
-        a[i] = (int) (d[i] * 32000.0);
+        a[i] = (int)(d[i] * 32000.0);
     }
 }
-void            init_perverse(int a[], double d[], int const n)
-{
-    int             index;
+void init_perverse(int a[], double d[], int const n) {
+    int index;
     for (index = 0; index < n; index++)
         switch (mtrand() % 4) {
         case 0:
@@ -359,7 +324,6 @@ void            init_perverse(int a[], double d[], int const n)
             a[index] = mtrand();
             break;
         }
-
 
     for (index = 0; index < n; index++)
         switch (mtrand() % 8) {
@@ -388,11 +352,9 @@ void            init_perverse(int a[], double d[], int const n)
             d[index] = mtrand();
             break;
         }
-
 }
-void            create_distribs(double d[], int a[], size_t n)
-{
-    int             iseed = 7;
+void create_distribs(double d[], int a[], size_t n) {
+    int iseed = 7;
     init_constant(a, d, n, 100);
     dsave(a, d, n, "constant");
     init_five(a, d, n, iseed);
@@ -417,9 +379,8 @@ void            create_distribs(double d[], int a[], size_t n)
     dsave(a, d, n, "trig");
 }
 
-void            make_distrib(double d[], int a[], size_t n, enum distribution_type which)
-{
-    int             iseed = 7;
+void make_distrib(double d[], int a[], size_t n, enum distribution_type which) {
+    int iseed = 7;
     switch (which) {
     case constant:
         init_constant(a, d, n, 100);

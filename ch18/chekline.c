@@ -31,30 +31,24 @@
 #include <stdio.h>
 #include <string.h>
 
-int main(void)
-{
-  char buff[100];
-  int count;
-  unsigned long sum;
-  char *nl;
+int main(void) {
+    char buff[100];
+    int count;
+    unsigned long sum;
+    char *nl;
 
-  for ( ; ; )
-  {
-    printf("Enter a string: ");
-    fflush(stdout);
-    if ( fgets(buff, sizeof buff, stdin) == NULL
-        || buff[0] == '\n')
-    {
-      return 0;
-    }
-    if ((nl = strchr(buff, '\n')) != NULL)
-      *nl = '\0';
+    for (;;) {
+        printf("Enter a string: ");
+        fflush(stdout);
+        if (fgets(buff, sizeof buff, stdin) == NULL || buff[0] == '\n') {
+            return 0;
+        }
+        if ((nl = strchr(buff, '\n')) != NULL)
+            *nl = '\0';
 
-    for (count = 0, sum = 0; buff[count] != '\0'; ++count)
-    {
-      sum += (unsigned char)buff[count];
+        for (count = 0, sum = 0; buff[count] != '\0'; ++count) {
+            sum += (unsigned char)buff[count];
+        }
+        printf("The checksum of \"%s\" is %lu decimal, %lX hex\n", buff, sum, sum);
     }
-	printf("The checksum of \"%s\" is %lu decimal, %lX hex\n",
-            buff, sum, sum);
-  }
 }

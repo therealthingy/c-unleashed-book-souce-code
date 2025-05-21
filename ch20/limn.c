@@ -32,70 +32,54 @@
 #include <stdlib.h>
 #include <string.h>
 
-void help(void)
-{
-  char *helpmsg[] =
-  {
-    "limn",
-    "Usage: limn <n>",
-    "Example: limn 72",
-    "Copies standard input to standard output,",
-    "ensuring that no line exceeds n characters",
-    "in length. Longer lines are split, and a",
-    "terminating \\ character is added to the",
-    "line at the split point. n must be at least 3."
-  };
+void help(void) {
+    char *helpmsg[] = {"limn",
+                       "Usage: limn <n>",
+                       "Example: limn 72",
+                       "Copies standard input to standard output,",
+                       "ensuring that no line exceeds n characters",
+                       "in length. Longer lines are split, and a",
+                       "terminating \\ character is added to the",
+                       "line at the split point. n must be at least 3."};
 
-  size_t i, j = sizeof helpmsg / sizeof helpmsg[0];
+    size_t i, j = sizeof helpmsg / sizeof helpmsg[0];
 
-  for(i = 0; i < j; i++)
-  {
-    puts(helpmsg[i]);
-  }
+    for (i = 0; i < j; i++) {
+        puts(helpmsg[i]);
+    }
 }
 
-int main(int argc, char **argv)
-{
-  int status = EXIT_SUCCESS;
+int main(int argc, char **argv) {
+    int status = EXIT_SUCCESS;
 
-  char *endp;
-  int thischar;
-  size_t lim;
-  size_t currline = 0;
+    char *endp;
+    int thischar;
+    size_t lim;
+    size_t currline = 0;
 
-  if(argc < 2 || strcmp(argv[1], "-?") == 0)
-  {
-    help();
-    status = EXIT_FAILURE;
-  }
-  else
-  {
-    lim = (size_t)strtoul(argv[1], &endp, 10);
+    if (argc < 2 || strcmp(argv[1], "-?") == 0) {
+        help();
+        status = EXIT_FAILURE;
+    } else {
+        lim = (size_t)strtoul(argv[1], &endp, 10);
 
-    if(endp == argv[1] || lim < 3)
-    {
-      help();
-      printf("\nInvalid arg %s\n", argv[1]);
-      status = EXIT_FAILURE;
-    }
-    else
-    {
-      while((thischar = getchar()) != EOF)
-      {
-        if(thischar == '\n')
-        {
-          currline = 0;
+        if (endp == argv[1] || lim < 3) {
+            help();
+            printf("\nInvalid arg %s\n", argv[1]);
+            status = EXIT_FAILURE;
+        } else {
+            while ((thischar = getchar()) != EOF) {
+                if (thischar == '\n') {
+                    currline = 0;
+                } else if (++currline == lim) {
+                    putchar('\\');
+                    putchar('\n');
+                    currline = 1;
+                }
+                putchar(thischar);
+            }
         }
-        else if(++currline == lim)
-        {
-          putchar('\\');
-          putchar('\n');
-          currline = 1;
-        }
-        putchar(thischar);
-      }
     }
-  }
 
-  return status;
+    return status;
 }

@@ -35,60 +35,55 @@
 
 typedef int T;
 
-T **Allocate(size_t m, size_t n)
-{
-  int **a;
-  int *p;
-  size_t Row;
+T **Allocate(size_t m, size_t n) {
+    int **a;
+    int *p;
+    size_t Row;
 
-  /* This method is not recommended in the chapter, but the chapter
-   * indicates that the code is at least portable. It isn't.
-   * This is because of possible differences in alignment requirements
-   * between T* and T**. I only realised this after the chapter had
-   * already been locked down, so I can't change the text, but at
-   * least I can put a friendly warning here.
-   *
-   * Well, you didn't really want to do it this way anyway, did you?
-   * :-)
-   *
-   * RJH 8 June 2000
-   */
-  a = malloc(m * n * sizeof **a + m * sizeof *a);
-  if(a != NULL)
-  {
-    for(Row = 0, p = (T *)a + m; Row < m; Row++, p += n)
-    {
-      a[Row] = p;
+    /* This method is not recommended in the chapter, but the chapter
+     * indicates that the code is at least portable. It isn't.
+     * This is because of possible differences in alignment requirements
+     * between T* and T**. I only realised this after the chapter had
+     * already been locked down, so I can't change the text, but at
+     * least I can put a friendly warning here.
+     *
+     * Well, you didn't really want to do it this way anyway, did you?
+     * :-)
+     *
+     * RJH 8 June 2000
+     */
+    a = malloc(m * n * sizeof **a + m * sizeof *a);
+    if (a != NULL) {
+        for (Row = 0, p = (T *)a + m; Row < m; Row++, p += n) {
+            a[Row] = p;
+        }
     }
-  }
-  return a;
+    return a;
 }
 
-int main(void)
-{
-  T **array;
-  int i;
-  int j;
-  int total = 0;
-  int row = 4;
-  int col = 7;
+int main(void) {
+    T **array;
+    int i;
+    int j;
+    int total = 0;
+    int row = 4;
+    int col = 7;
 
-  array = Allocate(row, col);
+    array = Allocate(row, col);
 
-  if(array != NULL)
-  {
-    /* Populating the array */
-    for(i = 0; i < row; i++)
-      for(j = 0; j < col; j++)
-        array[i][j] = i + j;
-    /* Accessing the array */
-    for(i = 0; i < row; i++)
-      for(j = 0; j < col; j++)
-        total += array[i][j];
+    if (array != NULL) {
+        /* Populating the array */
+        for (i = 0; i < row; i++)
+            for (j = 0; j < col; j++)
+                array[i][j] = i + j;
+        /* Accessing the array */
+        for (i = 0; i < row; i++)
+            for (j = 0; j < col; j++)
+                total += array[i][j];
 
-    printf("Total is %d\n", total);
-    free(array);
-  }
+        printf("Total is %d\n", total);
+        free(array);
+    }
 
-  return 0;
+    return 0;
 }

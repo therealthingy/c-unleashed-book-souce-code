@@ -1,11 +1,11 @@
-#if !defined( TRIE_H_ )
-#define TRIE_H_
+#if !defined(TRIE_H_)
+#    define TRIE_H_
 
 /*
  * This file defines the public interface for the trie management module
  */
 
-#include <stddef.h>
+#    include <stddef.h>
 
 /*
  * This is the type of the result of the search.  It is currently a void*
@@ -30,7 +30,7 @@ typedef enum trie_node_type *trie_pointer;
  * is no reason the application needs to know the details of that
  */
 struct trie {
-  trie_pointer root;
+    trie_pointer root;
 };
 
 /*
@@ -77,8 +77,7 @@ void trie_destroy(struct trie *trie);
  * The trie makes a copy of the key.  When trie_insert returns, you are
  * free to reuse the memory that you used to specify the key
  */
-int trie_insert(struct trie *trie, const unsigned char *key, size_t len_key,
-                                                    trie_result result);
+int trie_insert(struct trie *trie, const unsigned char *key, size_t len_key, trie_result result);
 
 /*
  * trie_delete -- remove an entry from a trie
@@ -109,7 +108,6 @@ int trie_delete(struct trie *trie, const unsigned char *key, size_t len_key);
  * successfully inserted, and has not been removed since, this will return
  * the trie_result that was specified during the insert.
  */
-trie_result trie_search(const struct trie *trie,
-                                  const unsigned char *key, size_t len_key);
+trie_result trie_search(const struct trie *trie, const unsigned char *key, size_t len_key);
 
 #endif /* TRIE_H_ */

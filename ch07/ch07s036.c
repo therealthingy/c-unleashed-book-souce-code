@@ -1,14 +1,13 @@
-  char *p;
+char *p;
 
-  p = malloc(len);
+p = malloc(len);
 
-  foomem(p);
+foomem(p);
 
-  /* ... */
+/* ... */
 }
 
-void foomem(char *p)
-{
-  assert(p != NULL);
-  dosomethingwith(p);
+void foomem(char *p) {
+    assert(p != NULL);
+    dosomethingwith(p);
 }

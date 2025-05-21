@@ -23,29 +23,28 @@
 **                                                                       **
 **************************************************************************/
 
-#include <stdio.h>
 #include "sparse.h"
+#include <stdio.h>
 
 SP_NODE *sp_next_node(SPARSE_MATRIX *sp, int dim, SP_NODE *node)
 /* SPARSE_MATRIX *sp  The sparse matrix in which to find the node */
 /* int dim            The dimension number of the next node to be found */
 /* SP_NODE *node      The current node */
 {
-  /* If the sparse matrix passed is empty, then there are no nodes to be found */
-  if (sp == (SPARSE_MATRIX *)NULL)
-    return ((SP_NODE *)NULL);
+    /* If the sparse matrix passed is empty, then there are no nodes to be found */
+    if (sp == (SPARSE_MATRIX *)NULL)
+        return ((SP_NODE *)NULL);
 
-  sp->error_no = SP_NOERR;
+    sp->error_no = SP_NOERR;
 
-  /* Make sure the dimension is within range */
-  if (dim > sp->dimensions)
-  {
-    sp->error_no = SP_DIM;
-    return((SP_NODE *)NULL);
-  }
+    /* Make sure the dimension is within range */
+    if (dim > sp->dimensions) {
+        sp->error_no = SP_DIM;
+        return ((SP_NODE *)NULL);
+    }
 
-  /* The stack has next, then previous node pointers for each dimension in that 
-     order, so there are 2 pointers for each dimension.  The next is the first
-     of the two, so the offset is 2 * dim */
-  return(*((SP_NODE **)(node->dimension_stack + (2 * (dim - 1)))));
+    /* The stack has next, then previous node pointers for each dimension in that
+       order, so there are 2 pointers for each dimension.  The next is the first
+       of the two, so the offset is 2 * dim */
+    return (*((SP_NODE **)(node->dimension_stack + (2 * (dim - 1)))));
 }
