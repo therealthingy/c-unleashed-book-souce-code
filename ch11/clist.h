@@ -31,6 +31,8 @@
 #ifndef CLIST_H__
 #define CLIST_H__
 
+#include <stddef.h>
+
 #define CL_SUCCESS   0
 #define CL_NO_MEM    1
 #define CL_EMPTY     2

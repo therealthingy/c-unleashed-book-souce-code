@@ -1,0 +1,11 @@
+
+OBJS := DISTRIBS.o KEYXFRM.o SINT.o DOUBLE.o STRINGS.o COCKUS.o
+BINS := BAR TEST
+
+
+PHONY: all
+all: $(OBJS) $(BINS)
+
+PHONY: clean
+clean:
+	@$(RM) $(OBJS) $(BINS)

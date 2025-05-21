@@ -31,6 +31,8 @@
 #ifndef STRARR_H__
 #define STRARR_H__
 
+#include <stddef.h>
+
 void FreeStrArray(char **Array, size_t NumRows);
 char **AllocStrArray(size_t NumRows, size_t Width);
 int ResizeOneString(char **Array, size_t Row, size_t NewSize);

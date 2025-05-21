@@ -28,6 +28,7 @@
  */
 
 #include <stdio.h>
+
 int main(int argc, char *argv[]) {
     long double dResult;
     long double dWork;

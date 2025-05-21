@@ -83,6 +83,6 @@ int main(int argc, char *argv[]) {
 
     printf("Received: %s\n", data);
 
-    CUPSShutdown(&ClientConnection, CUPS_SHUTDOWN_BOTH);
+    CUPSShutDown(&ClientConnection, CUPS_SHUTDOWN_BOTH);
     return EXIT_SUCCESS;
 }

@@ -1,0 +1,14 @@
+
+#ch24Abad.o
+OBJS := ch24AOK.o ch24AOK2.o ch24AOKT.o ch24BigE.o ch24cAdd.o ch24cnst.o ch24Drft.o ch24e.o ch24inti.o ch24LnBE.o ch24Safe.o
+BINS := ch24BigE ch24cnst ch24Drft ch24e ch24inti ch24LnBE
+
+
+PHONY: all
+all: $(OBJS) $(BINS)
+
+PHONY: clean
+clean:
+	@$(RM) $(OBJS) $(BINS)
+
+

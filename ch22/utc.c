@@ -33,6 +33,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/socket.h>
+#include <time.h>
 
 int Random(int n) {
     return (int)(n * (rand() / (1.0 + (double)RAND_MAX)));

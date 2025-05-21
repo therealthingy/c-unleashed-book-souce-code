@@ -32,6 +32,7 @@
 #define QUEUE_H__
 
 #include "sllist.h"
+#include <stddef.h>
 
 #define QUEUE_SUCCESS     0
 #define QUEUE_ADD_FAILURE 1

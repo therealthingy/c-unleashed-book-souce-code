@@ -62,7 +62,7 @@ int CUPSCheckForData(CONNECTION *Connection);
 int CUPSConnect(CONNECTION *Connection);
 int CUPSBind(CONNECTION *Connection);
 int CUPSListen(CONNECTION *Connection);
-int CUPSShutdown(CONNECTION *Connection, int ShutdownType);
+int CUPSShutDown(CONNECTION *Connection, int ShutdownType);
 int CUPSAcceptConnection(CONNECTION *NewSocket, CONNECTION *ServerConnection);
 int CUPSCheckForData(CONNECTION *Connection);
 int CUPSRecv(CONNECTION *Connection, char *data, size_t size);

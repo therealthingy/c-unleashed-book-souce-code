@@ -1,6 +1,6 @@
 
 OBJS :=
-BINS := obscure
+BINS := Ch19par
 
 
 PHONY: all

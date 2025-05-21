@@ -32,7 +32,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-int random(int i) {
+int my_random(int i) {
     double d;
 
     d = rand() / ((double)RAND_MAX + 1.0);
@@ -45,14 +45,14 @@ int go_left(int *x, int *y) {
 
     printf("Going left!\n");
 
-    return random(5);
+    return my_random(5);
 }
 
 int go_right(int *x, int *y) {
     ++*x;
 
     printf("Going right!\n");
-    return random(5);
+    return my_random(5);
 }
 
 int go_down(int *x, int *y) {
@@ -60,7 +60,7 @@ int go_down(int *x, int *y) {
 
     printf("Going down!\n");
 
-    return random(5);
+    return my_random(5);
 }
 
 int go_up(int *x, int *y) {
@@ -68,7 +68,7 @@ int go_up(int *x, int *y) {
 
     printf("Going up!\n");
 
-    return random(5);
+    return my_random(5);
 }
 
 int stop(int *x, int *y) {

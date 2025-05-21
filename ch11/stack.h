@@ -32,6 +32,7 @@
 #define STACK_H__
 
 #include "sllist.h"
+#include <stddef.h>
 
 #define STACK_SUCCESS      0
 #define STACK_PUSH_FAILURE 1

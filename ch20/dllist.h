@@ -31,6 +31,8 @@
 #ifndef DLLIST_H__
 #define DLLIST_H__
 
+#include <stddef.h>
+
 #define DL_SUCCESS      0
 #define DL_NO_MEM       1
 #define DL_ZERO_SIZE    2

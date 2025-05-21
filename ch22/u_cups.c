@@ -29,6 +29,7 @@
 /* C Unleashed Portable Sockets library - Unix */
 
 #include "cups.h"
+#include <string.h>
 
 void CUPSInit(CUPS_INFO *pInfo) {
     /* stub function; functionality not required
@@ -138,7 +139,7 @@ int CUPSListen(CONNECTION *Connection) {
     return Result;
 }
 
-int CUPSShutdown(CONNECTION *Connection, int ShutdownType) {
+int CUPSShutDown(CONNECTION *Connection, int ShutdownType) {
     if (ShutdownType != CUPS_SHUTDOWN_RECEIVE && ShutdownType != CUPS_SHUTDOWN_SEND) {
         ShutdownType = CUPS_SHUTDOWN_BOTH;
     }

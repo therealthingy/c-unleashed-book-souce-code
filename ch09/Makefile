@@ -1,6 +1,6 @@
 
 OBJS :=
-BINS := obscure
+BINS := asm
 
 
 PHONY: all

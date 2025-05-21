@@ -34,6 +34,7 @@
 #define DEQUE_H__
 
 #include "dllist.h"
+#include <stddef.h>
 
 #define DEQUE_SUCCESS     0
 #define DEQUE_ADD_FAILURE 1

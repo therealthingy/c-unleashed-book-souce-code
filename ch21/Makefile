@@ -1,6 +1,6 @@
 
 OBJS :=
-BINS := obscure
+BINS := 8962cd21
 
 
 PHONY: all

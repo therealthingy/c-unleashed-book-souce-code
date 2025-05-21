@@ -28,6 +28,9 @@
 #ifndef HEAP_H__
 #define HEAP_H__
 
+#include <stddef.h>
+#include <stdio.h>
+
 /* This module implements a priority queue as a heap
  * as described in Knuth 5.2.3.  This is a first-in-
  * smallest-out priority queue.

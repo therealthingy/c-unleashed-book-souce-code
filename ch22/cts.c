@@ -99,7 +99,7 @@ int main(int argc, char **argv) {
 
     if (0 != CUPSListen(&ServerConnection)) {
         printf("Unexpected error while calling listen().\n");
-        CUPSShutdown(&ServerConnection, CUPS_SHUTDOWN_BOTH);
+        CUPSShutDown(&ServerConnection, CUPS_SHUTDOWN_BOTH);
         return EXIT_FAILURE;
     }
 
@@ -125,7 +125,7 @@ int main(int argc, char **argv) {
             }
         }
     }
-    CUPSShutdown(&ServerConnection, CUPS_SHUTDOWN_BOTH);
+    CUPSShutDown(&ServerConnection, CUPS_SHUTDOWN_BOTH);
 
     CUPSCleanup(&CupsInfo);
 

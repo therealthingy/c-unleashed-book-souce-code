@@ -1,6 +1,6 @@
 
-OBJS :=
-BINS := obscure
+OBJS := avl.o bin.o pbin.o rb.o tbin.o
+BINS :=
 
 
 PHONY: all
