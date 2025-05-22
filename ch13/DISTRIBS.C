@@ -84,6 +84,7 @@ void dsave(int a[], double d[], size_t n, const char *name) {
         printf("tried to write %d items to %s but only wrote %d items\n", n, namedbl, written);
     }
 }
+
 long dload(int a[], double d[], size_t n, const char *name) {
     size_t ricount = 0;
     size_t rdcount = 0;

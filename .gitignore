@@ -1,5 +1,4 @@
-*.o
-*.d
+build/
 
-*.dylib
-*.so
+
+_book/

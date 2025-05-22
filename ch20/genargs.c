@@ -91,7 +91,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "dllist.h"
+#include <dllist.h>
 
 #define INDENT_2         "  "
 #define INDENT_4         "    "
