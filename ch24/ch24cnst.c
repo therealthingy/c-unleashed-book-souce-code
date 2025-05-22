@@ -35,6 +35,8 @@
 #include <float.h>
 #include <limits.h>
 #include <stdio.h>
+#include <stdlib.h>
+
 
 int main(int argc, char *argv[]) {
     /* Character and integer constants:                               */

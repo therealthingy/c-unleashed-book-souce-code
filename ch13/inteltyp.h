@@ -21,5 +21,6 @@ typedef unsigned long long uint64;
 typedef long long sint64;
 #    define SB_MASK64 0x8000000000000000ULL
 #endif
+
 extern uint32 float2key(float f);
 uint64 double2key(double d);

@@ -10,10 +10,13 @@
 ** many subfiles as we like in a single pass.  It could be made a lot
 ** better, but this file demonstrates the concept nicely.
 */
-#include "distribs.h"
-#include "genproto.h"
+// clang-format off
 #include "inteltyp.h"
+#include "genproto.h"   // inclusion order matters here !  (`sint` in `inteltyp` is required)
+// clang-format on
+#include "distribs.h"
 #include "mtrand.h"
+#include <errno.h>
 #include <float.h>
 #include <math.h>
 #include <stdio.h>

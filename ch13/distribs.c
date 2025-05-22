@@ -124,6 +124,7 @@ int drandom(int old) {
     else
         return (inew + m);
 }
+
 /*------------------------------------------------------------------*/
 void init_random(int a[], double d[], int const n, int const seed, int const max) {
     int index, the_int = seed;
@@ -134,6 +135,7 @@ void init_random(int a[], double d[], int const n, int const seed, int const max
         d[index] = a[index];
     }
 }
+
 /*------------------------------------------------------------------*/
 void init_two(int a[], double d[], int const n, int const seed) {
     int index, the_int = seed;
@@ -148,6 +150,7 @@ void init_two(int a[], double d[], int const n, int const seed) {
         d[index] = a[index];
     }
 }
+
 /*------------------------------------------------------------------*/
 void init_five(int a[], double d[], int const n, int const seed) {
     int index, the_int = seed;
@@ -170,6 +173,7 @@ void init_five(int a[], double d[], int const n, int const seed) {
         d[index] = a[index];
     }
 }
+
 /*------------------------------------------------------------------*/
 void init_ten(int a[], double d[], int const n, int const seed) {
     int index, the_int = seed;
@@ -202,6 +206,7 @@ void init_ten(int a[], double d[], int const n, int const seed) {
         d[index] = a[index];
     }
 }
+
 /*------------------------------------------------------------------*/
 void init_twenty(int a[], double d[], int const n, int const seed) {
     int index, the_int = seed;
@@ -254,6 +259,7 @@ void init_twenty(int a[], double d[], int const n, int const seed) {
         d[index] = a[index];
     }
 }
+
 /*------------------------------------------------------------------*/
 void init_sorted(int a[], double d[], int const n, int const first, int const diff) {
     int index, the_int = first;
@@ -263,6 +269,7 @@ void init_sorted(int a[], double d[], int const n, int const first, int const di
         the_int += diff;
     }
 }
+
 /*------------------------------------------------------------------*/
 void init_reverse(int a[], double d[], int const n) {
     int index;
@@ -272,6 +279,7 @@ void init_reverse(int a[], double d[], int const n) {
         d[index] = a[index];
     }
 }
+
 /*------------------------------------------------------------------*/
 void init_constant(int a[], double d[], int const n, int const value) {
     int index;
@@ -280,6 +288,7 @@ void init_constant(int a[], double d[], int const n, int const value) {
         d[index] = a[index];
     }
 }
+
 /*------------------------------------------------------------------*/
 void init_ramp(int a[], double d[], int const n, int const first, int const diff) {
     int index, the_int = first, mid = n / 2;
@@ -295,6 +304,7 @@ void init_ramp(int a[], double d[], int const n, int const first, int const diff
         d[index] = a[index];
     }
 }
+
 /*------------------------------------------------------------------*/
 #define TWO_PI 6.283185307179586476925286766559
 void init_trig(int a[], double d[], int const n) {
@@ -308,6 +318,7 @@ void init_trig(int a[], double d[], int const n) {
         a[i] = (int)(d[i] * 32000.0);
     }
 }
+
 void init_perverse(int a[], double d[], int const n) {
     int index;
     for (index = 0; index < n; index++)
@@ -354,6 +365,7 @@ void init_perverse(int a[], double d[], int const n) {
             break;
         }
 }
+
 void create_distribs(double d[], int a[], size_t n) {
     int iseed = 7;
     init_constant(a, d, n, 100);

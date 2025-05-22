@@ -9,9 +9,11 @@
 ** For small data sets, a profiler is needed because the
 ** routines are much faster than the resolution of clock()
 */
-#include "distribs.h"
-#include "genproto.h"
+// clang-format off
 #include "inteltyp.h"
+#include "genproto.h"   // inclusion order matters here !  (`sint` in `inteltyp` is required)
+// clang-format on
+#include "distribs.h"
 #include "mtrand.h"
 #include <float.h>
 #include <limits.h>

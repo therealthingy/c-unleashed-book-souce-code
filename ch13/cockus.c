@@ -179,6 +179,7 @@ uint32 mtrand(void) {
     return (y ^ (y >> 18));
 }
 
+#if 0
 #ifdef UNIT_TEST
 int main(void) {
     int j;
@@ -192,4 +193,5 @@ int main(void) {
 
     return (EXIT_SUCCESS);
 }
+#endif
 #endif

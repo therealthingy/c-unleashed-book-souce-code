@@ -51,10 +51,10 @@ add_subdirectory(ch09/)
 add_subdirectory(ch10/)
 add_subdirectory(ch11/)
 add_subdirectory(ch12/)
-# TODO: ch13
+add_subdirectory(ch13/)
 add_subdirectory(ch14/)
-# TODO: ch15
-# TODO: ch16
+# TODO: missing file (`sparse.h`)  add_subdirectory(ch15/)
+add_subdirectory(ch16/)
 add_subdirectory(ch17/)
 add_subdirectory(ch18/)
 add_subdirectory(ch19/)
@@ -62,7 +62,7 @@ add_subdirectory(ch20/)
 add_subdirectory(ch21/)
 add_subdirectory(ch22/)
 add_subdirectory(ch23/)
-# TODO: ch24
+add_subdirectory(ch24/)
 # NOTE: ch25 is empty
 add_subdirectory(ch26/)
 add_subdirectory(Bonus/)

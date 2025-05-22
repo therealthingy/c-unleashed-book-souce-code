@@ -4,6 +4,8 @@
 ** This code is Copyright 1999 by Dann Corbit
 */
 
+#include <stdio.h>
+
 /*
 ** Prototypes for creation of data distributions.
 ** Testing purposes only.
@@ -20,8 +22,8 @@ enum distribution_type { constant, five, ramp, haphazard, reverse, sorted, ten, 
 
 int dopen(void);
 int dclose(void);
-void dsave(int[], double[], unsigned int, const char *);
-long dload(int[], double[], unsigned int, const char *);
+void dsave(int[], double[], size_t, const char *);
+long dload(int[], double[], size_t, const char *);
 int drandom(int);
 
 void init_random(int[], double[], const int, const int, const int);
@@ -36,5 +38,5 @@ void init_ramp(int[], double[], const int, const int, const int);
 void init_trig(int[], double[], const int);
 void init_perverse(int[], double[], const int);
 
-void create_distribs(double[], int[], unsigned int);
+void create_distribs(double[], int[], size_t);
 void make_distrib(double d[], int a[], size_t n, enum distribution_type which);
