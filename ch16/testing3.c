@@ -1,7 +1,6 @@
 #include <limits.h>
 #include <stdio.h>
 
-
 #define INF INT_MAX
 
 int main(void) {

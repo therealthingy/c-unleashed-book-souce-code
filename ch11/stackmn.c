@@ -38,12 +38,12 @@
 
 #include "strarr.h"
 
-#define DEFAULT_LINE_LEN       64
-#define LINES_PER_ALLOC        16
-#define ERR_ROWS_NOT_ADDED     1
-#define ERR_STRING_NOT_RESIZED 2
-#define ERR_FILE_OPEN_FAILED   3
-#define ERR_ALLOC_FAILED       4
+#define DEFAULT_LINE_LEN                 64
+#define LINES_PER_ALLOC                  16
+#define READ_FILE_ERR_ROWS_NOT_ADDED     1
+#define READ_FILE_ERR_STRING_NOT_RESIZED 2
+#define READ_FILE_ERR_FILE_OPEN_FAILED   3
+#define READ_FILE_ERR_ALLOC_FAILED       4
 
 int ReadFile(char *Filename, char ***Array, int *NumRows) {
     char Buffer[DEFAULT_LINE_LEN] = {0};
@@ -89,7 +89,7 @@ int ReadFile(char *Filename, char ***Array, int *NumRows) {
                          * If it didn't work, give up.
                          */
                         if (0 == AddRowsToStrArray(Array, *NumRows, LINES_PER_ALLOC, DEFAULT_LINE_LEN)) {
-                            Error = ERR_ROWS_NOT_ADDED;
+                            Error = READ_FILE_ERR_ROWS_NOT_ADDED;
                         } else {
                             *NumRows += LINES_PER_ALLOC;
                         }
@@ -98,22 +98,22 @@ int ReadFile(char *Filename, char ***Array, int *NumRows) {
                     ++NumBlocks;
                     /* Make room for some more data on this line */
                     if (0 == ResizeOneString(*Array, Row, NumBlocks * DEFAULT_LINE_LEN)) {
-                        Error = ERR_STRING_NOT_RESIZED;
+                        Error = READ_FILE_ERR_STRING_NOT_RESIZED;
                     }
                 }
             }
             fclose(fp);
             if (0 == Error && *NumRows > Row) {
                 if (0 == AddRowsToStrArray(Array, *NumRows, Row - *NumRows, 0)) {
-                    Error = ERR_ALLOC_FAILED;
+                    Error = READ_FILE_ERR_ALLOC_FAILED;
                 }
                 *NumRows = Row;
             }
         } else {
-            Error = ERR_FILE_OPEN_FAILED; /* Can't open file */
+            Error = READ_FILE_ERR_FILE_OPEN_FAILED; /* Can't open file */
         }
     } else {
-        Error = ERR_ALLOC_FAILED; /* Can't allocate memory */
+        Error = READ_FILE_ERR_ALLOC_FAILED; /* Can't allocate memory */
     }
     if (Error != 0) {
         /* If the original allocation failed,

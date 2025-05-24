@@ -1,5 +1,5 @@
 
-add_library(strarr STATIC)
+add_library(strarr STATIC)                   # Demo of a "A Resizable 2D Array"
 target_sources(strarr PRIVATE strarr.c)
 target_include_directories(strarr PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
