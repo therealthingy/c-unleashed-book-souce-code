@@ -1,6 +1,8 @@
+set(TARGET_PREFIX ch15-)
 
-add_library(sparse STATIC)
-target_sources(sparse PRIVATE
+
+add_library(${TARGET_PREFIX}sparse STATIC)
+target_sources(${TARGET_PREFIX}sparse PRIVATE
         get_header_list.c
         add_header_dimension.c
         add_tuple.c
@@ -18,7 +20,7 @@ target_sources(sparse PRIVATE
         retrieve_node.c
         tuple_dim.c
 )
-target_include_directories(sparse PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(${TARGET_PREFIX}sparse PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
-add_executable(testme testme.c)
-target_link_libraries(testme PRIVATE sparse)
+add_executable(${TARGET_PREFIX}testme testme.c)
+target_link_libraries(${TARGET_PREFIX}testme PRIVATE ${TARGET_PREFIX}sparse)

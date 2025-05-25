@@ -1,5 +1,7 @@
+set(TARGET_PREFIX ch19-)
 
-add_executable(Ch19par Ch19par.c)
+
+add_executable(${TARGET_PREFIX}Ch19par Ch19par.c)
 
 
 # TODO: Consider copying

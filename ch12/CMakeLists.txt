@@ -1,6 +1,8 @@
+set(TARGET_PREFIX ch12-)
 
-add_library(ch12_trees OBJECT)
-target_sources(ch12_trees PRIVATE
+
+add_library(${TARGET_PREFIX}trees OBJECT)
+target_sources(${TARGET_PREFIX}trees PRIVATE
         avl.c
         bin.c
         pbin.c

@@ -1,13 +1,15 @@
-
-add_library(m_matrix STATIC)
-target_sources(m_matrix PRIVATE m_matrix.c)
-target_include_directories(m_matrix PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+set(TARGET_PREFIX ch17-)
 
 
-add_executable(m_test m_test.c)
-target_link_libraries(m_test PRIVATE m_matrix)
+add_library(${TARGET_PREFIX}m_matrix STATIC)
+target_sources(${TARGET_PREFIX}m_matrix PRIVATE m_matrix.c)
+target_include_directories(${TARGET_PREFIX}m_matrix PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+
+
+add_executable(${TARGET_PREFIX}m_test m_test.c)
+target_link_libraries(${TARGET_PREFIX}m_test PRIVATE ${TARGET_PREFIX}m_matrix)
 
 set(cmd ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_LIST_DIR}/mtest1.mat" "${CMAKE_CURRENT_BINARY_DIR}")
-add_custom_command(TARGET m_test POST_BUILD
+add_custom_command(TARGET ${TARGET_PREFIX}m_test POST_BUILD
         COMMENT "${target}: Copying file ${filename}"
         COMMAND ${cmd})

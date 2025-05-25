@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.10)
 
 project(c_unleashed_cd C)
 
-set(CMAKE_C_STANDARD 23)
+set(CMAKE_C_STANDARD 99)
 
 
 set(CMAKE_DISABLE_IN_SOURCE_BUILD ON)

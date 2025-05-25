@@ -1,6 +1,8 @@
+set(TARGET_PREFIX ch26-)
 
-add_library(byteorder OBJECT)
-target_sources(byteorder PRIVATE byteorder.c)
 
-add_library(modes OBJECT)
-target_sources(modes PRIVATE modes.c)
+add_library(${TARGET_PREFIX}byteorder OBJECT)
+target_sources(${TARGET_PREFIX}byteorder PRIVATE byteorder.c)
+
+add_library(${TARGET_PREFIX}modes OBJECT)
+target_sources(${TARGET_PREFIX}modes PRIVATE modes.c)

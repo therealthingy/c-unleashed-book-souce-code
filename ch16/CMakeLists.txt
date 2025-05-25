@@ -1,7 +1,8 @@
-# TODO: Makefile is buggy (invoke it twice deletes binaries  "Circular dependency dropped")
+set(TARGET_PREFIX ch16-)
 
-add_library(graph STATIC)
-target_sources(graph PRIVATE
+
+add_library(${TARGET_PREFIX}graph STATIC)
+target_sources(${TARGET_PREFIX}graph PRIVATE
         adjlist.c
         adjmatrix.c
         dfsfuncs.c
@@ -11,20 +12,20 @@ target_sources(graph PRIVATE
         pqueue.c
         shpath.c
         topsort.c)
-target_include_directories(graph PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(${TARGET_PREFIX}graph PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 
-add_executable(testing1 testing1.c)
-target_link_libraries(testing1 PRIVATE graph)
+add_executable(${TARGET_PREFIX}testing1 testing1.c)
+target_link_libraries(${TARGET_PREFIX}testing1 PRIVATE ${TARGET_PREFIX}graph)
 
-add_executable(testing2 testing2.c)
-target_link_libraries(testing2 PRIVATE graph)
+add_executable(${TARGET_PREFIX}testing2 testing2.c)
+target_link_libraries(${TARGET_PREFIX}testing2 PRIVATE ${TARGET_PREFIX}graph)
 
-add_executable(testing3 testing3.c)
-target_link_libraries(testing3 PRIVATE graph)
+add_executable(${TARGET_PREFIX}testing3 testing3.c)
+target_link_libraries(${TARGET_PREFIX}testing3 PRIVATE ${TARGET_PREFIX}graph)
 
-add_executable(testing4 testing4.c)
-target_link_libraries(testing4 PRIVATE graph)
+add_executable(${TARGET_PREFIX}testing4 testing4.c)
+target_link_libraries(${TARGET_PREFIX}testing4 PRIVATE ${TARGET_PREFIX}graph)
 
-add_executable(testing5 testing5.c)
-target_link_libraries(testing5 PRIVATE graph)
+add_executable(${TARGET_PREFIX}testing5 testing5.c)
+target_link_libraries(${TARGET_PREFIX}testing5 PRIVATE ${TARGET_PREFIX}graph)
