@@ -26,6 +26,7 @@ void RC4_setup_key(byte_t const key_text[], size_t len, RC4_key_t *key) {
         key->table[e] = temp;
     }
 }
+
 /* You can encrypt and decrypt with this function */
 void RC4_encrypt(byte_t const plaintext[], byte_t ciphertext[], size_t len, RC4_key_t *key) {
     int i;
