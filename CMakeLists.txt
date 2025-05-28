@@ -1,11 +1,10 @@
 cmake_minimum_required(VERSION 3.10)
 
+set(CMAKE_C_STANDARD 99)
+set(CMAKE_DISABLE_IN_SOURCE_BUILD ON)
+
 project(c_unleashed_cd C)
 
-set(CMAKE_C_STANDARD 99)
-
-
-set(CMAKE_DISABLE_IN_SOURCE_BUILD ON)
 
 # --  Set default build type depending on the build directory  --
 message(STATUS "")
