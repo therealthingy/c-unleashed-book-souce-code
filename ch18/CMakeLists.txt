@@ -10,7 +10,7 @@ add_executable(${TARGET_PREFIX}lj300 lj300.c)
 add_executable(${TARGET_PREFIX}parity parity.c)
 add_executable(${TARGET_PREFIX}pidloop pidloop.c)
 add_executable(${TARGET_PREFIX}script script.c)
-add_executable(${TARGET_PREFIX}TEXT2BIN TEXT2BIN.c)
+add_executable(${TARGET_PREFIX}textbin textbin.c)
 
 
 # TODO: Consider copying
