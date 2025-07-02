@@ -1,3 +1,10 @@
+CHANGES:
+  - clang-format
+  - fix build
+  - CMake support
+
+---
+
 # Source code from the book "C Unleashed"
 
 "C Unleashed" was written by Richard Heathfield, Lawrence Kirby and several
