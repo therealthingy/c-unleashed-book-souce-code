@@ -22,7 +22,7 @@ target_sources(${TARGET_PREFIX}dllist PRIVATE dllist.c)
 target_include_directories(${TARGET_PREFIX}dllist PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 add_executable(${TARGET_PREFIX}dllistmn dllistmn.c)
-target_link_libraries(${TARGET_PREFIX}dllistmn PRIVATE ${TARGET_PREFIX}dllist)
+target_link_libraries(${TARGET_PREFIX}dllistmn PRIVATE ${TARGET_PREFIX}dllist m)
 
 set(cmd ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_LIST_DIR}/cityloc.txt" "${CMAKE_CURRENT_BINARY_DIR}")
 add_custom_command(TARGET ${TARGET_PREFIX}dllistmn POST_BUILD

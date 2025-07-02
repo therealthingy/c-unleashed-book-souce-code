@@ -9,7 +9,9 @@ add_executable(${TARGET_PREFIX}hamming hamming.c)
 add_executable(${TARGET_PREFIX}lj300 lj300.c)
 add_executable(${TARGET_PREFIX}parity parity.c)
 add_executable(${TARGET_PREFIX}pidloop pidloop.c)
+target_link_libraries(${TARGET_PREFIX}pidloop PRIVATE m)
 add_executable(${TARGET_PREFIX}script script.c)
+target_link_libraries(${TARGET_PREFIX}script PRIVATE m)
 add_executable(${TARGET_PREFIX}textbin textbin.c)
 
 

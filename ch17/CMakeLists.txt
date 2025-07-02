@@ -4,6 +4,7 @@ set(TARGET_PREFIX ch17-)
 add_library(${TARGET_PREFIX}m_matrix STATIC)
 target_sources(${TARGET_PREFIX}m_matrix PRIVATE m_matrix.c)
 target_include_directories(${TARGET_PREFIX}m_matrix PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_link_libraries(${TARGET_PREFIX}m_matrix PRIVATE m)
 
 
 add_executable(${TARGET_PREFIX}m_test m_test.c)

@@ -8,7 +8,7 @@ target_include_directories(${TARGET_PREFIX}prng PUBLIC ${CMAKE_CURRENT_SOURCE_DI
 add_library(${TARGET_PREFIX}distribs STATIC)
 target_sources(${TARGET_PREFIX}distribs PRIVATE distribs.c)
 target_include_directories(${TARGET_PREFIX}distribs PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
-target_link_libraries(${TARGET_PREFIX}distribs PUBLIC ${TARGET_PREFIX}prng)
+target_link_libraries(${TARGET_PREFIX}distribs PUBLIC ${TARGET_PREFIX}prng m)
 
 add_library(${TARGET_PREFIX}keyxfrm OBJECT)
 target_sources(${TARGET_PREFIX}keyxfrm PRIVATE keyxfrm.c)
