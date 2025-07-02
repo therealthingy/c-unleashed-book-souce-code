@@ -27,6 +27,14 @@
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Release"
             }
+        },
+        {
+            "name": "ci",
+            "displayName": "~~GitLab CI~~",
+            "inherits": "__base",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug"
+            }
         }
     ],
     "buildPresets": [
@@ -39,6 +47,11 @@
             "name": "release",
             "displayName": "[BUILD] Release",
             "configurePreset": "release"
+        },
+        {
+            "name": "ci",
+            "displayName": "~~GitLab CI~~",
+            "configurePreset": "ci"
         }
     ],
     "workflowPresets": [
@@ -67,6 +80,20 @@
                 {
                     "type": "build",
                     "name": "release"
+                }
+            ]
+        },
+        {
+            "name": "ci",
+            "description": "CI: Configure + Build",
+            "steps": [
+                {
+                    "type": "configure",
+                    "name": "ci"
+                },
+                {
+                    "type": "build",
+                    "name": "ci"
                 }
             ]
         }
