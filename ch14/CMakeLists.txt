@@ -1,6 +1,5 @@
 set(TARGET_PREFIX ch14-)
 
-
 add_library(${TARGET_PREFIX}trie STATIC)
 target_sources(${TARGET_PREFIX}trie PRIVATE trie.c trie_extra.c)
 target_include_directories(${TARGET_PREFIX}trie PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

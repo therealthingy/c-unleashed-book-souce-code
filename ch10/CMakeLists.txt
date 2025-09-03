@@ -1,7 +1,11 @@
 set(TARGET_PREFIX ch10-)
 
-add_compile_options(-ansi -pedantic -Wall -O2 -pipe)
-
+add_compile_options(
+    -ansi
+    -pedantic
+    -Wall
+    -O2
+    -pipe)
 
 add_executable(${TARGET_PREFIX}fact1 fact1.c)
 add_executable(${TARGET_PREFIX}fact2 fact2.c)

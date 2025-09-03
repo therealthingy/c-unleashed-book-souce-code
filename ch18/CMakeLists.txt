@@ -1,6 +1,5 @@
 set(TARGET_PREFIX ch18-)
 
-
 add_executable(${TARGET_PREFIX}chekline chekline.c)
 add_executable(${TARGET_PREFIX}crcccitt crcccitt.c)
 add_executable(${TARGET_PREFIX}decode decode.c)
@@ -13,7 +12,6 @@ target_link_libraries(${TARGET_PREFIX}pidloop PRIVATE m)
 add_executable(${TARGET_PREFIX}script script.c)
 target_link_libraries(${TARGET_PREFIX}script PRIVATE m)
 add_executable(${TARGET_PREFIX}textbin textbin.c)
-
 
 # TODO: Consider copying
 #   - accel1.pid

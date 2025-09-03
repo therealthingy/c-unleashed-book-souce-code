@@ -1,8 +1,6 @@
 set(TARGET_PREFIX ch19-)
 
-
 add_executable(${TARGET_PREFIX}ch19par ch19par.c)
-
 
 # TODO: Consider copying
 #   - GeneratedCode.txt

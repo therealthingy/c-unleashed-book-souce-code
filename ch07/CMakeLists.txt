@@ -1,10 +1,8 @@
 set(TARGET_PREFIX ch07-)
 
-
 add_library(${TARGET_PREFIX}cfollow STATIC)
 target_sources(${TARGET_PREFIX}cfollow PRIVATE cfollow.c)
 target_include_directories(${TARGET_PREFIX}cfollow PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
-
 
 add_executable(${TARGET_PREFIX}cfollowd cfollowd.c)
 target_link_libraries(${TARGET_PREFIX}cfollowd PRIVATE ${TARGET_PREFIX}cfollow)

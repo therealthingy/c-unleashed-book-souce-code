@@ -5,11 +5,10 @@ set(CMAKE_DISABLE_IN_SOURCE_BUILD ON)
 
 project(c_unleashed_cd C)
 
-
 # --  Set default build type depending on the build directory  --
 message(STATUS "")
-if (NOT CMAKE_BUILD_TYPE)
-    if ("${CMAKE_BINARY_DIR}" MATCHES ".*(D|d)ebug$")
+if(NOT CMAKE_BUILD_TYPE)
+    if("${CMAKE_BINARY_DIR}" MATCHES ".*(D|d)ebug$")
         set(CMAKE_BUILD_TYPE "Debug")
     else()
         # Add debug symbols (required 4 `perf`) 2 Release build
@@ -26,18 +25,17 @@ message(STATUS "")
 # --  Ninja: Colorize output  --
 #   ( DERIVED FROM: https://medium.com/@alasher/colored-c-compiler-output-with-ninja-clang-gcc-10bfe7f2b949 )
 option(FORCE_COLORED_OUTPUT "Always produce ANSI-colored output" TRUE)
-if (${FORCE_COLORED_OUTPUT})
-    if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
-       add_compile_options(-fdiagnostics-color=always)
-    elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-       add_compile_options(-fcolor-diagnostics)
+if(${FORCE_COLORED_OUTPUT})
+    if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+        add_compile_options(-fdiagnostics-color=always)
+    elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+        add_compile_options(-fcolor-diagnostics)
     else()
         message(STATUS "`FORCE_COLORED_OUTPUT`: Unsupported compiler")
-    endif ()
-endif ()
+    endif()
+endif()
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-
 
 add_subdirectory(ch02/)
 add_subdirectory(ch03/)
