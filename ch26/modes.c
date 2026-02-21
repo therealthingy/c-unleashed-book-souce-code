@@ -44,7 +44,7 @@
  * an arbitrary sequence of bytes).
  *
  * If you plan on compressing your data (highly
- * recommeded), do it before calling one of these
+ * recommended), do it before calling one of these
  * encryption functions, and decompress it after
  * calling the decryption function.   Compression
  * increases security and increases efficiency.   Such
